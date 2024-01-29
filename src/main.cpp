@@ -37,6 +37,7 @@ void setSpeed(uint8_t id, float speedPct);
 void homing();
 void printPosition();
 void choiceMovement(String command);
+void check_pos_achieved(float target[]);
 
 
 
@@ -82,12 +83,6 @@ void loop() {
 bool ready = false;
 String command = Serial.readStringUntil('\n');
 choiceMovement(command);
-while (ready == false){
-    float pos_motor_0 = dxl.getPresentPosition(DXL_ID[0], UNIT_DEGREE);
-    if (abs(curl.pos_elbow_motor-pos_motor_0)>2.0){
-      ready = true;
-      }
-  }
 homing();
 }
 
@@ -104,6 +99,8 @@ void setSpeed(uint8_t id, float speedPct) {
 void choiceMovement(String command){
   if (command == "curl") {
     dxl.setGoalPosition(DXL_ID[0], curl.pos_elbow_motor, UNIT_DEGREE);
+    float target[nb_motor] = {curl.pos_elbow_motor,0};
+    check_pos_achieved(target);
   }
   /*else if (command == "jab") {
     // do something
@@ -124,6 +121,27 @@ void homing(){
   }
 }
 
+void check_pos_achieved(float target[]){
+  bool ready = false;
+  float interval = 2.0;
+  while (ready == false){
+    int total = 0;
+    for (int ii=0;ii<nb_motor;ii++){
+      float pos_motor = dxl.getPresentPosition(DXL_ID[ii], UNIT_DEGREE);
+      if (abs(target[ii]-pos_motor)>interval){
+        total += 1;
+      }
+    }
+    if (total == nb_motor){
+      ready = true;
+    }
+    else if (total > nb_motor){
+      Serial.println("Le check pour savoir si les moteurs sont arrives a destination n'est pas bien fait");
+    }
+  }
+}
+
+
 
 void printPosition(){
   for(int ii=0;ii<nb_motor;ii++){
@@ -134,3 +152,4 @@ void printPosition(){
     DEBUG_SERIAL.println(present_position);
   }
 }
+
