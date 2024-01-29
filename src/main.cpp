@@ -25,7 +25,6 @@ const int DXL_DIR_PIN = -1;
 const int nb_motor = 2;
 const uint8_t DXL_ID[nb_motor] = {1, 20}; //Motor ID
 float home_value[nb_motor] = {0,0}; 
-//const uint8_t DXL_ID_2 = 20;
 const float DXL_PROTOCOL_VERSION = 2.0;
 Dynamixel2Arduino dxl(DXL_SERIAL, DXL_DIR_PIN);
 String command;
@@ -36,7 +35,19 @@ using namespace ControlTableItem;
 // put function declarations here:
 void setSpeed(uint8_t id, float speedPct);
 void homing();
+void printPosition();
+void choiceMovement(String command);
 
+
+
+struct stancePosition{ // motor position (in degree)
+  //float pos_shoulder_motor1;
+  //float pos_shoulder_motor2;
+  float pos_elbow_motor;
+  //float pos_hand_motor;
+};
+
+struct stancePosition curl = {80.0};
 
 void setup() {
   // put your setup code here, to run once:
@@ -49,6 +60,7 @@ void setup() {
   dxl.begin(57600);
   // Set Port Protocol Version. This has to match with DYNAMIXEL protocol version.
   dxl.setPortProtocolVersion(DXL_PROTOCOL_VERSION);
+  
   // Get DYNAMIXEL information
   dxl.ping(DXL_ID[0]);
   dxl.ping(DXL_ID[1]);
@@ -61,36 +73,22 @@ void setup() {
   dxl.torqueOn(DXL_ID[0]);
   dxl.torqueOn(DXL_ID[1]);
 
-  // Limit the maximum velocity in Position Control Mode. Use 0 for Max speed
-  //dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID_1, 30);
-  //dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID_2, 30);
   setSpeed(DXL_ID[0],0.2);
   setSpeed(DXL_ID[1],0.2);
+  homing();
 }
 
 void loop() {
-
-  float target_1 = 90;
-  float target_2 = 180;
-  dxl.setGoalPosition(DXL_ID[0], target_1, UNIT_DEGREE);
-
-  int i_present_position = 0;
-  float f_present_position = 0;
-
-
-  i_present_position = dxl.getPresentPosition(DXL_ID[0], UNIT_DEGREE);
-  DEBUG_SERIAL.print("Present_Position 1 (degree) : ");
-  DEBUG_SERIAL.println(i_present_position);
- 
-
-  // Set Goal Position in DEGREE value
-  dxl.setGoalPosition(DXL_ID[1], target_2, UNIT_DEGREE);
-  
-
-  f_present_position = dxl.getPresentPosition(DXL_ID[1], UNIT_DEGREE);
-  DEBUG_SERIAL.print("Present_Position 2 (degree) : ");
-  DEBUG_SERIAL.println(f_present_position);
-
+bool ready = false;
+String command = Serial.readStringUntil('\n');
+choiceMovement(command);
+while (ready == false){
+    float pos_motor_0 = dxl.getPresentPosition(DXL_ID[0], UNIT_DEGREE);
+    if (abs(curl.pos_elbow_motor-pos_motor_0)>2.0){
+      ready = true;
+      }
+  }
+homing();
 }
 
 
@@ -103,19 +101,13 @@ void setSpeed(uint8_t id, float speedPct) {
   dxl.writeControlTableItem(PROFILE_VELOCITY, id, newSpeedRpm, writeTimeout);
 }
 
-void choiceMovement(){
-  /*
-  command = String(readCommand);
-
+void choiceMovement(String command){
   if (command == "curl") {
-    // do something
+    dxl.setGoalPosition(DXL_ID[0], curl.pos_elbow_motor, UNIT_DEGREE);
   }
-  else if (command == "jab") {
+  /*else if (command == "jab") {
     // do something
-  }
-  
-  */
-   
+  }*/
 }
 
 void homing(){
@@ -132,3 +124,13 @@ void homing(){
   }
 }
 
+
+void printPosition(){
+  for(int ii=0;ii<nb_motor;ii++){
+    float present_position = dxl.getPresentPosition(DXL_ID[ii], UNIT_DEGREE);
+    DEBUG_SERIAL.print("Present_Position ");
+    DEBUG_SERIAL.print(ii);
+    DEBUG_SERIAL.print(" (degree) : ");
+    DEBUG_SERIAL.println(present_position);
+  }
+}
