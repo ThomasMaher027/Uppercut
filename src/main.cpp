@@ -22,10 +22,11 @@
 #define DXL_SERIAL Serial1
 #define DEBUG_SERIAL Serial
 const int DXL_DIR_PIN = -1;
-const int nb_motor = 1;
-const int nb_movement = 1;
-const uint8_t DXL_ID[nb_motor] = {1}; //Motor ID
-float home_value[nb_motor] = {0}; 
+const int nb_motor = 3;
+const int nb_movement = 3;
+const uint8_t DXL_ID[nb_motor] = {1, 3, 4}; //Motor ID
+//float home_value[nb_motor] = {0,0}; 
+
 const float DXL_PROTOCOL_VERSION = 2.0;
 Dynamixel2Arduino dxl(DXL_SERIAL, DXL_DIR_PIN);
 String command;
@@ -37,9 +38,9 @@ using namespace ControlTableItem;
 void setSpeed(uint8_t id, float speedPct);
 void homing();
 void printPosition();
-int choiceMovement(String command);
-void check_pos_achieved(float target[]);
-void setGoal();
+int choiceMovement(String command, struct _stancePosition *pos_struct);
+void check_pos_achieved(float *target);
+void setGoal(float *pos_motor);
 
 struct _stancePosition{ // motor position (in degree)
   char stance_name[20];
@@ -47,7 +48,13 @@ struct _stancePosition{ // motor position (in degree)
 };
 
 struct _stancePosition stancePosition[nb_movement] = {
-  {"curl",{80.0}},
+  {"home",{0.0, 0.0, 0.0}},
+  {"curl",{0.0, 0.0, 90.0}},
+  {"jab",{90.0, 75.0, 25.0}}
+};
+
+struct _stancePosition follow_up[1] = {
+  {"jab", {0.0, 90.0, 0.0}}
 };
 
 void setup() {
@@ -60,12 +67,9 @@ void setup() {
   // Set Port Protocol Version. This has to match with DYNAMIXEL protocol version.
   dxl.setPortProtocolVersion(DXL_PROTOCOL_VERSION);
   
-  // Get DYNAMIXEL information
-  dxl.ping(DXL_ID[0]);
-  dxl.ping(DXL_ID[1]);
 
-  // Turn off torque when configuring items in EEPROM area
   for (int i=0;i<nb_motor;i++){
+    dxl.ping(DXL_ID[i]);
     dxl.torqueOff(DXL_ID[i]);
     dxl.setOperatingMode(DXL_ID[i], OP_POSITION);
     dxl.torqueOn(DXL_ID[i]);
@@ -77,51 +81,30 @@ void setup() {
 
 
 void loop() {
-  bool ready = false;
   String command = Serial.readStringUntil('\n');
-  int chosen_command = choiceMovement(command);
-    /*dxl.setGoalPosition(DXL_ID[0], curl.pos_elbow_motor, UNIT_DEGREE);
-    float target[nb_motor] = {curl.pos_elbow_motor};
-  check_pos_achieved(target);*/
-  homing();
+  int chosen_command = choiceMovement(command, stancePosition);
+  setGoal(stancePosition[chosen_command].pos_motor);
+  check_pos_achieved(stancePosition[chosen_command].pos_motor);
   }
 
 
 
-void setSpeed(uint8_t id, float speedPct) {
-  double maxDynamixelSpeed = 1023*0.229; //RPM
-  uint32_t newSpeedRpm = speedPct*maxDynamixelSpeed;
-  uint32_t writeTimeout = 100; //ms
-  dxl.writeControlTableItem(PROFILE_VELOCITY, id, newSpeedRpm, writeTimeout);
-}
-
-int choiceMovement(String command){
+int choiceMovement(String command, struct _stancePosition *pos_struct){
   for (int i=0;i<nb_movement;i++){
-    if (command == stancePosition[i].stance_name){
+    if (command == pos_struct[i].stance_name){
       return i;
     } 
   }
-  return nb_movement+1; // Va faire crash le programme car on retourne un index out-of-bound (on a pas reçu une commande correspondante à un mouvement prédéfini)
+  return 0;
 }
 
-void setGoal(){
-}
-
-void homing(){
-  bool ready = false;
+void setGoal(float *pos_motor){
   for(int i=0;i<nb_motor;i++){
-    dxl.setGoalPosition(DXL_ID[i], home_value[i], UNIT_DEGREE);
-  } 
-  while (ready == false){
-    float pos_motor_0 = dxl.getPresentPosition(DXL_ID[0], UNIT_DEGREE);
-    float pos_motor_1 = dxl.getPresentPosition(DXL_ID[1], UNIT_DEGREE);
-    if ((abs(home_value[0]-pos_motor_0)>2.0) && (abs(home_value[1]-pos_motor_1)>2.0)){
-      ready = true;
-    }
+    dxl.setGoalPosition(DXL_ID[i], pos_motor[i], UNIT_DEGREE);
   }
 }
 
-void check_pos_achieved(float target[]){
+void check_pos_achieved(float *target){
   bool ready = false;
   float interval = 2.0;
   while (ready == false){
@@ -141,6 +124,18 @@ void check_pos_achieved(float target[]){
   }
 }
 
+void homing(){
+  setGoal(stancePosition[0].pos_motor);
+  check_pos_achieved(stancePosition[0].pos_motor);
+}
+
+void setSpeed(uint8_t id, float speedPct) {
+  double maxDynamixelSpeed = 1023*0.229; //RPM
+  uint32_t newSpeedRpm = speedPct*maxDynamixelSpeed;
+  uint32_t writeTimeout = 100; //ms
+  dxl.writeControlTableItem(PROFILE_VELOCITY, id, newSpeedRpm, writeTimeout);
+}
+
 void printPosition(){
   for(int i=0;i<nb_motor;i++){
     float present_position = dxl.getPresentPosition(DXL_ID[i], UNIT_DEGREE);
@@ -150,4 +145,3 @@ void printPosition(){
     DEBUG_SERIAL.println(present_position);
   }
 }
-
