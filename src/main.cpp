@@ -22,9 +22,10 @@
 #define DXL_SERIAL Serial1
 #define DEBUG_SERIAL Serial
 const int DXL_DIR_PIN = -1;
-const int nb_motor = 2;
-const uint8_t DXL_ID[nb_motor] = {1, 20}; //Motor ID
-float home_value[nb_motor] = {0,0}; 
+const int nb_motor = 1;
+const int nb_movement = 1;
+const uint8_t DXL_ID[nb_motor] = {1}; //Motor ID
+float home_value[nb_motor] = {0}; 
 const float DXL_PROTOCOL_VERSION = 2.0;
 Dynamixel2Arduino dxl(DXL_SERIAL, DXL_DIR_PIN);
 String command;
@@ -36,23 +37,20 @@ using namespace ControlTableItem;
 void setSpeed(uint8_t id, float speedPct);
 void homing();
 void printPosition();
-void choiceMovement(String command);
+int choiceMovement(String command);
 void check_pos_achieved(float target[]);
+void setGoal();
 
-
-
-struct stancePosition{ // motor position (in degree)
-  //float pos_shoulder_motor1;
-  //float pos_shoulder_motor2;
-  float pos_elbow_motor;
-  //float pos_hand_motor;
+struct _stancePosition{ // motor position (in degree)
+  char stance_name[20];
+  float pos_motor[nb_motor];
 };
 
-struct stancePosition curl = {80.0};
+struct _stancePosition stancePosition[nb_movement] = {
+  {"curl",{80.0}},
+};
 
 void setup() {
-  // put your setup code here, to run once:
-  
   // Use UART port of DYNAMIXEL Shield to debug.
   DEBUG_SERIAL.begin(115200);
   while(!DEBUG_SERIAL);
@@ -67,28 +65,29 @@ void setup() {
   dxl.ping(DXL_ID[1]);
 
   // Turn off torque when configuring items in EEPROM area
-  dxl.torqueOff(DXL_ID[0]);
-  dxl.torqueOff(DXL_ID[1]);
-  dxl.setOperatingMode(DXL_ID[0], OP_POSITION);
-  dxl.setOperatingMode(DXL_ID[1], OP_POSITION);
-  dxl.torqueOn(DXL_ID[0]);
-  dxl.torqueOn(DXL_ID[1]);
-
-  setSpeed(DXL_ID[0],0.2);
-  setSpeed(DXL_ID[1],0.2);
+  for (int i=0;i<nb_motor;i++){
+    dxl.torqueOff(DXL_ID[i]);
+    dxl.setOperatingMode(DXL_ID[i], OP_POSITION);
+    dxl.torqueOn(DXL_ID[i]);
+    setSpeed(DXL_ID[i],0.2);
+  }
   homing();
 }
 
+
+
 void loop() {
-bool ready = false;
-String command = Serial.readStringUntil('\n');
-choiceMovement(command);
-homing();
-}
+  bool ready = false;
+  String command = Serial.readStringUntil('\n');
+  int chosen_command = choiceMovement(command);
+    /*dxl.setGoalPosition(DXL_ID[0], curl.pos_elbow_motor, UNIT_DEGREE);
+    float target[nb_motor] = {curl.pos_elbow_motor};
+  check_pos_achieved(target);*/
+  homing();
+  }
 
 
 
-// put function definitions here:
 void setSpeed(uint8_t id, float speedPct) {
   double maxDynamixelSpeed = 1023*0.229; //RPM
   uint32_t newSpeedRpm = speedPct*maxDynamixelSpeed;
@@ -96,15 +95,16 @@ void setSpeed(uint8_t id, float speedPct) {
   dxl.writeControlTableItem(PROFILE_VELOCITY, id, newSpeedRpm, writeTimeout);
 }
 
-void choiceMovement(String command){
-  if (command == "curl") {
-    dxl.setGoalPosition(DXL_ID[0], curl.pos_elbow_motor, UNIT_DEGREE);
-    float target[nb_motor] = {curl.pos_elbow_motor,0};
-    check_pos_achieved(target);
+int choiceMovement(String command){
+  for (int i=0;i<nb_movement;i++){
+    if (command == stancePosition[i].stance_name){
+      return i;
+    } 
   }
-  /*else if (command == "jab") {
-    // do something
-  }*/
+  return nb_movement+1; // Va faire crash le programme car on retourne un index out-of-bound (on a pas reçu une commande correspondante à un mouvement prédéfini)
+}
+
+void setGoal(){
 }
 
 void homing(){
@@ -126,9 +126,9 @@ void check_pos_achieved(float target[]){
   float interval = 2.0;
   while (ready == false){
     int total = 0;
-    for (int ii=0;ii<nb_motor;ii++){
-      float pos_motor = dxl.getPresentPosition(DXL_ID[ii], UNIT_DEGREE);
-      if (abs(target[ii]-pos_motor)>interval){
+    for (int i=0;i<nb_motor;i++){
+      float pos_motor = dxl.getPresentPosition(DXL_ID[i], UNIT_DEGREE);
+      if (abs(target[i]-pos_motor)<interval){
         total += 1;
       }
     }
@@ -141,13 +141,11 @@ void check_pos_achieved(float target[]){
   }
 }
 
-
-
 void printPosition(){
-  for(int ii=0;ii<nb_motor;ii++){
-    float present_position = dxl.getPresentPosition(DXL_ID[ii], UNIT_DEGREE);
+  for(int i=0;i<nb_motor;i++){
+    float present_position = dxl.getPresentPosition(DXL_ID[i], UNIT_DEGREE);
     DEBUG_SERIAL.print("Present_Position ");
-    DEBUG_SERIAL.print(ii);
+    DEBUG_SERIAL.print(i);
     DEBUG_SERIAL.print(" (degree) : ");
     DEBUG_SERIAL.println(present_position);
   }
