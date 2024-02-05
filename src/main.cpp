@@ -38,27 +38,48 @@ void homing();
 void printPosition();
 int choiceMovement(String command);
 void check_pos_achieved(float *target);
-void setGoal(float *pos_motor, int pos);
+void setGoal_Position(float *target, int pos);
+void setGoalSpeed(float *target, int pos);
 
 struct _stancePosition{ // motor position (in degree)
   char stance_name[20];
   int nb_mov;
-  float pos_motor[16];
+  float target[16];
 };
 
 struct _stancePosition stancePosition[nb_movement] = {
-  {"home", 1 ,{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}},
-  {"curl", 1, {0.0, 0.0, 90.0, 0.0, 0.0, 0.0, 90.0, 0.0, 0.0, 0.0, 90.0, 0.0, 0.0, 0.0, 90.0, 0.0}},
-  {"jab", 2, {10.0, 10.0, 10.0, 10.0, 50.0, 50.0, 50.0, 50.0, 50.0, 30.0, 75.0, 25.0, 90.0, 75.0, 25.0}}
+  {"home", 1 ,{0.0, 0.0, 0.0, 0.0, 
+               0.0, 0.0, 0.0, 0.0,
+               0.0, 0.0, 0.0, 0.0, 
+               0.0, 0.0, 0.0, 0.0}},
+
+  {"curl", 1, {0.0, 0.0, 90.0, 0.0, 
+               0.0, 0.0, 90.0, 0.0,
+               0.0, 0.0, 90.0, 0.0,
+               0.0, 0.0, 90.0, 0.0}},
+
+  {"jab", 2, {10.0, 10.0, 10.0, 10.0, 
+              50.0, 50.0, 50.0, 50.0, 
+              50.0, 30.0, 75.0, 25.0,
+              90.0, 75.0, 25.0, 25.0}}
 };
 
-struct movement {
-  char pos_name[20];
-  int nb_mov;
-  float pos_motor[16];
-};
+struct _stancePosition stanceSpeed[nb_movement] = {
+  {"home", 1 ,{0.3, 0.3, 0.3, 0.3, 
+               0.3, 0.3, 0.3, 0.3, 
+               0.3, 0.3, 0.3, 0.3, 
+               0.3, 0.3, 0.3, 0.3}},
 
-//struct movement curl = {"curl", 1, {0.0, 0.0, 90.0, 0.0, 0.0, 0.0, 90.0, 0.0, 0.0, 0.0, 90.0, 0.0, 0.0, 0.0, 90.0, 0.0}};
+  {"curl", 1, {0.3, 0.3, 0.5, 0.3,
+               0.3, 0.3, 0.3, 0.3,
+               0.3, 0.3, 0.3, 0.3, 
+               0.3, 0.3, 0.3, 0.3}},
+
+  {"jab", 2, {0.1, 0.2, 0.3, 0.4, 
+              0.5, 0.4, 0.3, 0.2, 
+              0.3, 0.3, 0.3, 0.3, 
+              0.3, 0.3, 0.3, 0.3}}
+};
 
 
 void setup() {
@@ -85,15 +106,16 @@ void setup() {
 
 
 void loop() {
-  String command = Serial.readStringUntil('\n');
+  String command = Serial.readStringUntil(';');
   int chosen_command = choiceMovement(command);
-  for (int i=0; i<stancePosition[chosen_command].nb_mov*nb_motor; i+=nb_motor){
-    setGoal(stancePosition[chosen_command].pos_motor,i);
-    check_pos_achieved(stancePosition[chosen_command].pos_motor);
+  if (chosen_command >= 0){
+    for (int i=0; i<stancePosition[chosen_command].nb_mov*nb_motor; i+=nb_motor){
+      setGoalSpeed(stanceSpeed[chosen_command].target,i);
+      setGoal_Position(stancePosition[chosen_command].target,i);
+      check_pos_achieved(stancePosition[chosen_command].target);
+    }
   }
-  
-  check_pos_achieved(stancePosition[chosen_command].pos_motor);
-  }
+}
 
 
 
@@ -103,13 +125,21 @@ int choiceMovement(String command){
       return i;
     } 
   }
-  return 0;
+  return -1;
 }
 
-void setGoal(float *pos_motor, int pos){
+void setGoal_Position(float *target, int pos){
   int mot=0;
   for(int i=pos;i<pos+nb_motor;i++){
-    dxl.setGoalPosition(DXL_ID[mot], pos_motor[i], UNIT_DEGREE);
+    dxl.setGoalPosition(DXL_ID[mot], target[i], UNIT_DEGREE);
+    mot++;
+  }
+}
+
+void setGoalSpeed(float *target, int pos){
+  int mot=0;
+  for(int i=pos;i<pos+nb_motor;i++){
+    setSpeed(DXL_ID[mot], target[i]);
     mot++;
   }
 }
@@ -135,8 +165,8 @@ void check_pos_achieved(float *target){
 }
 
 void homing(){
-  setGoal(stancePosition[0].pos_motor,0);
-  check_pos_achieved(stancePosition[0].pos_motor);
+  setGoal_Position(stancePosition[0].target,0);
+  check_pos_achieved(stancePosition[0].target);
 }
 
 void setSpeed(uint8_t id, float speedPct) {
