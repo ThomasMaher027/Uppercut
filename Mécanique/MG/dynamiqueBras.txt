@@ -1,0 +1,59 @@
+NewtonianFrame N 
+RigidFrame E
+RigidBody B, Av, M
+System S1(E, B, Av, M), S2(B, Av, M), S3(Av, M)
+
+%Point Cav(Av), Cb(B), Rb(B), Re(E), Mvte(E), Mvtn(N)
+
+
+Constant g = 9.81 m/s^2    % Earth's gravitational acceleration.
+Constant mM = 0.200 kg, mAv = 0.300 kg, mB = 0.400 kg
+Constant Lb = 0.250 m, LAv = 0.300 m, LM = 0.180 m
+%Constant Tc = 0.84 N*m, Tb = 2.95 N*m, Te = 2.95 N*m
+%Constant qe = 0 deg, qb = 0 deg, qc = 0 deg %bras droit a coter (demi Tpose)
+Constant qe = -90 deg, qb = 90 deg, qc = 0 deg %lever devant (pointer)
+%Variable qc'', qb'', qe''
+Variable Te, Tb, Tc
+
+M.SetMass( mM )
+Av.SetMass( mAv )
+B.SetMass( mB )
+
+%A.SetInertia( Acm,  IAxx = 0.2 kg*m^2,  IAyy = 0.3 kg*m^2,  IAzz = 0.4 kg*m^2 )
+%B.SetInertia( Bcm,  IBxx, IByy, IBzz,  IBxy, IByz, IBzx )
+%Av.SetInertia( Avcm,  IBxx, IByy, IBzz,  IBxy, IByz, IBzx )
+%M.SetInertia( Mcm,  IBxx, IByy, IBzz,  IBxy, IByz, IBzx )
+
+E.RotateX(N, qe)
+B.RotateY(E, qb)
+Av.RotateY(B, qc)
+M.RotateY(B, qc)
+
+Eo.Translate(No, 0>)
+Bo.Translate(Eo, 0>)
+Bcm.Translate(Bo,-(Lb/2)*bz>)
+Avo.Translate(Bo, -Lb*bz>)
+Avcm.Translate(Avo,-(LAv/3)*Avz>)
+Mo.Translate(Avo, -LAv*Avz>)
+Mcm.Translate(Mo, -(LM/3)*Mz>)
+
+System.AddForceGravity( -g*Ny> )            % Add's gravity force to each massive object.
+
+E.AddTorque(N, Te*nx>)
+B.AddTorque(E, Tb*ey>)
+Av.AddTorque(B, Tc*ey>)
+
+
+%-------------- Définition des équations scalaires ----------%
+EQ[1] = Dot(S1.GetDynamics(Eo), nx>)
+EQ[2] = Dot(S2.GetDynamics(Bo), ey>)
+EQ[3] = Dot(S3.GetDynamics(Avo), ey>)
+
+%EQ[1] = Dot(S1.GetMomentofForces(Eo), nx>)
+%EQ[2] = Dot(S2.GetMomentofForces(Bo), ey>)
+%EQ[3] = Dot(S3.GetMomentofForces(Avo), ey>)
+
+%----------------- Resolution -----------------%
+EvaluateToNumber(solve(Implicit,EQ, Te, Tb, Tc))
+
+
