@@ -22,9 +22,9 @@
 #define DXL_SERIAL Serial1
 #define DEBUG_SERIAL Serial
 const int DXL_DIR_PIN = -1;
-const int nb_motor = 4;
-const int nb_movement = 3;
-const uint8_t DXL_ID[nb_motor] = {1, 3, 4, 20}; //Motor ID
+const int nb_motor = 1;
+const int nb_movement = 5;
+const uint8_t DXL_ID[nb_motor] = {1/*, 3, 4, 20*/}; //Motor ID
 
 const float DXL_PROTOCOL_VERSION = 2.0;
 Dynamixel2Arduino dxl(DXL_SERIAL, DXL_DIR_PIN);
@@ -33,7 +33,7 @@ Dynamixel2Arduino dxl(DXL_SERIAL, DXL_DIR_PIN);
 using namespace ControlTableItem;
 
 // put function declarations here:
-void setSpeed(uint8_t id, float speedPct);
+void set_speed(uint8_t id, float speedPct);
 void homing();
 void printPosition();
 int choiceMovement(String command);
@@ -53,15 +53,25 @@ struct _stancePosition stancePosition[nb_movement] = {
                0.0, 0.0, 0.0, 0.0, 
                0.0, 0.0, 0.0, 0.0}},
 
-  {"curl", 1, {0.0, 0.0, 90.0, 0.0, 
+  {"curl", 1, {90.0, 90.0, 90.0, 90.0, 
                0.0, 0.0, 90.0, 0.0,
                0.0, 0.0, 90.0, 0.0,
                0.0, 0.0, 90.0, 0.0}},
 
-  {"jab", 2, {10.0, 10.0, 10.0, 10.0, 
+  {"jab", 2, {10.0, 50.0, 50.0, 50.0, 
+              50.0, 170.0, 50.0, 50.0, 
+              50.0, 30.0, 75.0, 25.0,
+              90.0, 75.0, 25.0, 25.0}},
+  
+  {"question", 2, {50.0, 170.0, 10.0, 10.0, 
               50.0, 50.0, 50.0, 50.0, 
               50.0, 30.0, 75.0, 25.0,
-              90.0, 75.0, 25.0, 25.0}}
+              90.0, 75.0, 25.0, 25.0}},
+              
+  {"corde", 2, {130.0, 10.0, 10.0, 10.0, 
+                20.0, 50.0, 50.0, 50.0, 
+                50.0, 30.0, 75.0, 25.0,
+                90.0, 75.0, 25.0, 25.0}}
 };
 
 struct _stancePosition stanceSpeed[nb_movement] = {
@@ -76,6 +86,16 @@ struct _stancePosition stanceSpeed[nb_movement] = {
                0.3, 0.3, 0.3, 0.3}},
 
   {"jab", 2, {0.1, 0.2, 0.3, 0.4, 
+              0.5, 0.4, 0.3, 0.2, 
+              0.3, 0.3, 0.3, 0.3, 
+              0.3, 0.3, 0.3, 0.3}},
+              
+  {"question", 2, {0.1, 0.2, 0.3, 0.4, 
+              0.5, 0.4, 0.3, 0.2, 
+              0.3, 0.3, 0.3, 0.3, 
+              0.3, 0.3, 0.3, 0.3}},
+              
+  {"corde", 2, {0.1, 0.2, 0.3, 0.4, 
               0.5, 0.4, 0.3, 0.2, 
               0.3, 0.3, 0.3, 0.3, 
               0.3, 0.3, 0.3, 0.3}}
@@ -98,7 +118,7 @@ void setup() {
     dxl.torqueOff(DXL_ID[i]);
     dxl.setOperatingMode(DXL_ID[i], OP_POSITION);
     dxl.torqueOn(DXL_ID[i]);
-    setSpeed(DXL_ID[i],0.2);
+    set_speed(DXL_ID[i],0.2);
   }
   homing();
 }
@@ -106,13 +126,16 @@ void setup() {
 
 
 void loop() {
-  String command = Serial.readStringUntil(';');
-  int chosen_command = choiceMovement(command);
-  if (chosen_command >= 0){
-    for (int i=0; i<stancePosition[chosen_command].nb_mov*nb_motor; i+=nb_motor){
-      setGoalSpeed(stanceSpeed[chosen_command].target,i);
-      setGoal_Position(stancePosition[chosen_command].target,i);
-      check_pos_achieved(stancePosition[chosen_command].target);
+  if (Serial.available()){
+    String command = Serial.readStringUntil(';');
+    int chosen_command = choiceMovement(command);
+    if (chosen_command >= 0){
+      for (int i=0; i<stancePosition[chosen_command].nb_mov*nb_motor; i+=nb_motor){
+        setGoalSpeed(stanceSpeed[chosen_command].target,i);
+        setGoal_Position(stancePosition[chosen_command].target,i);
+        check_pos_achieved(stancePosition[chosen_command].target);
+      }
+      //homing();
     }
   }
 }
@@ -139,7 +162,7 @@ void setGoal_Position(float *target, int pos){
 void setGoalSpeed(float *target, int pos){
   int mot=0;
   for(int i=pos;i<pos+nb_motor;i++){
-    setSpeed(DXL_ID[mot], target[i]);
+    set_speed(DXL_ID[mot], target[i]);
     mot++;
   }
 }
@@ -165,11 +188,18 @@ void check_pos_achieved(float *target){
 }
 
 void homing(){
+  setGoalSpeed(stanceSpeed[0].target,0);
   setGoal_Position(stancePosition[0].target,0);
   check_pos_achieved(stancePosition[0].target);
 }
 
-void setSpeed(uint8_t id, float speedPct) {
+void set_speed(uint8_t id, float speedPct) {
+  if (speedPct > 1){
+    speedPct = 1;
+  }
+  if (speedPct < 0){
+    speedPct = 0;
+  }
   double maxDynamixelSpeed = 1023*0.229; //RPM
   uint32_t newSpeedRpm = speedPct*maxDynamixelSpeed;
   uint32_t writeTimeout = 100; //ms
