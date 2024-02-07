@@ -1,0 +1,133 @@
+   (1) NewtonianFrame N 
+   (2) RigidFrame E
+   (3) RigidBody B, Av, M
+   (4) Particle MotC, MotM
+   (5) System S1(E, B, Av, M), S2(B, Av, M), S3(Av, M)
+   (6) Constant g = 9.81 m/s^2    % Earth's gravitational acceleration.
+   (7) Constant mB = 0.400 kg, mAv = 0.13392 kg, mM = 0.200 kg
+   (8) Constant mMot = 0.0572 kg
+   (9) Constant Lb = 0.250 m, LAv = 0.200 m, LM = 0.180 m
+   (10) Constant LBcmz = 0.120 m
+   (11) Constant LAvcmz = 0.076 m, LAvcmy = 0.005 m
+   (12) %Constant LMcmz = 0.076 m, LMcmy = 0.005 m
+   (13) Constant dMotM = 0.015 m
+   (14) %Constant qe = 0 deg, qb = 0 deg, qc = 0 deg %bras droit a coter (demi Tpose)
+   (15) Constant qe = -90 deg, qb = 90 deg, qc = 0 deg %lever devant (pointer)
+   (16) %Variable qc'', qb'', qe''
+   (17) %Constant Tc = 0.84 N*m, Tb = 2.95 N*m, Te = 2.95 N*m
+   (18) Variable Te, Tb, Tc
+   (19) M.SetMass( mM )
+   (20) Av.SetMass( mAv )
+   (21) B.SetMass( mB )
+   (22) MotC.SetMass(mMot)
+   (23) MotM.SetMass(mMot)
+   (24) %A.SetInertia( Acm,  IAxx = 0.2 kg*m^2,  IAyy = 0.3 kg*m^2,  IAzz = 0.4 kg*m^2 )
+   (25) %B.SetInertia( Bcm,  IBxx, IByy, IBzz,  IBxy, IByz, IBzx )
+   (26) %Av.SetInertia( Avcm,  IBxx, IByy, IBzz,  IBxy, IByz, IBzx )
+   (27) %M.SetInertia( Mcm,  IBxx, IByy, IBzz,  IBxy, IByz, IBzx )
+   (28) E.RotateX(N, qe)
+-> (29) E_N = [1, 0, 0;  0, cos(qe), sin(qe);  0, -sin(qe), cos(qe)]
+-> (30) w_E_N> = 0>
+-> (31) alf_E_N> = 0>
+
+   (32) B.RotateY(E, qb)
+-> (33) B_E = [cos(qb), 0, -sin(qb);  0, 1, 0;  sin(qb), 0, cos(qb)]
+-> (34) w_B_E> = 0>
+-> (35) w_B_N> = 0>
+-> (36) alf_B_E> = 0>
+-> (37) alf_B_N> = 0>
+
+   (38) Av.RotateY(B, qc)
+-> (39) Av_B = [cos(qc), 0, -sin(qc);  0, 1, 0;  sin(qc), 0, cos(qc)]
+-> (40) w_Av_B> = 0>
+-> (41) w_Av_N> = 0>
+-> (42) alf_Av_B> = 0>
+-> (43) alf_Av_N> = 0>
+
+   (44) M.RotateY(B, qc)
+-> (45) M_B = [cos(qc), 0, -sin(qc);  0, 1, 0;  sin(qc), 0, cos(qc)]
+-> (46) w_M_B> = 0>
+-> (47) w_M_N> = 0>
+-> (48) alf_M_B> = 0>
+-> (49) alf_M_N> = 0>
+
+   (50) Eo.Translate(No, 0>)
+-> (51) p_No_Eo> = 0>
+-> (52) v_Eo_N> = 0>
+-> (53) a_Eo_N> = 0>
+
+   (54) Bo.Translate(Eo, 0>)
+-> (55) p_Eo_Bo> = 0>
+-> (56) v_Bo_N> = 0>
+-> (57) a_Bo_N> = 0>
+
+   (58) Bcm.Translate(Bo,-LBcmz*bz>)
+-> (59) p_Bo_Bcm> = -LBcmz*Bz>
+-> (60) v_Bcm_N> = 0>
+-> (61) a_Bcm_N> = 0>
+
+   (62) MotC.Translate(Bo, (-(3*Lb)/4)*bz>)
+-> (63) p_Bo_MotC> = -0.75*Lb*Bz>
+-> (64) v_MotC_N> = 0>
+-> (65) a_MotC_N> = 0>
+
+   (66) Avo.Translate(Bo, -Lb*bz>)
+-> (67) p_Bo_Avo> = -Lb*Bz>
+-> (68) v_Avo_N> = 0>
+-> (69) a_Avo_N> = 0>
+
+   (70) Avcm.Translate(Avo,-LAvcmz*Avz> + LAvcmy*Avy>)
+-> (71) p_Avo_Avcm> = LAvcmy*Avy> - LAvcmz*Avz>
+-> (72) v_Avcm_N> = 0>
+-> (73) a_Avcm_N> = 0>
+
+   (74) MotM.Translate(Avo, -dMotM*Avz>)
+-> (75) p_Avo_MotM> = -dMotM*Avz>
+-> (76) v_MotM_N> = 0>
+-> (77) a_MotM_N> = 0>
+
+   (78) Mo.Translate(Avo, -LAv*Avz>)
+-> (79) p_Avo_Mo> = -LAv*Avz>
+-> (80) v_Mo_N> = 0>
+-> (81) a_Mo_N> = 0>
+
+   (82) Mcm.Translate(Mo, -(LM/3)*Mz>)
+-> (83) p_Mo_Mcm> = -0.3333333*LM*Mz>
+-> (84) v_Mcm_N> = 0>
+-> (85) a_Mcm_N> = 0>
+
+   (86) System.AddForceGravity( -g*Ny> )            % Add's gravity force to each massive object.
+-> (87) Force_Avcm> = -g*mAv*Ny>
+-> (88) Force_Bcm> = -g*mB*Ny>
+-> (89) Force_Mcm> = -g*mM*Ny>
+-> (90) Force_MotC> = -g*mMot*Ny>
+-> (91) Force_MotM> = -g*mMot*Ny>
+
+   (92) E.AddTorque(N, Te*nx>)
+-> (93) Torque_E_N> = Te*Nx>
+
+   (94) B.AddTorque(E, Tb*ey>)
+-> (95) Torque_B_E> = Tb*Ey>
+
+   (96) Av.AddTorque(B, Tc*ey>)
+-> (97) Torque_Av_B> = Tc*Ey>
+
+   (98) %-------------- Définition des équations scalaires ----------%
+   (99) EQ[1] = Dot(S1.GetDynamics(Eo), nx>)
+-> (100) EQ[1] = g*Lb*mAv*cos(qb)*cos(qe) + g*Lb*mM*cos(qb)*cos(qe) + g*LBcmz*
+         mB*cos(qb)*cos(qe) + g*LAv*mM*cos(qe)*cos(qb+qc) + g*LAvcmz*mAv*cos(
+         qe)*cos(qb+qc) + 0.3333333*g*LM*mM*cos(qe)*cos(qb+qc) - g*LAvcmy*mAv*sin(qe)
+         - Te
+
+   (101) EQ[2] = Dot(S2.GetDynamics(Bo), ey>)
+-> (102) EQ[2] = -0.3333333*g*sin(qe)*(3*Lb*mAv*sin(qb)+3*Lb*mM*sin(qb)+3*LBcmz
+         *mB*sin(qb)+LM*mM*sin(qb+qc)+3*LAv*mM*sin(qb+qc)+3*LAvcmz*mAv*sin(qb+
+         qc)) - Tb
+
+   (103) EQ[3] = Dot(S3.GetDynamics(Avo), ey>)
+-> (104) EQ[3] = -0.3333333*g*sin(qe)*sin(qb+qc)*(LM*mM+3*LAv*mM+3*LAvcmz*mAv)
+         - Tc
+
+   (105) %----------------- Resolution -----------------%
+   (106) 
+aluateToNumber(solve(Implicit,EQ, Te, Tb, Tc))
