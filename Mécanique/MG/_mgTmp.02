@@ -4,12 +4,12 @@
    (4) Particle MotC, MotM
    (5) System S1(E, B, Av, M), S2(B, Av, M), S3(Av, M)
    (6) Constant g = 9.81 m/s^2    % Earth's gravitational acceleration.
-   (7) Constant mB = 0.400 kg, mAv = 0.13392 kg, mM = 0.200 kg
+   (7) Constant mB = 0.400 kg, mAv = 0.13392 kg, mM = 0.23850 kg
    (8) Constant mMot = 0.0572 kg
    (9) Constant Lb = 0.250 m, LAv = 0.200 m, LM = 0.180 m
    (10) Constant LBcmz = 0.120 m
    (11) Constant LAvcmz = 0.076 m, LAvcmy = 0.005 m
-   (12) %Constant LMcmz = 0.076 m, LMcmy = 0.005 m
+   (12) Constant LMcmz = 0.062 m
    (13) Constant dMotM = 0.015 m
    (14) %Constant qe = 0 deg, qb = 0 deg, qc = 0 deg %bras droit a coter (demi Tpose)
    (15) Constant qe = -90 deg, qb = 90 deg, qc = 0 deg %lever devant (pointer)
@@ -91,8 +91,8 @@
 -> (80) v_Mo_N> = 0>
 -> (81) a_Mo_N> = 0>
 
-   (82) Mcm.Translate(Mo, -(LM/3)*Mz>)
--> (83) p_Mo_Mcm> = -0.3333333*LM*Mz>
+   (82) Mcm.Translate(Mo, -LMcmz*Mz>)
+-> (83) p_Mo_Mcm> = -LMcmz*Mz>
 -> (84) v_Mcm_N> = 0>
 -> (85) a_Mcm_N> = 0>
 
@@ -116,17 +116,15 @@
    (99) EQ[1] = Dot(S1.GetDynamics(Eo), nx>)
 -> (100) EQ[1] = g*Lb*mAv*cos(qb)*cos(qe) + g*Lb*mM*cos(qb)*cos(qe) + g*LBcmz*
          mB*cos(qb)*cos(qe) + g*LAv*mM*cos(qe)*cos(qb+qc) + g*LAvcmz*mAv*cos(
-         qe)*cos(qb+qc) + 0.3333333*g*LM*mM*cos(qe)*cos(qb+qc) - g*LAvcmy*mAv*sin(qe)
+         qe)*cos(qb+qc) + g*LMcmz*mM*cos(qe)*cos(qb+qc) - g*LAvcmy*mAv*sin(qe)
          - Te
 
    (101) EQ[2] = Dot(S2.GetDynamics(Bo), ey>)
--> (102) EQ[2] = -0.3333333*g*sin(qe)*(3*Lb*mAv*sin(qb)+3*Lb*mM*sin(qb)+3*LBcmz
-         *mB*sin(qb)+LM*mM*sin(qb+qc)+3*LAv*mM*sin(qb+qc)+3*LAvcmz*mAv*sin(qb+
-         qc)) - Tb
+-> (102) EQ[2] = -g*sin(qe)*(Lb*mAv*sin(qb)+Lb*mM*sin(qb)+LBcmz*mB*sin(qb)+LAv*
+         mM*sin(qb+qc)+LAvcmz*mAv*sin(qb+qc)+LMcmz*mM*sin(qb+qc)) - Tb
 
    (103) EQ[3] = Dot(S3.GetDynamics(Avo), ey>)
--> (104) EQ[3] = -0.3333333*g*sin(qe)*sin(qb+qc)*(LM*mM+3*LAv*mM+3*LAvcmz*mAv)
-         - Tc
+-> (104) EQ[3] = -g*sin(qe)*sin(qb+qc)*(LAv*mM+LAvcmz*mAv+LMcmz*mM) - Tc
 
    (105) %----------------- Resolution -----------------%
    (106) 
