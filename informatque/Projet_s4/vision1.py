@@ -4,6 +4,7 @@ import mediapipe as mp
 import numpy as np
 import cv2
 import serial
+import time
 
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
@@ -41,6 +42,25 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
         image.flags.writeable = True
         image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
+        def calculate_angle(a, b, c):
+            a = np.array(a)
+            b = np.array(b)
+            c = np.array(c)
+    
+            radians = np.arctan2(c[1]-b[1], c[0]-b[0]) - np.arctan2(a[1]-b[1], a[0]-b[0])
+            angle = np.abs(radians*180.0/np.pi)
+    
+            if angle >180.0:
+                angle = 360-angle
+    
+            return angle
+        
+        def write_read(x):
+            arduino.write(bytes(x,   'utf-8'))
+            time.sleep(0.05)
+            data = arduino.readline()
+            return   data
+        
         #Extract Landmarks
         try:
             landmarks = results.pose_landmarks.landmark
@@ -88,14 +108,14 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
                         tuple(np.multiply(shoulder, [640, 480]).astype(int)),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA, )
 
-
+            ret = "rien"
             # curl counter logic
             if angle > 160:
                 stage = "down"
             if angle < 30 and stage == "down":
                 stage = "up"
                 counter += 1
-                arduino.write("curl;")
+                ret = write_read("1")
 
             # shoulder counter logic
             if angleB > 150:
@@ -103,7 +123,7 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
             if angleB < 30 and stageB == "down" and angleC < 150:
                 stageB = "up"
                 counterB += 1
-                arduino.write("question;")
+                ret = write_read("2")
 
             #Shoulder counter logic
             if angleC < 50:
@@ -111,7 +131,7 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
             if 80 < angleC < 100 and stageC == "down" and angleD < 170:
                 stageC = "up"
                 counterC += 1
-                arduino.write("jab;")
+                ret = write_read("3")
 
             #Shoulder counter logic
             if angleD < 110:
@@ -119,7 +139,11 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
             if angleD > 170 and stageD == "down":
                 stageD = "up"
                 counterD += 1
-                arduino.write("corde;")
+                ret = write_read(4)
+            if ret != "rien":
+                print(ret)
+                
+                
 
 
 
@@ -191,18 +215,7 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
                                   )
 
 
-        def calculate_angle(a, b, c):
-            a = np.array(a)
-            b = np.array(b)
-            c = np.array(c)
-
-            radians = np.arctan2(c[1]-b[1], c[0]-b[0]) - np.arctan2(a[1]-b[1], a[0]-b[0])
-            angle = np.abs(radians*180.0/np.pi)
-
-            if angle >180.0:
-                angle = 360-angle
-
-            return angle
+  
 
 
         cv2.imshow('Mediapipe Feed', image)
