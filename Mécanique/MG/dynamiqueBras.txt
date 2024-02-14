@@ -20,11 +20,11 @@ Constant dMotM = 0.015 m
 Constant dMotE = 0.100 m
 
 %Constant qe = 0 deg, qb = 0 deg, qc = 0 deg %bras droit a coter (demi Tpose)
-Constant qe = -90 deg, qb = 90 deg, qc = 0 deg %lever devant (pointer)
-%Variable qc'', qb'', qe''
+%Constant qe = -90 deg, qb = 90 deg, qc = 0 deg %lever devant (pointer)
+Variable qc'', qb'', qe''
 
-%Constant Tc = 0.84 N*m, Tb = 2.95 N*m, Te = 2.95 N*m
-Variable Te, Tb, Tc
+Constant Tc = 0.42 N*m, Tb = 1.4875 N*m, Te = 1.4875 N*m
+%Variable Te, Tb, Tc
 
 M.SetMass( mM )
 Av.SetMass( mAv )
@@ -70,6 +70,22 @@ EQ[2] = Dot(S2.GetDynamics(Bo), ey>)
 EQ[3] = Dot(S3.GetDynamics(Avo), ey>)
 
 %----------------- Resolution -----------------%
-EvaluateToNumber(solve(Implicit,EQ, Te, Tb, Tc))
+%EvaluateToNumber(solve(Implicit,EQ, Te, Tb, Tc))
+%EvaluateToNumber(solve(Implicit,EQ, qe, qb, qc))
+
+Input  qe = 0 deg,      qe' = 0 rad/sec
+Input  qb = 0 deg,      qb' = 0 rad/sec
+Input  qc = 0 deg,      qc' = 0 rad/sec
+
+%Input  qe = -90 deg,   qe' = 0 rad/sec
+%Input  qb = 90 deg,    qb' = 0 rad/sec
+%Input  qc = 0 deg,     qc' = 0 rad/sec
+
+Input  tFinal = 2 sec,  tStep = 0.1 sec,  absError = 1.0E-07,  relError = 1.0E-07
+OutputPlot  t sec,  qe'' degrees/s^2,  qb'' degrees/s^2, qc'' degrees/s^2
+
+ODE() 
+
+
 
 
