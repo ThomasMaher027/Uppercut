@@ -22,9 +22,6 @@
 #define DXL_SERIAL Serial1
 #define DEBUG_SERIAL Serial
 const int DXL_DIR_PIN = -1;
-const int nb_motor = 1;
-const int nb_movement = 5;
-const uint8_t DXL_ID[nb_motor] = {20}; //Motor ID
 
 const float DXL_PROTOCOL_VERSION = 2.0;
 Dynamixel2Arduino dxl(DXL_SERIAL, DXL_DIR_PIN);
@@ -40,75 +37,80 @@ int choiceMovement(int command);
 void check_pos_achieved(float *target, int i);
 void setGoal_Position(float *target, int pos);
 void setGoalSpeed(float *target, int pos);
+void limitPosition(int id, float target);
 
-struct _stancePosition{ // motor position (in degree)
+const int nb_motor = 1;
+const int nb_movement = 5;
+const uint8_t DXL_ID[nb_motor] = {20}; //Motor ID
+
+struct structStance{ 
   int stance_id;
-  int nb_mov;
-  float target[16];
+  int nb_sub_movement;
+  float target[16]; // motor position (in degree)
 };
 
-struct _stancePosition stancePosition[nb_movement] = {
+struct structStance stancePosition[nb_movement] = {
   // Home
   {0, 1 ,{0.0, 0.0, 0.0, 0.0, 
-               0.0, 0.0, 0.0, 0.0,
-               0.0, 0.0, 0.0, 0.0, 
-               0.0, 0.0, 0.0, 0.0}},
+          0.0, 0.0, 0.0, 0.0,
+          0.0, 0.0, 0.0, 0.0, 
+          0.0, 0.0, 0.0, 0.0}},
 
   // Curl
   {1, 1, {90.0, 90.0, 90.0, 90.0, 
-               0.0, 0.0, 90.0, 0.0,
-               0.0, 0.0, 90.0, 0.0,
-               0.0, 0.0, 90.0, 0.0}},
+          0.0, 0.0, 90.0, 0.0,
+          0.0, 0.0, 90.0, 0.0,
+          0.0, 0.0, 90.0, 0.0}},
 
   // Jab
   {2, 1, {10.0, 50.0, 90.0, 10.0, 
-              50.0, 170.0, 50.0, 50.0, 
-              50.0, 30.0, 75.0, 25.0,
-              90.0, 75.0, 25.0, 25.0}},
+          50.0, 170.0, 50.0, 50.0, 
+          50.0, 30.0, 75.0, 25.0,
+          90.0, 75.0, 25.0, 25.0}},
 
   // Question
   {3, 1, {50.0, 170.0, 10.0, 10.0, 
-              50.0, 50.0, 50.0, 50.0, 
-              50.0, 30.0, 75.0, 25.0,
-              90.0, 75.0, 25.0, 25.0}},
+          50.0, 50.0, 50.0, 50.0, 
+          50.0, 30.0, 75.0, 25.0,
+          90.0, 75.0, 25.0, 25.0}},
 
   // Corde
   {4, 1, {90.0, 0.0, 90.0, 90.0, 
-                90.0, 90.0, 0.0, 0.0, 
-                90.0, 90.0, 90.0, 0.0,
-                90.0, 90.0, 90.0, 90.0}}
+          90.0, 90.0, 0.0, 0.0, 
+          90.0, 90.0, 90.0, 0.0,
+          90.0, 90.0, 90.0, 90.0}}
 };
 
-struct _stancePosition stanceSpeed[nb_movement] = {
+struct structStance stanceSpeed[nb_movement] = {
   // Home
   {0, 1 ,{0.3, 0.3, 0.3, 0.3, 
-               0.3, 0.3, 0.3, 0.3, 
-               0.3, 0.3, 0.3, 0.3, 
-               0.3, 0.3, 0.3, 0.3}},
+          0.3, 0.3, 0.3, 0.3, 
+          0.3, 0.3, 0.3, 0.3, 
+          0.3, 0.3, 0.3, 0.3}},
   
   // Curl
   {1, 1, {0.2, 0.3, 0.5, 0.3,
-               0.3, 0.3, 0.3, 0.3,
-               0.3, 0.3, 0.3, 0.3, 
-               0.3, 0.3, 0.3, 0.3}},
+          0.3, 0.3, 0.3, 0.3,
+          0.3, 0.3, 0.3, 0.3, 
+          0.3, 0.3, 0.3, 0.3}},
 
   // Jab
   {2, 1, {0.1, 0.2, 0.3, 0.4, 
-              0.5, 0.4, 0.3, 0.2, 
-              0.3, 0.3, 0.3, 0.3, 
-              0.3, 0.3, 0.3, 0.3}},
+          0.5, 0.4, 0.3, 0.2, 
+          0.3, 0.3, 0.3, 0.3, 
+          0.3, 0.3, 0.3, 0.3}},
 
   // Question
   {3, 1, {0.1, 0.2, 0.3, 0.4, 
-              0.5, 0.4, 0.3, 0.2, 
-              0.3, 0.3, 0.3, 0.3, 
-              0.3, 0.3, 0.3, 0.3}},
+          0.5, 0.4, 0.3, 0.2, 
+          0.3, 0.3, 0.3, 0.3, 
+          0.3, 0.3, 0.3, 0.3}},
               
   // Corde        
   {4, 1, {0.1, 0.2, 0.3, 0.4, 
-              0.5, 0.4, 0.3, 0.2, 
-              0.3, 0.3, 0.3, 0.3, 
-              0.3, 0.3, 0.3, 0.3}}
+          0.5, 0.4, 0.3, 0.2, 
+          0.3, 0.3, 0.3, 0.3, 
+          0.3, 0.3, 0.3, 0.3}}
 };
 
 
@@ -122,7 +124,7 @@ void setup() {
   // Set Port Protocol Version. This has to match with DYNAMIXEL protocol version.
   dxl.setPortProtocolVersion(DXL_PROTOCOL_VERSION);
   
-
+  // initialise each motor
   for (int i=0;i<nb_motor;i++){
     dxl.ping(DXL_ID[i]);
     dxl.torqueOff(DXL_ID[i]);
@@ -138,21 +140,16 @@ void setup() {
 
 void loop() {
   while (!Serial.available());
-    //int command = 0;
-    int command = Serial.readString().toInt();
-    //command -= 48;
-    //int chosen_command = choiceMovement(command);
-    int chosen_command = command;
+    int chosen_command = 0;
+    chosen_command = Serial.readString().toInt();
     Serial.print(chosen_command);
     
     if (chosen_command <= 0){
       chosen_command = 0;
     }
-    if (chosen_command == 49){
-      chosen_command = 1;
-    }
+
     if (chosen_command < nb_movement){
-      for (int i=0; i<stancePosition[chosen_command].nb_mov*nb_motor; i+=nb_motor){
+      for (int i=0; i<stancePosition[chosen_command].nb_sub_movement*nb_motor; i+=nb_motor){
         setGoalSpeed(stanceSpeed[chosen_command].target,i);
         setGoal_Position(stancePosition[chosen_command].target,i);
         check_pos_achieved(stancePosition[chosen_command].target,i);
@@ -162,44 +159,34 @@ void loop() {
 }
 
 
-
-int choiceMovement(int command){
-  for (int i=0;i<nb_movement;i++){
-    if (command == stancePosition[i].stance_id){
-      return i;
-    } 
-  }
-  return -1;
-}
-
 void setGoal_Position(float *target, int pos){
-  int mot=0;
+  int motor=0;
   for(int i=pos;i<pos+nb_motor;i++){
-    dxl.setGoalPosition(DXL_ID[mot], target[i], UNIT_DEGREE);
-    mot++;
+    dxl.setGoalPosition(DXL_ID[motor], target[i], UNIT_DEGREE);
+    motor++;
   }
 }
 
 void setGoalSpeed(float *target, int pos){
-  int mot=0;
+  int motor=0;
   for(int i=pos;i<pos+nb_motor;i++){
-    set_speed(DXL_ID[mot], target[i]);
-    mot++;
+    set_speed(DXL_ID[motor], target[i]);
+    motor++;
   }
 }
 
 void check_pos_achieved(float *target, int j){
   bool ready = false;
-  float interval = 2.0;
+  float interval = 5.0;
   while (ready == false){
     int total = 0;
-    int pos_j = j;
+    int target_index = j;
     for (int i=0;i<nb_motor;i++){
       float pos_motor = dxl.getPresentPosition(DXL_ID[i], UNIT_DEGREE);
-      if (abs(target[pos_j]-pos_motor)<interval){
+      if (abs(target[target_index]-pos_motor)<interval){
         total += 1;
       }
-      pos_j += 1;
+      target_index += 1;
     }
     if (total == nb_motor){
       ready = true;
@@ -237,4 +224,18 @@ void printPosition(){
     DEBUG_SERIAL.print(" (degree) : ");
     DEBUG_SERIAL.println(present_position);
   }
+}
+
+void limitPosition(int id, float target){
+
+}
+
+
+int choiceMovement(int command){
+  for (int i=0;i<nb_movement;i++){
+    if (command == stancePosition[i].stance_id){
+      return i;
+    } 
+  }
+  return -1;
 }
