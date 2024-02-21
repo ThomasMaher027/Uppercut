@@ -9,141 +9,143 @@
    (9) %Constant mB = 0.340 kg, mAv = 0.050 kg, mM = 0.090 kg
    (10) Constant mMotp = 0.060 kg
    (11) Constant mMotg = 0.090 kg
-   (12) Constant Lb = 0.250 m, LAv = 0.200 m, LM = 0.180 m
+   (12) %Constant Lb = 0.250 m, LAv = 0.200 m, LM = 0.180 m
    (13) %Constant Lb = 0.250 m, LAv = 0.100 m, LM = 0.180 m
-   (14) Constant LBcmz = 0.120 m, LBcmy = 0.040 m
-   (15) Constant LAvcmz = 0.076 m, LAvcmy = 0.005 m
-   (16) Constant LMcmz = 0.062 m
-   (17) Constant dMotM = 0.015 m
-   (18) Constant dMotE = 0.100 m
-   (19) %Constant qe = 0 deg, qb = 0 deg, qc = 0 deg %bras droit a coter (demi Tpose)
-   (20) %Constant qe = -90 deg, qb = 90 deg, qc = 0 deg %lever devant (pointer)
-   (21) Variable qc'', qb'', qe''
-   (22) Constant Tc = 0.42 N*m, Tb = 1.4875 N*m, Te = 1.4875 N*m
-   (23) %Variable Te, Tb, Tc
-   (24) M.SetMass( mM )
-   (25) Av.SetMass( mAv )
-   (26) B.SetMass( mB )
-   (27) MotC.SetMass(mMotp)
-   (28) MotM.SetMass(mMotp)
-   (29) MotE.SetMass(mMotg)
-   (30) %A.SetInertia( Acm,  IAxx = 0.2 kg*m^2,  IAyy = 0.3 kg*m^2,  IAzz = 0.4 kg*m^2 )
-   (31) %B.SetInertia( Bcm,  IBxx, IByy, IBzz,  IBxy, IByz, IBzx )
-   (32) %Av.SetInertia( Avcm,  IBxx, IByy, IBzz,  IBxy, IByz, IBzx )
-   (33) %M.SetInertia( Mcm,  IBxx, IByy, IBzz,  IBxy, IByz, IBzx )
-   (34) E.RotateX(N, qe)
--> (35) E_N = [1, 0, 0;  0, cos(qe), sin(qe);  0, -sin(qe), cos(qe)]
--> (36) w_E_N> = qe'*Ex>
--> (37) alf_E_N> = qe''*Ex>
+   (14) Constant Lb = 0.220 m, LAv = 0.150 m, LM = 0.120 m
+   (15) %Constant LBcmz = 0.120 m, LBcmy = 0.040 m
+   (16) %Constant LAvcmz = 0.076 m, LAvcmy = 0.005 m
+   (17) %Constant LMcmz = 0.062 m
+   (18) Constant LBcmz = 0.11117 m, LBcmy = 0.00164 m, LBcmx = 0.00287 m
+   (19) Constant LAvcmz = 0.07206 m, LAvcmy = 0.0015 m
+   (20) Constant LMcmz = 0.062 m %%
+   (21) Constant dMotM = 0.040 m
+   (22) Constant dMotE = 0.040 m
+   (23) %Constant qe = 0 deg, qb = 0 deg, qc = 0 deg %bras droit a coter (demi Tpose)
+   (24) Constant qe = -90 deg, qb = 90 deg, qc = 0 deg %lever devant (pointer)
+   (25) %Variable qc'', qb'', qe''
+   (26) %Constant Tc = 0.84 N*m, Tb = 2.95 N*m, Te = 2.95 N*m
+   (27) Variable Te, Tb, Tc
+   (28) M.SetMass( mM )
+   (29) Av.SetMass( mAv )
+   (30) B.SetMass( mB )
+   (31) MotC.SetMass(mMotp)
+   (32) MotM.SetMass(mMotp)
+   (33) MotE.SetMass(mMotg)
+   (34) %A.SetInertia( Acm,  IAxx = 0.2 kg*m^2,  IAyy = 0.3 kg*m^2,  IAzz = 0.4 kg*m^2 )
+   (35) %B.SetInertia( Bcm,  IBxx, IByy, IBzz,  IBxy, IByz, IBzx )
+   (36) %Av.SetInertia( Avcm,  IBxx, IByy, IBzz,  IBxy, IByz, IBzx )
+   (37) %M.SetInertia( Mcm,  IBxx, IByy, IBzz,  IBxy, IByz, IBzx )
+   (38) E.RotateX(N, qe)
+-> (39) E_N = [1, 0, 0;  0, cos(qe), sin(qe);  0, -sin(qe), cos(qe)]
+-> (40) w_E_N> = 0>
+-> (41) alf_E_N> = 0>
 
-   (38) B.RotateY(E, qb)
--> (39) B_E = [cos(qb), 0, -sin(qb);  0, 1, 0;  sin(qb), 0, cos(qb)]
--> (40) w_B_E> = qb'*By>
--> (41) w_B_N> = qb'*By> + qe'*Ex>
--> (42) alf_B_E> = qb''*By>
--> (43) alf_B_N> = qb''*By> + qe''*Ex> + qb'*qe'*Ez>
+   (42) B.RotateY(E, qb)
+-> (43) B_E = [cos(qb), 0, -sin(qb);  0, 1, 0;  sin(qb), 0, cos(qb)]
+-> (44) w_B_E> = 0>
+-> (45) w_B_N> = 0>
+-> (46) alf_B_E> = 0>
+-> (47) alf_B_N> = 0>
 
-   (44) Av.RotateY(B, qc)
--> (45) Av_B = [cos(qc), 0, -sin(qc);  0, 1, 0;  sin(qc), 0, cos(qc)]
--> (46) w_Av_B> = qc'*Avy>
--> (47) w_Av_N> = (qb'+qc')*By> + qe'*Ex>
--> (48) alf_Av_B> = qc''*Avy>
--> (49) alf_Av_N> = (qb''+qc'')*By> + qe''*Ex> + qe'*(qb'+qc')*Ez>
+   (48) Av.RotateY(B, qc)
+-> (49) Av_B = [cos(qc), 0, -sin(qc);  0, 1, 0;  sin(qc), 0, cos(qc)]
+-> (50) w_Av_B> = 0>
+-> (51) w_Av_N> = 0>
+-> (52) alf_Av_B> = 0>
+-> (53) alf_Av_N> = 0>
 
-   (50) M.RotateY(B, qc)
--> (51) M_B = [cos(qc), 0, -sin(qc);  0, 1, 0;  sin(qc), 0, cos(qc)]
--> (52) w_M_B> = qc'*My>
--> (53) w_M_N> = (qb'+qc')*By> + qe'*Ex>
--> (54) alf_M_B> = qc''*My>
--> (55) alf_M_N> = (qb''+qc'')*By> + qe''*Ex> + qe'*(qb'+qc')*Ez>
+   (54) M.RotateY(B, qc)
+-> (55) M_B = [cos(qc), 0, -sin(qc);  0, 1, 0;  sin(qc), 0, cos(qc)]
+-> (56) w_M_B> = 0>
+-> (57) w_M_N> = 0>
+-> (58) alf_M_B> = 0>
+-> (59) alf_M_N> = 0>
 
-   (56) Eo.Translate(No, 0>)
--> (57) p_No_Eo> = 0>
--> (58) v_Eo_N> = 0>
--> (59) a_Eo_N> = 0>
+   (60) Eo.Translate(No, 0>)
+-> (61) p_No_Eo> = 0>
+-> (62) v_Eo_N> = 0>
+-> (63) a_Eo_N> = 0>
 
-   (60) MotE.Translate(Eo, dMotE*ey>)
--> (61) p_Eo_MotE> = dMotE*Ey>
--> (62) v_MotE_N> = dMotE*qe'*Ez>
--> (63) a_MotE_N> = -dMotE*qe'^2*Ey> + dMotE*qe''*Ez>
+   (64) MotE.Translate(Eo, dMotE*ey>)
+-> (65) p_Eo_MotE> = dMotE*Ey>
+-> (66) v_MotE_N> = 0>
+-> (67) a_MotE_N> = 0>
 
-   (64) Bo.Translate(Eo, 0>)
--> (65) p_Eo_Bo> = 0>
--> (66) v_Bo_N> = 0>
--> (67) a_Bo_N> = 0>
+   (68) Bo.Translate(Eo, 0>)
+-> (69) p_Eo_Bo> = 0>
+-> (70) v_Bo_N> = 0>
+-> (71) a_Bo_N> = 0>
 
-   (68) Bcm.Translate(Bo,-LBcmz*bz> + LBcmy*by>) 
--> (69) p_Bo_Bcm> = LBcmy*By> - LBcmz*Bz>
--> (70) v_Bcm_N> = -LBcmz*qb'*Bx> + LBcmz*cos(qb)*qe'*By> + LBcmy*qe'*Ez>
--> (71) a_Bcm_N> = -LBcmz*qb''*Bx> + (LBcmz*cos(qb)*qe''-qe'*(LBcmy*qe'+2*LBcmz
-        *sin(qb)*qb'))*By> + LBcmz*qb'^2*Bz> + (LBcmz*cos(qb)*qe'^2+LBcmy*qe'')*Ez>
+   (72) Bcm.Translate(Bo,-LBcmz*bz> + LBcmy*by> - LBcmx*bx>) 
+-> (73) p_Bo_Bcm> = -LBcmx*Bx> + LBcmy*By> - LBcmz*Bz>
+-> (74) v_Bcm_N> = 0>
+-> (75) a_Bcm_N> = 0>
 
-   (72) MotC.Translate(Bo, (-(3*Lb)/4)*bz>)
--> (73) p_Bo_MotC> = -0.75*Lb*Bz>
--> (74) v_MotC_N> = -0.75*Lb*qb'*Bx> + 0.75*Lb*cos(qb)*qe'*By>
--> (75) a_MotC_N> = -0.75*Lb*qb''*Bx> - 0.75*Lb*(2*sin(qb)*qb'*qe'-cos(qb)*qe'')*By>
-        + 0.75*Lb*qb'^2*Bz> + 0.75*Lb*cos(qb)*qe'^2*Ez>
+   (76) MotC.Translate(Bo, (-(3*Lb)/4)*bz>)
+-> (77) p_Bo_MotC> = -0.75*Lb*Bz>
+-> (78) v_MotC_N> = 0>
+-> (79) a_MotC_N> = 0>
 
-   (76) Avo.Translate(Bo, -Lb*bz>)
--> (77) p_Bo_Avo> = -Lb*Bz>
--> (78) v_Avo_N> = -Lb*qb'*Bx> + Lb*cos(qb)*qe'*By>
--> (79) a_Avo_N> = -Lb*qb''*Bx> - Lb*(2*sin(qb)*qb'*qe'-cos(qb)*qe'')*By>
-        + Lb*qb'^2*Bz> + Lb*cos(qb)*qe'^2*Ez>
+   (80) Avo.Translate(Bo, -Lb*bz>)
+-> (81) p_Bo_Avo> = -Lb*Bz>
+-> (82) v_Avo_N> = 0>
+-> (83) a_Avo_N> = 0>
 
-   (80) Avcm.Translate(Avo,-LAvcmz*Avz> + LAvcmy*Avy>)
--> (81) p_Avo_Avcm> = LAvcmy*Avy> - LAvcmz*Avz>
--> (82) v_Avcm_N> = -LAvcmz*(qb'+qc')*Avx> - Lb*qb'*Bx> + (Lb*cos(qb)+LAvcmz*
-        cos(qb+qc))*qe'*By> + LAvcmy*qe'*Ez>
+   (84) Avcm.Translate(Avo,-LAvcmz*Avz> + LAvcmy*Avy>)
+-> (85) p_Avo_Avcm> = LAvcmy*Avy> - LAvcmz*Avz>
+-> (86) v_Avcm_N> = 0>
+-> (87) a_Avcm_N> = 0>
 
--> (83) a_Avcm_N> = -LAvcmz*(qb''+qc'')*Avx> + LAvcmz*(qb'+qc')^2*Avz> - Lb*qb
-        ''*Bx> + (LAvcmz*cos(qb+qc)*qe''-LAvcmy*qe'^2-2*LAvcmz*sin(qb+qc)*qe'*(
-        qb'+qc')-Lb*(2*sin(qb)*qb'*qe'-cos(qb)*qe''))*By> + Lb*qb'^2*Bz> + (Lb*
-        cos(qb)*qe'^2+LAvcmz*cos(qb+qc)*qe'^2+LAvcmy*qe'')*Ez>
+   (88) MotM.Translate(Avo, -dMotM*Avz>)
+-> (89) p_Avo_MotM> = -dMotM*Avz>
+-> (90) v_MotM_N> = 0>
+-> (91) a_MotM_N> = 0>
 
-   (84) MotM.Translate(Avo, -dMotM*Avz>)
--> (85) p_Avo_MotM> = -dMotM*Avz>
--> (86) v_MotM_N> = -dMotM*(qb'+qc')*Avx> - Lb*qb'*Bx> + (Lb*cos(qb)+dMotM*cos(
-        qb+qc))*qe'*By>
--> (87) a_MotM_N> = -dMotM*(qb''+qc'')*Avx> + dMotM*(qb'+qc')^2*Avz> - Lb*qb''*Bx>
-        + (-Lb*(2*sin(qb)*qb'*qe'-cos(qb)*qe'')-dMotM*(2*sin(qb+qc)*qe'*(qb'+
-        qc')-cos(qb+qc)*qe''))*By> + Lb*qb'^2*Bz> + (Lb*cos(qb)+dMotM*cos(qb+
-        qc))*qe'^2*Ez>
+   (92) Mo.Translate(Avo, -LAv*Avz>)
+-> (93) p_Avo_Mo> = -LAv*Avz>
+-> (94) v_Mo_N> = 0>
+-> (95) a_Mo_N> = 0>
 
-   (88) Mo.Translate(Avo, -LAv*Avz>)
--> (89) p_Avo_Mo> = -LAv*Avz>
--> (90) v_Mo_N> = -LAv*(qb'+qc')*Avx> - Lb*qb'*Bx> + (Lb*cos(qb)+LAv*cos(qb+qc))
-        *qe'*By>
--> (91) a_Mo_N> = -LAv*(qb''+qc'')*Avx> + LAv*(qb'+qc')^2*Avz> - Lb*qb''*Bx>
-        + (-Lb*(2*sin(qb)*qb'*qe'-cos(qb)*qe'')-LAv*(2*sin(qb+qc)*qe'*(qb'+qc')
-        -cos(qb+qc)*qe''))*By> + Lb*qb'^2*Bz> + (Lb*cos(qb)+LAv*cos(qb+qc))*qe'^2*Ez>
+   (96) Mcm.Translate(Mo, -LMcmz*Mz>) 
+-> (97) p_Mo_Mcm> = -LMcmz*Mz>
+-> (98) v_Mcm_N> = 0>
+-> (99) a_Mcm_N> = 0>
 
-   (92) Mcm.Translate(Mo, -LMcmz*Mz>) 
--> (93) p_Mo_Mcm> = -LMcmz*Mz>
--> (94) v_Mcm_N> = -LAv*(qb'+qc')*Avx> - Lb*qb'*Bx> + (Lb*cos(qb)+LAv*cos(qb+
-        qc)+LMcmz*cos(qb+qc))*qe'*By> - LMcmz*(qb'+qc')*Mx>
+   (100) System.AddForceGravity( -g*Ny> )            % Add's gravity force to each massive object.
+-> (101) Force_Avcm> = -g*mAv*Ny>
+-> (102) Force_Bcm> = -g*mB*Ny>
+-> (103) Force_Mcm> = -g*mM*Ny>
+-> (104) Force_MotC> = -g*mMotp*Ny>
+-> (105) Force_MotE> = -g*mMotg*Ny>
+-> (106) Force_MotM> = -g*mMotp*Ny>
 
--> (95) a_Mcm_N> = -LAv*(qb''+qc'')*Avx> + LAv*(qb'+qc')^2*Avz> - Lb*qb''*Bx>
-        + (-Lb*(2*sin(qb)*qb'*qe'-cos(qb)*qe'')-LAv*(2*sin(qb+qc)*qe'*(qb'+qc')
-        -cos(qb+qc)*qe'')-LMcmz*(2*sin(qb+qc)*qe'*(qb'+qc')-cos(qb+qc)*qe''))*By>
-        + Lb*qb'^2*Bz> + (Lb*cos(qb)+LAv*cos(qb+qc)+LMcmz*cos(qb+qc))*qe'^2*Ez>
-        - LMcmz*(qb''+qc'')*Mx> + LMcmz*(qb'+qc')^2*Mz>
+   (107) E.AddTorque(N, Te*nx>)
+-> (108) Torque_E_N> = Te*Nx>
 
-   (96) System.AddForceGravity( -g*Ny> )            % Add's gravity force to each massive object.
--> (97) Force_Avcm> = -g*mAv*Ny>
--> (98) Force_Bcm> = -g*mB*Ny>
--> (99) Force_Mcm> = -g*mM*Ny>
--> (100) Force_MotC> = -g*mMotp*Ny>
--> (101) Force_MotE> = -g*mMotg*Ny>
--> (102) Force_MotM> = -g*mMotp*Ny>
+   (109) B.AddTorque(E, Tb*ey>)
+-> (110) Torque_B_E> = Tb*Ey>
 
-   (103) E.AddTorque(N, Te*nx>)
--> (104) Torque_E_N> = Te*Nx>
+   (111) Av.AddTorque(B, Tc*ey>)
+-> (112) Torque_Av_B> = Tc*Ey>
 
-   (105) B.AddTorque(E, Tb*ey>)
--> (106) Torque_B_E> = Tb*Ey>
+   (113) %-------------- Définition des équations scalaires ----------%
+   (114) EQ[1] = Dot(S1.GetDynamics(Eo), nx>)
+-> (115) EQ[1] = g*Lb*mAv*cos(qb)*cos(qe) + g*Lb*mM*cos(qb)*cos(qe) + g*LBcmz*
+         mB*cos(qb)*cos(qe) + 1.75*g*Lb*mMotp*cos(qb)*cos(qe) + dMotM*g*mMotp*
+         cos(qe)*cos(qb+qc) + g*LAv*mM*cos(qe)*cos(qb+qc) + g*LAvcmz*mAv*cos(
+         qe)*cos(qb+qc) + g*LMcmz*mM*cos(qe)*cos(qb+qc) - dMotE*g*mMotg*sin(qe)
+         - g*LAvcmy*mAv*sin(qe) - g*LBcmy*mB*sin(qe) - g*LBcmx*mB*sin(qb)*cos(qe)
+         - Te
 
-   (107) Av.AddTorque(B, Tc*ey>)
--> (108) Torque_Av_B> = Tc*Ey>
+   (116) EQ[2] = Dot(S2.GetDynamics(Bo), ey>)
+-> (117) EQ[2] = -g*sin(qe)*(Lb*mAv*sin(qb)+Lb*mM*sin(qb)+LBcmx*mB*cos(qb)+LBc
+         mz*mB*sin(qb)+1.75*Lb*mMotp*sin(qb)+dMotM*mMotp*sin(qb+qc)+LAv*mM*sin(
+         qb+qc)+LAvcmz*mAv*sin(qb+qc)+LMcmz*mM*sin(qb+qc)) - Tb
 
-   (109) %-------------- Définition des équations scalaires ----------%
-   (110) EQ[1] = Dot(S1.GetDynamics(Eo), nx>)
+   (118) EQ[3] = Dot(S3.GetDynamics(Avo), ey>)
+-> (119) EQ[3] = -g*sin(qe)*sin(qb+qc)*(dMotM*mMotp+LAv*mM+LAvcmz*mAv+LMcmz*mM)
+         - Tc
+
+   (120) %----------------- Resolution -----------------%
+   (121) 
+aluateToNumber(solve(Implicit,EQ, Te, Tb, Tc))

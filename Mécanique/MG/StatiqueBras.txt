@@ -7,6 +7,7 @@ System S1(E, MotE, B, MotC, Av, MotM, M), S2(B, MotC, Av, MotM, M), S3(Av, MotM,
 
 Constant g = 9.81 m/s^2    % Earth's gravitational acceleration.
 
+%Constant mB = 0.340 kg, mAv = 0.100 kg, mM = 0.090 kg
 Constant mB = 0.340 kg, mAv = 0.070 kg, mM = 0.090 kg
 %Constant mB = 0.340 kg, mAv = 0.050 kg, mM = 0.090 kg
 Constant mMotp = 0.060 kg
@@ -14,17 +15,17 @@ Constant mMotg = 0.090 kg
 
 %Constant Lb = 0.250 m, LAv = 0.200 m, LM = 0.180 m
 %Constant Lb = 0.250 m, LAv = 0.100 m, LM = 0.180 m
-Constant Lb = 0.220 m, LAv = 0.150 m, LM = 0.110 m
+Constant Lb = 0.220 m, LAv = 0.150 m, LM = 0.120 m
 
 %Constant LBcmz = 0.120 m, LBcmy = 0.040 m
 %Constant LAvcmz = 0.076 m, LAvcmy = 0.005 m
 %Constant LMcmz = 0.062 m
-Constant LBcmz = 0.120 m, LBcmy = 0.040 m
-Constant LAvcmz = 0.076 m, LAvcmy = 0.005 m
-Constant LMcmz = 0.062 m
+Constant LBcmz = 0.11117 m, LBcmy = 0.00164 m, LBcmx = 0.00287 m
+Constant LAvcmz = 0.07206 m, LAvcmy = 0.0015 m
+Constant LMcmz = 0.062 m %%
 
-Constant dMotM = 0.015 m
-Constant dMotE = 0.100 m
+Constant dMotM = 0.040 m
+Constant dMotE = 0.040 m
 
 %Constant qe = 0 deg, qb = 0 deg, qc = 0 deg %bras droit a coter (demi Tpose)
 Constant qe = -90 deg, qb = 90 deg, qc = 0 deg %lever devant (pointer)
@@ -54,7 +55,7 @@ Eo.Translate(No, 0>)
 MotE.Translate(Eo, dMotE*ey>)
 
 Bo.Translate(Eo, 0>)
-Bcm.Translate(Bo,-LBcmz*bz> + LBcmy*by>) 
+Bcm.Translate(Bo,-LBcmz*bz> + LBcmy*by> - LBcmx*bx>) 
 MotC.Translate(Bo, (-(3*Lb)/4)*bz>)
 
 Avo.Translate(Bo, -Lb*bz>)
