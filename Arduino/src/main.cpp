@@ -37,80 +37,84 @@ int choiceMovement(int command);
 void check_pos_achieved(float *target, int i);
 void setGoal_Position(float *target, int pos);
 void setGoalSpeed(float *target, int pos);
-void limitPosition(int id, float target);
+void limitPosition();
+float getSpeed(int motor, float target);
 
-const int nb_motor = 1;
-const int nb_movement = 5;
-const uint8_t DXL_ID[nb_motor] = {20}; //Motor ID
+const int nb_motor = 3;
+const int nb_movement = 4;
+const uint8_t DXL_ID[nb_motor] = {1, 20, 3}; //Motor ID
+float min_pos_motor[nb_motor] = {0};
+float max_pos_motor[nb_motor] = {90};
 
+int nb_target = 16;
 struct structStance{ 
   int stance_id;
   int nb_sub_movement;
-  float target[16]; // motor position (in degree)
+  float target[12]; // motor position (in degree)
 };
 
 struct structStance stancePosition[nb_movement] = {
   // Home
-  {0, 1 ,{0.0, 0.0, 0.0, 0.0, 
-          0.0, 0.0, 0.0, 0.0,
-          0.0, 0.0, 0.0, 0.0, 
-          0.0, 0.0, 0.0, 0.0}},
+  {0, 1 ,{228.0, 92.0, 29.0,
+          228.0, 92.0, 29.0, 
+          228.0, 92.0, 29.0,
+          228.0, 92.0, 29.0,}},
 
   // Curl
-  {1, 1, {90.0, 90.0, 90.0, 90.0, 
-          0.0, 0.0, 90.0, 0.0,
-          0.0, 0.0, 90.0, 0.0,
-          0.0, 0.0, 90.0, 0.0}},
+  {1, 1, {300.0, 92.0, 200.0, 
+          300.0, 92.0, 200.0,
+          300.0, 92.0, 200.0,
+          300.0, 92.0, 200.0}},
 
   // Jab
-  {2, 1, {10.0, 50.0, 90.0, 10.0, 
-          50.0, 170.0, 50.0, 50.0, 
-          50.0, 30.0, 75.0, 25.0,
-          90.0, 75.0, 25.0, 25.0}},
+  {2, 3, {228.0, 195.0, 219.0, 
+          310.0, 195.0, 35.0, 
+          228.0, 195.0, 219.0,
+          228.0, 195.0, 219.0}},
 
   // Question
-  {3, 1, {50.0, 170.0, 10.0, 10.0, 
-          50.0, 50.0, 50.0, 50.0, 
-          50.0, 30.0, 75.0, 25.0,
-          90.0, 75.0, 25.0, 25.0}},
-
+  {3, 1, {228.0, 92.0, 175.0,
+          228.0, 92.0, 175.0, 
+          228.0, 92.0, 175.0,
+          228.0, 92.0, 175.0,}},
+/*
   // Corde
-  {4, 1, {90.0, 0.0, 90.0, 90.0, 
-          90.0, 90.0, 0.0, 0.0, 
-          90.0, 90.0, 90.0, 0.0,
-          90.0, 90.0, 90.0, 90.0}}
+  {4, 1, {90.0, 0.0, 90.0, 
+          90.0, 90.0, 0.0, 
+          90.0, 90.0, 90.0,
+          90.0, 90.0, 90.0}}*/
 };
 
 struct structStance stanceSpeed[nb_movement] = {
   // Home
-  {0, 1 ,{0.3, 0.3, 0.3, 0.3, 
-          0.3, 0.3, 0.3, 0.3, 
-          0.3, 0.3, 0.3, 0.3, 
-          0.3, 0.3, 0.3, 0.3}},
+  {0, 1 ,{0.3, 0.3, 0.3,
+          0.3, 0.3, 0.3,
+          0.3, 0.3, 0.3, 
+          0.3, 0.3, 0.3}},
   
   // Curl
-  {1, 1, {0.2, 0.3, 0.5, 0.3,
-          0.3, 0.3, 0.3, 0.3,
-          0.3, 0.3, 0.3, 0.3, 
-          0.3, 0.3, 0.3, 0.3}},
+  {1, 1, {0.2, 0.3, 0.2,
+          0.3, 0.3, 0.3,
+          0.3, 0.3, 0.3, 
+          0.3, 0.3, 0.3}},
 
   // Jab
-  {2, 1, {0.1, 0.2, 0.3, 0.4, 
-          0.5, 0.4, 0.3, 0.2, 
-          0.3, 0.3, 0.3, 0.3, 
-          0.3, 0.3, 0.3, 0.3}},
+  {2, 3, {0.35, 0.35, 0.6, 
+          0.35, 0.35, 0.6,
+          0.35, 0.35, 0.6,
+          0.35, 0.35, 0.6,}},
 
   // Question
-  {3, 1, {0.1, 0.2, 0.3, 0.4, 
-          0.5, 0.4, 0.3, 0.2, 
-          0.3, 0.3, 0.3, 0.3, 
-          0.3, 0.3, 0.3, 0.3}},
-              
+  {3, 1, {0.1, 0.2, 0.3, 
+          0.2, 0.2, 0.3,
+          0.3, 0.3, 0.3, 
+          0.3, 0.3, 0.3}},
+   /*           
   // Corde        
-  {4, 1, {0.1, 0.2, 0.3, 0.4, 
-          0.5, 0.4, 0.3, 0.2, 
-          0.3, 0.3, 0.3, 0.3, 
-          0.3, 0.3, 0.3, 0.3}}
+  {4, 1, {0.1, 0.2, 0.3,
+          0.25, 0.25, 0.3, 
+          0.3, 0.3, 0.3, 
+          0.3, 0.3, 0.3}}*/
 };
 
 
@@ -132,6 +136,7 @@ void setup() {
     dxl.torqueOn(DXL_ID[i]);
     set_speed(DXL_ID[i],0.2);
   }
+  //limitPosition();
   homing();
   
 }
@@ -150,7 +155,7 @@ void loop() {
 
     if (chosen_command < nb_movement){
       for (int i=0; i<stancePosition[chosen_command].nb_sub_movement*nb_motor; i+=nb_motor){
-        setGoalSpeed(stanceSpeed[chosen_command].target,i);
+        //setGoalSpeed(stanceSpeed[chosen_command].target,i);
         setGoal_Position(stancePosition[chosen_command].target,i);
         check_pos_achieved(stancePosition[chosen_command].target,i);
       }
@@ -162,9 +167,19 @@ void loop() {
 void setGoal_Position(float *target, int pos){
   int motor=0;
   for(int i=pos;i<pos+nb_motor;i++){
+    float speed_pct = getSpeed(motor, target[i]);
+    set_speed(DXL_ID[motor], speed_pct);
     dxl.setGoalPosition(DXL_ID[motor], target[i], UNIT_DEGREE);
     motor++;
   }
+}
+
+float getSpeed(int motor, float target){
+  // Égal à 1/270. Donc, pour une erreur d'angle de 270 deg, la vitesse est 100% (les moteurs ne tourneront pas plus de 270 deg) 
+  float p_gain = 0.004545455;
+  float error = abs(dxl.getPresentPosition(DXL_ID[motor], UNIT_DEGREE) - target);
+  float out_speed = error*p_gain;
+  return out_speed; 
 }
 
 void setGoalSpeed(float *target, int pos){
@@ -198,17 +213,17 @@ void check_pos_achieved(float *target, int j){
 }
 
 void homing(){
-  setGoalSpeed(stanceSpeed[0].target,0);
+  //setGoalSpeed(stanceSpeed[0].target,0);
   setGoal_Position(stancePosition[0].target,0);
   check_pos_achieved(stancePosition[0].target, 0);
 }
 
 void set_speed(uint8_t id, float speedPct) {
-  if (speedPct > 1){
-    speedPct = 1;
+  if (speedPct > 0.8){
+    speedPct = 0.8;
   }
-  if (speedPct < 0){
-    speedPct = 0;
+  if (speedPct < 0.1){
+    speedPct = 0.1;
   }
   double maxDynamixelSpeed = 1023*0.229; //RPM
   uint32_t newSpeedRpm = speedPct*maxDynamixelSpeed;
@@ -226,8 +241,22 @@ void printPosition(){
   }
 }
 
-void limitPosition(int id, float target){
-
+void limitPosition(){
+  int k = 0;
+  for(int i=0;i<nb_movement;i++){
+    for (int j=0; j<nb_target; j++){
+        if (stancePosition[i].target[j] < min_pos_motor[k]){
+          stancePosition[i].target[j] = min_pos_motor[k];
+        }
+        else if (stancePosition[i].target[j] > max_pos_motor[k]){
+          stancePosition[i].target[j] = max_pos_motor[k];
+        }
+        k+=1;
+        if (k>=nb_motor){
+          k = 0;
+        }
+    }
+  }
 }
 
 
