@@ -8,7 +8,8 @@ import time
 
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
-arduino = serial.Serial(port='COM5',   baudrate=115200, timeout=.1)
+mp_hand = mp.solutions.hands
+#arduino = serial.Serial(port='COM5',   baudrate=115200, timeout=.1)
 
 # VIDEO FEED
 cap = cv2.VideoCapture(0)
@@ -30,7 +31,7 @@ stageC = None
 counterD = 0
 stageD = None
 
-with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
+with (mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose):
     while cap.isOpened():
         ret, frame = cap.read()
         #recolor image to rgb
@@ -55,11 +56,11 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
     
             return angle
         
-        def write_read(x):
+        """def write_read(x):
             arduino.write(bytes(x,   'utf-8'))
             time.sleep(0.05)
             data = arduino.readline()
-            return   data
+            return   data"""
         
         #Extract Landmarks
         try:
@@ -110,36 +111,39 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
 
             ret = "rien"
             # curl counter logic
-            if angle > 160:
+            if angle > 160 and angleB < 10:
                 stage = "down"
-            if angle < 30 and stage == "down":
+            if angle < 30 and stage == "down" and angleB < 20:
                 stage = "up"
                 counter += 1
-                ret = write_read("1")
+                #ret = write_read("1")
 
-            # shoulder counter logic
-            if angleB > 150:
-                stageB = "down"
-            if angleB < 30 and stageB == "down" and angleC < 150:
-                stageB = "up"
-                counterB += 1
-                ret = write_read("2")
+
 
             #Shoulder counter logic
             if angleC < 50:
                 stageC = "down"
-            if 80 < angleC < 100 and stageC == "down" and angleD < 170:
+            if 80 < angleC < 100 and stageC == "down" and angleD < 170 and stageD != "up":
                 stageC = "up"
                 counterC += 1
-                ret = write_read("3")
+                #ret = write_read("3")
+
+
+            # shoulder counter logic
+            if angleB > 150:
+                stageB = "down"
+            if angleB < 30 and stageB == "down" and angleC < 150 and stageC != "up":
+                stageB = "up"
+                counterB += 1
+                #ret = write_read("2")
 
             #Shoulder counter logic
             if angleD < 110:
                 stageD = "down"
-            if angleD > 170 and stageD == "down":
+            if angleD > 170 and stageD == "down" and stageC != "up":
                 stageD = "up"
                 counterD += 1
-                ret = write_read(4)
+                #ret = write_read(4)
             if ret != "rien":
                 print(ret)
                 

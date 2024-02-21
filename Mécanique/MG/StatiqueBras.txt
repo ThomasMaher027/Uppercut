@@ -5,17 +5,24 @@ Particle MotE, MotC, MotM
 %System S1(E, B, Av, M), S2(B, Av, M), S3(Av, M)
 System S1(E, MotE, B, MotC, Av, MotM, M), S2(B, MotC, Av, MotM, M), S3(Av, MotM, M)
 
-
 Constant g = 9.81 m/s^2    % Earth's gravitational acceleration.
+
 Constant mB = 0.340 kg, mAv = 0.070 kg, mM = 0.090 kg
 %Constant mB = 0.340 kg, mAv = 0.050 kg, mM = 0.090 kg
 Constant mMotp = 0.060 kg
 Constant mMotg = 0.090 kg
-Constant Lb = 0.250 m, LAv = 0.200 m, LM = 0.180 m
+
+%Constant Lb = 0.250 m, LAv = 0.200 m, LM = 0.180 m
 %Constant Lb = 0.250 m, LAv = 0.100 m, LM = 0.180 m
+Constant Lb = 0.220 m, LAv = 0.150 m, LM = 0.110 m
+
+%Constant LBcmz = 0.120 m, LBcmy = 0.040 m
+%Constant LAvcmz = 0.076 m, LAvcmy = 0.005 m
+%Constant LMcmz = 0.062 m
 Constant LBcmz = 0.120 m, LBcmy = 0.040 m
 Constant LAvcmz = 0.076 m, LAvcmy = 0.005 m
 Constant LMcmz = 0.062 m
+
 Constant dMotM = 0.015 m
 Constant dMotE = 0.100 m
 
