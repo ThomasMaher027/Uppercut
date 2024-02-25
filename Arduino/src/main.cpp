@@ -175,7 +175,7 @@ void setGoal_Position(float *target, int pos){
 }
 
 float getSpeed(int motor, float target){
-  // Égal à 1/270. Donc, pour une erreur d'angle de 270 deg, la vitesse est 100% (les moteurs ne tourneront pas plus de 270 deg) 
+  // Égal à 1/220. Donc, pour une erreur d'angle de 220 deg, la vitesse est 100% (les moteurs ne tourneront pas plus de 270 deg) 
   float p_gain = 0.004545455;
   float error = abs(dxl.getPresentPosition(DXL_ID[motor], UNIT_DEGREE) - target);
   float out_speed = error*p_gain;
