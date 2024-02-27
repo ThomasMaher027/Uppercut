@@ -5,6 +5,7 @@ Particle MotE, MotC, MotM
 %System S1(E, B, Av, M), S2(B, Av, M), S3(Av, M)
 System S1(E, MotE, B, MotC, Av, MotM, M), S2(B, MotC, Av, MotM, M), S3(Av, MotM, M)
 Constant g = 9.81 m/s^2    % Earth's gravitational acceleration.
+%Constant mB = 0.340 kg, mAv = 0.100 kg, mM = 0.090 kg
 Constant mB = 0.340 kg, mAv = 0.070 kg, mM = 0.090 kg
 %Constant mB = 0.340 kg, mAv = 0.050 kg, mM = 0.090 kg
 Constant mMotp = 0.060 kg

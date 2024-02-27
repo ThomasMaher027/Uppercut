@@ -25,7 +25,7 @@ Constant LAvcmz = 0.07206 m, LAvcmy = 0.0015 m
 Constant LMcmz = 0.062 m %%
 
 Constant dMotM = 0.040 m
-Constant dMotE = 0.040 m
+Constant dMotE = 0.040 mhe
 
 %Constant qe = 0 deg, qb = 0 deg, qc = 0 deg %bras droit a coter (demi Tpose)
 %Constant qe = -90 deg, qb = 90 deg, qc = 0 deg %lever devant (pointer)
@@ -42,9 +42,9 @@ MotM.SetMass(mMotp)
 MotE.SetMass(mMotg)
 
 %A.SetInertia( Acm,  IAxx = 0.2 kg*m^2,  IAyy = 0.3 kg*m^2,  IAzz = 0.4 kg*m^2 )
-%B.SetInertia( Bcm,  IBxx, IByy, IBzz,  IBxy, IByz, IBzx )
-%Av.SetInertia( Avcm,  IBxx, IByy, IBzz,  IBxy, IByz, IBzx )
-%M.SetInertia( Mcm,  IBxx, IByy, IBzz,  IBxy, IByz, IBzx )
+%B.SetInertia( Bcm,  IBxx =, IByy, IBzz)
+Av.SetInertia( Avcm,  IAvxx = 0.00011084 kg*m^2, IAvyy = 0.00018089 kg*m^2, IAvzz = 0.00007775 kg*m^2,  IAvxy = 0 kg*m^2, IAvyz =  0.00000058 kg*m^2, IAvzx = 0 kg*m^2)
+M.SetInertia( Mcm,  IBxx, IByy, IBzz,  IBxy, IByz, IBzx )
 
 E.RotateX(N, qe)
 B.RotateY(E, qb)
