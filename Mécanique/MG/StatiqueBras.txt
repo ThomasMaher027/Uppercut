@@ -41,11 +41,6 @@ MotC.SetMass(mMotp)
 MotM.SetMass(mMotp)
 MotE.SetMass(mMotg)
 
-%A.SetInertia( Acm,  IAxx = 0.2 kg*m^2,  IAyy = 0.3 kg*m^2,  IAzz = 0.4 kg*m^2 )
-%B.SetInertia( Bcm,  IBxx, IByy, IBzz,  IBxy, IByz, IBzx )
-%Av.SetInertia( Avcm,  IBxx, IByy, IBzz,  IBxy, IByz, IBzx )
-%M.SetInertia( Mcm,  IBxx, IByy, IBzz,  IBxy, IByz, IBzx )
-
 E.RotateX(N, qe)
 B.RotateY(E, qb)
 Av.RotateY(B, qc)
