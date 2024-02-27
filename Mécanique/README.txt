@@ -26,6 +26,13 @@ ASSEMBLAGE DU BICEP
 	- 1x Gear 32T
 	- 1x Gear 16T
 
+	Pour faire l'assemblage, il faut d'abord fixer les deux Bicep_base et Fixation_moteur à l'aide de la quincaillerie. Ensuite, il faut insérer la Fixation moteur de la même orientation que la figure 2.
+	
+	Il faut visser l'adaptateur sur le moteur et insérer un premier shaft au bout de Bicep_base. Avant de l'insérer au complet, il faut ajouter dans l'ordre une partie de l'avant bras, un engrenage 16T et l'autre partie de l'avant bras.
+	
+	Enfin, il faut insérer le deuxième shaft comme sur la figure 2, y ajouter l'engrenage 32T et positionner le moteurs-à-vis les 4 trous de sa fixation. Il ne reste qu'à bien fixer le moteur et aligner les deux engrenages, en s'Étant assurer de ne pas oublier de brancher les fils au moteur avant de le fixer.  
+
+
 ASSEMBLAGE DE L'AVANT BRAS
 	Pour fair l'avant
 
@@ -41,3 +48,7 @@ ASSEMBLAGE DE LA MAIN:
 	Après, il faut passer le fil de pêche dans les doigts et l'attacher au bout du doigt. Il peut aussi être intéressant d'utiliser de la colle.
 	
 	Ensuite il faut connecter les doigts à la paume de la même façon que les segments de doigt se connectent ensemble.
+
+ASSEMBLAGE COMPLET
+	
+	Bicep et épaule : Il faut fixer le bicep à l'épaule à l'aide de 4 vis, 4 écrous et 4 washer. 
