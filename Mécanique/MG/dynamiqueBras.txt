@@ -54,7 +54,7 @@ Eo.Translate(No, 0>)
 MotE.Translate(Eo, dMotE*ey>)
 
 Bo.Translate(Eo, 0>)
-Bcm.Translate(Bo,-LBcmz*bz> + LBcmy*by> - LBcmx*bx>) 
+Bcm.Translate(Bo,-LBcmz*bz> + LBcmy*by> + LBcmx*bx>) 
 MotC.Translate(Bo, (-(3*Lb)/4)*bz>)
 
 Avo.Translate(Bo, -Lb*bz>)
@@ -78,7 +78,7 @@ EQ[3] = Dot(S3.GetDynamics(Avo), ey>)
 
 %----------------- Resolution -----------------%
 %EvaluateToNumber(solve(Implicit,EQ, Te, Tb, Tc))
-%EvaluateToNumber(solve(Implicit,EQ, qe, qb, qc))
+EvaluateToNumber(solve(Implicit,EQ, qe, qb, qc))
 
 Input  qe = 0 deg,      qe' = 0 rad/sec
 Input  qb = 0 deg,      qb' = 0 rad/sec
@@ -89,7 +89,7 @@ Input  qc = 0 deg,      qc' = 0 rad/sec
 %Input  qc = 0 deg,     qc' = 0 rad/sec
 
 Input  tFinal = 2 sec,  tStep = 0.1 sec,  absError = 1.0E-07,  relError = 1.0E-07
-OutputPlot  t sec,  qe'' degrees/s^2,  qb'' degrees/s^2, qc'' degrees/s^2
+OutputPlot  t sec,  qe'' deg/s^2,  qb'' deg/s^2, qc'' deg/s^2
 
 ODE() 
 

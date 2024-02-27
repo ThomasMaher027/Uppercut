@@ -27,8 +27,8 @@ Constant LMcmz = 0.03170 m, LMcmy = 0.001 m, LMcmx = 0.0002 m
 Constant dMotM = 0.040 m
 Constant dMotE = 0.040 m
 
-Constant qe = 0 deg, qb = 0 deg, qc = 0 deg %bras droit a coter (demi Tpose)
-%Constant qe = -90 deg, qb = 90 deg, qc = 0 deg %lever devant (pointer)
+%Constant qe = 0 deg, qb = 0 deg, qc = 0 deg %bras droit a coter (demi Tpose)
+Constant qe = -90 deg, qb = 90 deg, qc = 0 deg %lever devant (pointer)
 %Variable qc'', qb'', qe''
 
 %Constant Tc = 0.84 N*m, Tb = 2.95 N*m, Te = 2.95 N*m
