@@ -20,15 +20,15 @@ Constant Lb = 0.220 m, LAv = 0.150 m, LM = 0.120 m
 %Constant LBcmz = 0.120 m, LBcmy = 0.040 m
 %Constant LAvcmz = 0.076 m, LAvcmy = 0.005 m
 %Constant LMcmz = 0.062 m
-Constant LBcmz = 0.11117 m, LBcmy = 0.00164 m, LBcmx = 0.00287 m
+Constant LBcmz = 0.1105 m, LBcmy = 0.0006 m, LBcmx = 0.0125 m
 Constant LAvcmz = 0.07206 m, LAvcmx = 0.0015 m
 Constant LMcmz = 0.03170 m, LMcmy = 0.001 m, LMcmx = 0.0002 m 
 
 Constant dMotM = 0.040 m
 Constant dMotE = 0.040 m
 
-%Constant qe = 0 deg, qb = 0 deg, qc = 0 deg %bras droit a coter (demi Tpose)
-Constant qe = -90 deg, qb = 90 deg, qc = 0 deg %lever devant (pointer)
+Constant qe = 0 deg, qb = 0 deg, qc = 0 deg %bras droit a coter (demi Tpose)
+%Constant qe = -90 deg, qb = 90 deg, qc = 0 deg %lever devant (pointer)
 %Variable qc'', qb'', qe''
 
 %Constant Tc = 0.84 N*m, Tb = 2.95 N*m, Te = 2.95 N*m
