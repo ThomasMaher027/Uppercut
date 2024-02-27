@@ -21,8 +21,8 @@ Constant Lb = 0.220 m, LAv = 0.150 m, LM = 0.120 m
 %Constant LAvcmz = 0.076 m, LAvcmy = 0.005 m
 %Constant LMcmz = 0.062 m
 Constant LBcmz = 0.11117 m, LBcmy = 0.00164 m, LBcmx = 0.00287 m
-Constant LAvcmz = 0.07206 m, LAvcmy = 0.0015 m
-Constant LMcmz = 0.062 m %%
+Constant LAvcmz = 0.07206 m, LAvcmx = 0.0015 m
+Constant LMcmz = 0.03170 m, LMcmy = 0.001 m, LMcmx = 0.0002 m 
 
 Constant dMotM = 0.040 m
 Constant dMotE = 0.040 mhe
@@ -43,8 +43,8 @@ MotE.SetMass(mMotg)
 
 %A.SetInertia( Acm,  IAxx = 0.2 kg*m^2,  IAyy = 0.3 kg*m^2,  IAzz = 0.4 kg*m^2 )
 %B.SetInertia(Bcm, IBxx = 0.00011084 kg*m^2, IByy = 0.00018089 kg*m^2, IBzz = 0.00007775 kg*m^2,  IBxy = 0 kg*m^2, IByz =  0.00000058 kg*m^2, IBzx = 0 kg*m^2)
-Av.SetInertia(Avcm, IAvxx = 0.00011084 kg*m^2, IAvyy = 0.00018089 kg*m^2, IAvzz = 0.00007775 kg*m^2,  IAvxy = 0 kg*m^2, IAvyz =  0.00000058 kg*m^2, IAvzx = 0 kg*m^2)
-%M.SetInertia(Mcm, IMxx = 0.00011084 kg*m^2, IMyy = 0.00018089 kg*m^2, IMzz = 0.00007775 kg*m^2,  IMxy = 0 kg*m^2, IMyz =  0.00000058 kg*m^2, IMzx = 0 kg*m^2) %%
+Av.SetInertia(Avcm, IAvxx = 0.00018089 kg*m^2, IAvyy = 0.00011084 kg*m^2, IAvzz = 0.00007775 kg*m^2,  IAvxy = 0 kg*m^2, IAvyz =  0 kg*m^2, IAvzx = 0.00000058 kg*m^2)
+M.SetInertia(Mcm, IMxx = 0.00016081 kg*m^2, IMyy = 0.00012716 kg*m^2, IMzz = 0.00003633 kg*m^2,  IMxy = 0.00000009 kg*m^2, IMyz =  -0.00000214 kg*m^2, IMzx = -0.00000098 kg*m^2)
 
 E.RotateX(N, qe)
 B.RotateY(E, qb)
@@ -59,11 +59,11 @@ Bcm.Translate(Bo,-LBcmz*bz> + LBcmy*by> - LBcmx*bx>)
 MotC.Translate(Bo, (-(3*Lb)/4)*bz>)
 
 Avo.Translate(Bo, -Lb*bz>)
-Avcm.Translate(Avo,-LAvcmz*Avz> + LAvcmy*Avy>)
+Avcm.Translate(Avo,-LAvcmz*Avz> + LAvcmx*Avx>)
 MotM.Translate(Avo, -dMotM*Avz>)
 
 Mo.Translate(Avo, -LAv*Avz>)
-Mcm.Translate(Mo, -LMcmz*Mz>) 
+Mcm.Translate(Mo, -LMcmz*Mz> + LMcmy*My> + LMcmx*Mx>) 
 
 System.AddForceGravity( -g*Ny> )            % Add's gravity force to each massive object.
 
