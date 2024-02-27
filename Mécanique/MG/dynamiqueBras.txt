@@ -5,25 +5,33 @@ Particle MotE, MotC, MotM
 %System S1(E, B, Av, M), S2(B, Av, M), S3(Av, M)
 System S1(E, MotE, B, MotC, Av, MotM, M), S2(B, MotC, Av, MotM, M), S3(Av, MotM, M)
 
-
 Constant g = 9.81 m/s^2    % Earth's gravitational acceleration.
+
+%Constant mB = 0.340 kg, mAv = 0.100 kg, mM = 0.090 kg
 Constant mB = 0.340 kg, mAv = 0.070 kg, mM = 0.090 kg
 %Constant mB = 0.340 kg, mAv = 0.050 kg, mM = 0.090 kg
 Constant mMotp = 0.060 kg
 Constant mMotg = 0.090 kg
-Constant Lb = 0.250 m, LAv = 0.200 m, LM = 0.180 m
+
+%Constant Lb = 0.250 m, LAv = 0.200 m, LM = 0.180 m
 %Constant Lb = 0.250 m, LAv = 0.100 m, LM = 0.180 m
-Constant LBcmz = 0.120 m, LBcmy = 0.040 m
-Constant LAvcmz = 0.076 m, LAvcmy = 0.005 m
-Constant LMcmz = 0.062 m
-Constant dMotM = 0.015 m
-Constant dMotE = 0.100 m
+Constant Lb = 0.220 m, LAv = 0.150 m, LM = 0.120 m
+
+%Constant LBcmz = 0.120 m, LBcmy = 0.040 m
+%Constant LAvcmz = 0.076 m, LAvcmy = 0.005 m
+%Constant LMcmz = 0.062 m
+Constant LBcmz = 0.1105 m, LBcmy = 0.0006 m, LBcmx = 0.0125 m
+Constant LAvcmz = 0.07206 m, LAvcmx = 0.0015 m
+Constant LMcmz = 0.03170 m, LMcmy = 0.001 m, LMcmx = 0.0002 m 
+
+Constant dMotM = 0.040 m
+Constant dMotE = 0.040 m
 
 %Constant qe = 0 deg, qb = 0 deg, qc = 0 deg %bras droit a coter (demi Tpose)
 %Constant qe = -90 deg, qb = 90 deg, qc = 0 deg %lever devant (pointer)
 Variable qc'', qb'', qe''
 
-Constant Tc = 0.42 N*m, Tb = 1.4875 N*m, Te = 1.4875 N*m
+Constant Tc = 0.84 N*m, Tb = 2.95 N*m, Te = 2.95 N*m
 %Variable Te, Tb, Tc
 
 M.SetMass( mM )
@@ -33,10 +41,9 @@ MotC.SetMass(mMotp)
 MotM.SetMass(mMotp)
 MotE.SetMass(mMotg)
 
-%A.SetInertia( Acm,  IAxx = 0.2 kg*m^2,  IAyy = 0.3 kg*m^2,  IAzz = 0.4 kg*m^2 )
-%B.SetInertia( Bcm,  IBxx, IByy, IBzz,  IBxy, IByz, IBzx )
-%Av.SetInertia( Avcm,  IBxx, IByy, IBzz,  IBxy, IByz, IBzx )
-%M.SetInertia( Mcm,  IBxx, IByy, IBzz,  IBxy, IByz, IBzx )
+B.SetInertia(Bcm, IBxx = 0.00136096 kg*m^2, IByy = 0.00105899 kg*m^2, IBzz = 0.00064248 kg*m^2,  IBxy = -0.00000034 kg*m^2, IByz =  -0.00001995 kg*m^2, IBzx = -0.00012044 kg*m^2)
+Av.SetInertia(Avcm, IAvxx = 0.00018089 kg*m^2, IAvyy = 0.00011084 kg*m^2, IAvzz = 0.00007775 kg*m^2,  IAvxy = 0 kg*m^2, IAvyz =  0 kg*m^2, IAvzx = 0.00000058 kg*m^2)
+M.SetInertia(Mcm, IMxx = 0.00016081 kg*m^2, IMyy = 0.00012716 kg*m^2, IMzz = 0.00003633 kg*m^2,  IMxy = 0.00000009 kg*m^2, IMyz =  -0.00000214 kg*m^2, IMzx = -0.00000098 kg*m^2)
 
 E.RotateX(N, qe)
 B.RotateY(E, qb)
@@ -47,15 +54,15 @@ Eo.Translate(No, 0>)
 MotE.Translate(Eo, dMotE*ey>)
 
 Bo.Translate(Eo, 0>)
-Bcm.Translate(Bo,-LBcmz*bz> + LBcmy*by>) 
+Bcm.Translate(Bo,-LBcmz*bz> + LBcmy*by> - LBcmx*bx>) 
 MotC.Translate(Bo, (-(3*Lb)/4)*bz>)
 
 Avo.Translate(Bo, -Lb*bz>)
-Avcm.Translate(Avo,-LAvcmz*Avz> + LAvcmy*Avy>)
+Avcm.Translate(Avo,-LAvcmz*Avz> + LAvcmx*Avx>)
 MotM.Translate(Avo, -dMotM*Avz>)
 
 Mo.Translate(Avo, -LAv*Avz>)
-Mcm.Translate(Mo, -LMcmz*Mz>) 
+Mcm.Translate(Mo, -LMcmz*Mz> + LMcmy*My> + LMcmx*Mx>) 
 
 System.AddForceGravity( -g*Ny> )            % Add's gravity force to each massive object.
 

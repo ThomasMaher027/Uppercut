@@ -45,8 +45,10 @@ const int nb_movement = 4;
 const uint8_t DXL_ID[nb_motor] = {1, 20, 3}; //Motor ID
 float min_pos_motor[nb_motor] = {0};
 float max_pos_motor[nb_motor] = {90};
+float upper_speed_limit = 0.8;
+float lower_speed_limit = 0.1;
 
-int nb_target = 16;
+int nb_target = 12;
 struct structStance{ 
   int stance_id;
   int nb_sub_movement;
@@ -175,7 +177,7 @@ void setGoal_Position(float *target, int pos){
 }
 
 float getSpeed(int motor, float target){
-  // Égal à 1/270. Donc, pour une erreur d'angle de 270 deg, la vitesse est 100% (les moteurs ne tourneront pas plus de 270 deg) 
+  // Égal à 1/220. Donc, pour une erreur d'angle de 220 deg, la vitesse est 100% (les moteurs ne tourneront pas plus de 270 deg) 
   float p_gain = 0.004545455;
   float error = abs(dxl.getPresentPosition(DXL_ID[motor], UNIT_DEGREE) - target);
   float out_speed = error*p_gain;
@@ -219,11 +221,11 @@ void homing(){
 }
 
 void set_speed(uint8_t id, float speedPct) {
-  if (speedPct > 0.8){
-    speedPct = 0.8;
+  if (speedPct > upper_speed_limit){
+    speedPct = upper_speed_limit;
   }
-  if (speedPct < 0.1){
-    speedPct = 0.1;
+  if (speedPct < lower_speed_limit){
+    speedPct = lower_speed_limit;
   }
   double maxDynamixelSpeed = 1023*0.229; //RPM
   uint32_t newSpeedRpm = speedPct*maxDynamixelSpeed;
