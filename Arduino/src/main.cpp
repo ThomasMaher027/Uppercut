@@ -37,14 +37,16 @@ int choiceMovement(int command);
 void check_pos_achieved(float *target, int i);
 void setGoal_Position(float *target, int pos);
 void setGoalSpeed(float *target, int pos);
-void limitPosition();
+void limitPosition(float *target_angle);
 float getSpeed(int motor, float target);
+void setAngularSpeed(float *target, float delta_time);
+void setAngularPosition(float *target);
 
 const int nb_motor = 3;
 const int nb_movement = 4;
 const uint8_t DXL_ID[nb_motor] = {1, 20, 3}; //Motor ID
-float min_pos_motor[nb_motor] = {0};
-float max_pos_motor[nb_motor] = {90};
+float min_pos_motor[nb_motor] = {119, 92, 29};
+float max_pos_motor[nb_motor] = {317, 234, 219};
 float upper_speed_limit = 0.8;
 float lower_speed_limit = 0.1;
 
@@ -144,7 +146,7 @@ void setup() {
 }
 
 
-
+/*
 void loop() {
   while (!Serial.available());
     int chosen_command = 0;
@@ -163,8 +165,50 @@ void loop() {
       }
       homing();
     }
+}*/
+
+
+void loop(){
+  while (!Serial.available());
+    // TODO : Lire et séparer les valeurs du port série
+    // J'ai besoin des cibles d'angle pour les 4 moteurs et le temps entre du écriture du port série
+    float target_angle[nb_motor] = {};
+    float delta_time;
+    limitPosition(target_angle);
+    setAngularSpeed(target_angle, delta_time);
+    setAngularPosition(target_angle);
 }
 
+void limitPosition(float *target_angle){
+  for(int i=0;i<nb_motor;i++){
+    if (target_angle[i] < min_pos_motor[i]){
+      target_angle[i] = min_pos_motor[i]
+    }
+    if (target_angle[i] < min_pos_motor[i]){
+      target_angle[i] = min_pos_motor[i]
+    }
+  }
+}
+
+void setAngularSpeed(float *target, float delta_time){
+  float conv_rad_enc = 162.82; // (valeur d'encodeur)/rad
+  for(int i=0;i<nb_motor;i++){
+    float present_pos = dxl.getPresentPosition(DXL_ID[i], UNIT_DEGREE);
+    float delta_pos = abs(target[i] - present_pos)*conv_rad_enc; // (valeur d'encodeur);
+    if (delta_pos>1023){
+      delta_pos = 1023;
+    }
+    float speed = delta_pos/delta_time; // dq/dt
+    speed *= 0.229; // RPM/(valeur encodeur)
+    dxl.writeControlTableItem(PROFILE_VELOCITY, i, speed, 100);
+  }
+}
+
+void setAngularPosition(float *target){
+  for (int i=0;i<nb_motor;i++){
+    dxl.setGoalPosition(DXL_ID[i], target[i], UNIT_DEGREE);
+  }
+}
 
 void setGoal_Position(float *target, int pos){
   int motor=0;
@@ -240,24 +284,6 @@ void printPosition(){
     DEBUG_SERIAL.print(i);
     DEBUG_SERIAL.print(" (degree) : ");
     DEBUG_SERIAL.println(present_position);
-  }
-}
-
-void limitPosition(){
-  int k = 0;
-  for(int i=0;i<nb_movement;i++){
-    for (int j=0; j<nb_target; j++){
-        if (stancePosition[i].target[j] < min_pos_motor[k]){
-          stancePosition[i].target[j] = min_pos_motor[k];
-        }
-        else if (stancePosition[i].target[j] > max_pos_motor[k]){
-          stancePosition[i].target[j] = max_pos_motor[k];
-        }
-        k+=1;
-        if (k>=nb_motor){
-          k = 0;
-        }
-    }
   }
 }
 

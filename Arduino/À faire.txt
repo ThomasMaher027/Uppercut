@@ -1,0 +1,14 @@
+À faire/modifier dans le code de la carte OpenRB-150:
+	- Faire la lecture du port série pour les mouvements en temps réels (mtr)
+		J'ai pensé à lire un string dont les valeurs des angles sont séparés par un caractère spécial
+
+	- Tester le module de limite de position
+		Qu'est-ce qui arrive quand une position en dehors des limites est entrée
+	
+	- Tester le module de calcul de vitesse angulaire
+		Est-ce que les valeurs de vitesse sont bonnes?
+
+	- Nettoyer le code
+		Thomas : Je vais m'en occuper. Le code est assez mêlé
+
+	- Évaluer l'utilité d'un PID en position ou en vitesse	
