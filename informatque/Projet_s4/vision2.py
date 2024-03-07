@@ -96,7 +96,7 @@ with (mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence
             shoulderC = [landmarks[mp_holistic.PoseLandmark.RIGHT_SHOULDER.value].x,
                         landmarks[mp_holistic.PoseLandmark.RIGHT_SHOULDER.value].y]
 
-            index = [landmarks2[mp_holistic.HandLandmark.INDEX_FINGER_TIP.value].x,
+            """index = [landmarks2[mp_holistic.HandLandmark.INDEX_FINGER_TIP.value].x,
                         landmarks2[mp_holistic.HandLandmark.INDEX_FINGER_TIP.value].y]
 
             index2 = [landmarks2[mp_holistic.HandLandmark.INDEX_FINGER_MCP.value].x,
@@ -121,7 +121,7 @@ with (mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence
                            landmarks2[mp_holistic.HandLandmark.PINKY_MCP.value].y]
 
             poignet = [landmarks2[mp_holistic.HandLandmark.WRIST.value].x,
-                            landmarks2[mp_holistic.HandLandmark.WRIST.value].y]
+                            landmarks2[mp_holistic.HandLandmark.WRIST.value].y]"""
 
             angle = calculate_angle(shoulder, elbow, wrist)
             angleB = calculate_angle(hip, shoulder, elbow)
