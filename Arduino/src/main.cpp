@@ -17,6 +17,7 @@
 
 #include <Arduino.h>
 #include <Dynamixel2Arduino.h>
+#include "serialCommunication.h"
 
 //OpenRB does not require the DIR control pin.
 #define DXL_SERIAL Serial1
@@ -147,6 +148,7 @@ void setup() {
 
 
 /*
+// fonction loop() pour les mouvements préenregistés
 void loop() {
   while (!Serial.available());
     int chosen_command = 0;
@@ -167,7 +169,7 @@ void loop() {
     }
 }*/
 
-
+// fonction loop() pour le temps réel
 void loop(){
   while (!Serial.available());
     // TODO : Lire et séparer les valeurs du port série
