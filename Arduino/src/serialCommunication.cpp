@@ -14,7 +14,7 @@ float target_pos3 = 0.0;
 float target_pos4 = 0.0;
 float delta_time = 0.0;
 
-int nb_data = 4;
+const int nb_data = 4;
 float msg[nb_data] = {0, 0, 0, 0};
 
 
@@ -75,7 +75,10 @@ void parseData() {      // sépare les données en partie
 void showParsedData() {
     for(int ii=0;ii<nb_data;ii++) {
         if(ii<(nb_data-1)) {
-            Serial.print("Target %d : ", ii);
+            Serial.print("Target ");
+            Serial.print(ii);
+            Serial.print(" : ");
+
             Serial.println(msg[ii]);
         }
         else {

@@ -175,7 +175,7 @@ void loop(){
   while (!Serial.available());
     // TODO : Lire et séparer les valeurs du port série
     // J'ai besoin des cibles d'angle pour les 4 moteurs et le temps entre du écriture du port série
-    float data[nb_motor] = getSerialMessage();
+    float* data = getSerialMessage();
     limitPosition(data);
     setAngularSpeed(data, data[nb_motor+1]);
     setAngularPosition(data);
@@ -184,10 +184,10 @@ void loop(){
 void limitPosition(float *target_angle){
   for(int i=0;i<nb_motor;i++){
     if (target_angle[i] < min_pos_motor[i]){
-      target_angle[i] = min_pos_motor[i]
+      target_angle[i] = min_pos_motor[i];
     }
     if (target_angle[i] < min_pos_motor[i]){
-      target_angle[i] = min_pos_motor[i]
+      target_angle[i] = min_pos_motor[i];
     }
   }
 }
@@ -202,7 +202,8 @@ void setAngularSpeed(float *target, float delta_time){
     }
     float speed = delta_pos/delta_time; // dq/dt
     speed *= 0.229; // RPM/(valeur encodeur)
-    dxl.writeControlTableItem(PROFILE_VELOCITY, i, speed, 100);
+    uint32_t writeTimeout = 100;
+    dxl.writeControlTableItem(PROFILE_VELOCITY, i, speed, writeTimeout);
   }
 }
 
