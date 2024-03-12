@@ -1,4 +1,10 @@
+#ifndef SERIALCOM_H
+#define SERIALCOM_H
+#include <Arduino.h>
+
 void recvWithStartEndMarkers();
 void parseData();
 void showParsedData();
-void getSerialMessage(); 
+float* getSerialMessage(); 
+
+#endif SERIALCOM_H

@@ -14,6 +14,10 @@ float target_pos3 = 0.0;
 float target_pos4 = 0.0;
 float delta_time = 0.0;
 
+int nb_data = 4;
+float msg[nb_data] = {0, 0, 0, 0};
+
+
 boolean newData = false;
 
 
@@ -58,45 +62,34 @@ void parseData() {      // sépare les données en partie
     char * strtokIndx; // utilisé par strtok() comme un index
 
     strtokIndx = strtok(tempChars, ",");
-    target_pos1 = atof(strtokIndx);  
+    msg[0] = atof(strtokIndx);  
     
-    strtokIndx = strtok(NULL, ",");
-    target_pos2 = atof(strtokIndx);
-    
-    strtokIndx = strtok(NULL, ",");
-    target_pos3 = atof(strtokIndx);
-    
-    strtokIndx = strtok(NULL, ",");
-    target_pos4 = atof(strtokIndx);
-    
-    strtokIndx = strtok(NULL, ",");
-    delta_time = atof(strtokIndx);
-
+    for(int ii = 1;ii<nb_data;ii++){
+        strtokIndx = strtok(NULL, ",");
+        msg[ii] = atof(strtokIndx);
+    }
 }
 
 //============
 
 void showParsedData() {
-    Serial.print("Target 1 : ");
-    Serial.println(target_pos1);
-    
-    Serial.print("Target 2 : ");
-    Serial.println(target_pos2);
-    
-    Serial.print("Target 3 : ");
-    Serial.println(target_pos3);
-    
-    Serial.print("Target 4 : ");
-    Serial.println(target_pos4);
-    
-    Serial.print("Delta temps : ");
-    Serial.println(delta_time);
+    for(int ii=0;ii<nb_data;ii++) {
+        if(ii<(nb_data-1)) {
+            Serial.print("Target %d : ", ii);
+            Serial.println(msg[ii]);
+        }
+        else {
+            Serial.print("Delta temps : ");
+            Serial.println(msg[ii]);
+        }
+
+    }
 }
 
 //============
 
-void getSerialMessage(){
-      recvWithStartEndMarkers();
+float* getSerialMessage(){
+    recvWithStartEndMarkers();
     if (newData == true) {
         strcpy(tempChars, receivedChars);
             // Copie nécessaire pour protéger les données originales,
@@ -104,5 +97,6 @@ void getSerialMessage(){
         parseData();
         showParsedData();
         newData = false;
+        return msg;
     }
 }
