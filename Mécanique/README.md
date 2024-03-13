@@ -3,7 +3,7 @@
 ## ASSEMBLAGE DE L'ÉPAULE
 
 Il faut d'abord imprimer les éléments suivant :
-- **1x** 0001.SLDPRT
+- **1x** [0001.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Épaule_test_2).
 - **1x** 0002.SLDPRT
 - **1x** 0003.SLDPRT
 Il faut ensuite se procurer les éléments suivant :
