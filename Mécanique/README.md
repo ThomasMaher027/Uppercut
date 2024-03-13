@@ -4,8 +4,8 @@
 
 Il faut d'abord imprimer les éléments suivant :
 - **1x** [0001.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Épaule_test_2).
-- **1x** 0002.SLDPRT
-- **1x** 0003.SLDPRT
+- **1x** [0002.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Épaule_test_2).
+- **1x** [0003.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Épaule_test_2).
 Il faut ensuite se procurer les éléments suivant :
 - **2x** shaft 1/4 de longueur 180mm et 135mm
 - **2x** moteur dynamixel XM,H-430
@@ -21,10 +21,10 @@ Il faut ensuite refaire ces manipulations pour la pièce 0002 et 0003. Vous pouv
 
 ## ASSEMBLAGE DU BICEP
 Il faut d'abord imprimer les éléments suivant :
-- **2x** Bicep_base.SLDPRT
-- **1x** Fixation_moteur.SLDPRT
-- **1x** Fixation_bicep.SLDPRT
-- **1x** Adaptateur.SLDPRT
+- **2x** [Bicep_base.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Coude_VF).
+- **1x** [Fixation_moteur.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Coude_VF).
+- **1x** [Fixation_bicep.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Coude_VF).
+- **1x** [Adaptateur.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Coude_VF).
 Il faut ensuite se procurer les éléments suivant :
 - **2x** shaft de longueur 100mm et 50mm
 - **1x** moteur dynamixel XL,H-430
