@@ -15,6 +15,8 @@ Pour faire l'assemblage, il faut fixer 0001 et 0002 à l'aide d'un shaft. Ensuit
 
 Il faut ensuite refaire ces manipulations pour la pièce 0002 et 0003. Vous pouvez vous fier à la figure 1 pour visualiser le modèle correctement.Il faut faire attention à la bonne orientation des pièces. 
 
+![Figure 1 : Modèle 3D de l'épaule](https://github.com/ThomasMaher027/Uppercut/blob/main/Mécanique/figure_1.png)
+
 ## ASSEMBLAGE DU BICEP
 Il faut d'abord imprimer les éléments suivant :
 - 2x Bicep_base.SLDPRT
@@ -33,6 +35,7 @@ Il faut visser l'adaptateur sur le moteur et insérer un premier shaft au bout d
 	
 Enfin, il faut insérer le deuxième shaft comme sur la figure 2, y ajouter l'engrenage 32T et positionner le moteur vis-à-vis les 4 trous de sa fixation. Il ne reste qu'à bien fixer le moteur et aligner les deux engrenages, en s'étant assuré de ne pas oublier de brancher les fils au moteur avant de le fixer.  
 
+![Figure 2 : Modèle 3D du biceps](https://github.com/ThomasMaher027/Uppercut/blob/main/Mécanique/figure_2.png)
 
 ## ASSEMBLAGE DE L'AVANT-BRAS
 Pour faire l'avant-bras, il faut simplement fixer le rouleau_doigts au moteur et fixer le moteur à son support. Ensuite il faut assembler les 2 pièces d'Avant_Bras sur les côtés et les fixer au biceps avec le shaft ainsi qu'à la main à l'autre extrémité.
