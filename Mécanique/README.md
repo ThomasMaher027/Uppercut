@@ -30,8 +30,8 @@ Il faut d'abord imprimer les éléments suivant :
 Il faut ensuite se procurer les éléments suivant :
 - **2x** shaft de longueur 100mm et 50mm
 - **1x** moteur dynamixel XL,H-430
-- **1x** Gear 32T
-- **1x** Gear 16T
+- **1x** [32T, 0.250" (1/4) Bore 32P Shaft Mount Pinion Gear](https://www.servocity.com/32t-0-250-1-4-bore-32p-shaft-mount-pinion-gear/).
+- **1x** [16T, 0.250" (1/4) Bore 32P Shaft Mount Pinion Gear](https://www.servocity.com/16t-0-250-1-4-bore-32p-shaft-mount-pinion-gear/).
 
 Pour faire l'assemblage, il faut d'abord fixer les deux Bicep_base et Fixation_moteur à l'aide de la quincaillerie. Ensuite, il faut insérer la Fixation du moteur de la même orientation que la figure 2.
 	
