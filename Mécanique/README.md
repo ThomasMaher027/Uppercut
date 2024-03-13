@@ -1,6 +1,6 @@
-ASSEMBLAGE MÉCANIQUE
+# ASSEMBLAGE MÉCANIQUE
 
-ASSEMBLAGE DE L'ÉPAULE
+## ASSEMBLAGE DE L'ÉPAULE
 	Il faut d'abord imprimer les éléments suivant :
 	- 1x 0001.SLDPRT
 	- 1x 0002.SLDPRT
@@ -14,7 +14,7 @@ ASSEMBLAGE DE L'ÉPAULE
 
 	Il faut ensuite refaire ces manipulations pour la pièce 0002 et 0003. Vous pouvez vous fier à la figure 1 pour visualiser le modèle correctement.Il faut faire attention à la bonne orientation des pièces. 
 
-ASSEMBLAGE DU BICEP
+## ASSEMBLAGE DU BICEP
 	Il faut d'abord imprimer les éléments suivant :
 	- 2x Bicep_base.SLDPRT
 	- 1x Fixation_moteur.SLDPRT
@@ -33,7 +33,7 @@ ASSEMBLAGE DU BICEP
 	Enfin, il faut insérer le deuxième shaft comme sur la figure 2, y ajouter l'engrenage 32T et positionner le moteur vis-à-vis les 4 trous de sa fixation. Il ne reste qu'à bien fixer le moteur et aligner les deux engrenages, en s'étant assuré de ne pas oublier de brancher les fils au moteur avant de le fixer.  
 
 
-ASSEMBLAGE DE L'AVANT-BRAS
+## ASSEMBLAGE DE L'AVANT-BRAS
 	Pour faire l'avant-bras, il faut simplement fixer le rouleau_doigts au moteur et fixer le moteur à son support. Ensuite il faut assembler les 2 pièces d'Avant_Bras sur les côtés et les fixer au biceps avec le shaft ainsi qu'à la main à l'autre extrémité.
 	
 	Liste de pièces:
@@ -42,7 +42,7 @@ ASSEMBLAGE DE L'AVANT-BRAS
 	- 1x moteur dynamixel XL,H-430
 	- 1x rouleau_doigts
 
-ASSEMBLAGE DE LA MAIN:
+## ASSEMBLAGE DE LA MAIN:
 	Pour faire la main il faut avoir:
 	- 9 exemplaires de Doigt1
 	- 5 exemplaires de Doigt2
@@ -55,7 +55,7 @@ ASSEMBLAGE DE LA MAIN:
 	
 	Ensuite il faut connecter les doigts à la paume de la même façon que les segments de doigt se connectent ensemble.
 
-ASSEMBLAGE COMPLET
+## ASSEMBLAGE COMPLET:
 	
 	Bicep et épaule : Il faut fixer le biceps à l'épaule à l'aide de 4 vis M4 25LG, 4 écrous et 4 rondelles.
 	
