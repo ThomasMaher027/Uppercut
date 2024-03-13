@@ -17,6 +17,7 @@
 
 #include <Arduino.h>
 #include <Dynamixel2Arduino.h>
+#include "serialCommunication.h"
 
 //OpenRB does not require the DIR control pin.
 #define DXL_SERIAL Serial1
@@ -49,6 +50,7 @@ float min_pos_motor[nb_motor] = {119, 92, 29};
 float max_pos_motor[nb_motor] = {317, 234, 219};
 float upper_speed_limit = 0.8;
 float lower_speed_limit = 0.1;
+float msg_data[5];
 
 int nb_target = 12;
 struct structStance{ 
@@ -147,6 +149,7 @@ void setup() {
 
 
 /*
+// fonction loop() pour les mouvements préenregistés
 void loop() {
   while (!Serial.available());
     int chosen_command = 0;
@@ -167,25 +170,24 @@ void loop() {
     }
 }*/
 
-
+// fonction loop() pour le temps réel
 void loop(){
   while (!Serial.available());
     // TODO : Lire et séparer les valeurs du port série
     // J'ai besoin des cibles d'angle pour les 4 moteurs et le temps entre du écriture du port série
-    float target_angle[nb_motor] = {};
-    float delta_time;
-    limitPosition(target_angle);
-    setAngularSpeed(target_angle, delta_time);
-    setAngularPosition(target_angle);
+    float* data = getSerialMessage();
+    limitPosition(data);
+    setAngularSpeed(data, data[nb_motor+1]);
+    setAngularPosition(data);
 }
 
 void limitPosition(float *target_angle){
   for(int i=0;i<nb_motor;i++){
     if (target_angle[i] < min_pos_motor[i]){
-      target_angle[i] = min_pos_motor[i]
+      target_angle[i] = min_pos_motor[i];
     }
     if (target_angle[i] < min_pos_motor[i]){
-      target_angle[i] = min_pos_motor[i]
+      target_angle[i] = min_pos_motor[i];
     }
   }
 }
@@ -200,7 +202,8 @@ void setAngularSpeed(float *target, float delta_time){
     }
     float speed = delta_pos/delta_time; // dq/dt
     speed *= 0.229; // RPM/(valeur encodeur)
-    dxl.writeControlTableItem(PROFILE_VELOCITY, i, speed, 100);
+    uint32_t writeTimeout = 100;
+    dxl.writeControlTableItem(PROFILE_VELOCITY, i, speed, writeTimeout);
   }
 }
 

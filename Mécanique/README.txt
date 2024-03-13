@@ -5,10 +5,10 @@ ASSEMBLAGE DE L'ÉPAULE
 	- 1x 0001.SLDPRT
 	- 1x 0002.SLDPRT
 	- 1x 0003.SLDPRT
-	- 2x Adaptateur_Boost.SLDPRT
 	Il faut ensuite se procurer les éléments suivant :
-	- 2x shaft de longueur XXX mm
-	- 2x moteur XM,H-430
+	- 2x shaft 1/4 de longueur 180mm et 135mm
+	- 2x moteur dynamixel XM,H-430
+	- 2x Adapteur_boost du moteur au shaft
 	
 	Pour faire l'assemblage, il faut fixer 0001 et 0002 à l'aide d'un shaft. Ensuite, il faut visser l'adaptateur à un moteur et positionner celui-ci du côté de son support. Il ne reste qu'à visser le moteur à sa base. 
 
@@ -21,29 +21,35 @@ ASSEMBLAGE DU BICEP
 	- 1x Fixation_bicep.SLDPRT
 	- 1x Adaptateur.SLDPRT
 	Il faut ensuite se procurer les éléments suivant :
-	- 2x shaft de longueur XXX mm
-	- 1x moteur XL,H-430
+	- 2x shaft de longueur 100mm et 50mm
+	- 1x moteur dynamixel XL,H-430
 	- 1x Gear 32T
 	- 1x Gear 16T
 
-	Pour faire l'assemblage, il faut d'abord fixer les deux Bicep_base et Fixation_moteur à l'aide de la quincaillerie. Ensuite, il faut insérer la Fixation moteur de la même orientation que la figure 2.
+	Pour faire l'assemblage, il faut d'abord fixer les deux Bicep_base et Fixation_moteur à l'aide de la quincaillerie. Ensuite, il faut insérer la Fixation du moteur de la même orientation que la figure 2.
 	
-	Il faut visser l'adaptateur sur le moteur et insérer un premier shaft au bout de Bicep_base. Avant de l'insérer au complet, il faut ajouter dans l'ordre une partie de l'avant bras, un engrenage 16T et l'autre partie de l'avant bras.
+	Il faut visser l'adaptateur sur le moteur et insérer un premier shaft au bout de Bicep_base. Avant de l'insérer au complet, il faut ajouter dans l'ordre une partie de l'avant-bras, un engrenage 16T et l'autre partie de l'avant-bras.
 	
-	Enfin, il faut insérer le deuxième shaft comme sur la figure 2, y ajouter l'engrenage 32T et positionner le moteurs-à-vis les 4 trous de sa fixation. Il ne reste qu'à bien fixer le moteur et aligner les deux engrenages, en s'Étant assurer de ne pas oublier de brancher les fils au moteur avant de le fixer.  
+	Enfin, il faut insérer le deuxième shaft comme sur la figure 2, y ajouter l'engrenage 32T et positionner le moteur vis-à-vis les 4 trous de sa fixation. Il ne reste qu'à bien fixer le moteur et aligner les deux engrenages, en s'étant assuré de ne pas oublier de brancher les fils au moteur avant de le fixer.  
 
 
-ASSEMBLAGE DE L'AVANT BRAS
-	Pour fair l'avant
+ASSEMBLAGE DE L'AVANT-BRAS
+	Pour faire l'avant-bras, il faut simplement fixer le rouleau_doigts au moteur et fixer le moteur à son support. Ensuite il faut assembler les 2 pièces d'Avant_Bras sur les côtés et les fixer au biceps avec le shaft ainsi qu'à la main à l'autre extrémité.
+	
+	Liste de pièces:
+	- 2x Avant_Bras.SLDPRT
+	- 1x Support_Avant_Bras_moteur.SLDPRT
+	- 1x moteur dynamixel XL,H-430
+	- 1x rouleau_doigts
 
 ASSEMBLAGE DE LA MAIN:
-	Pour fair la main il faut avoir:
+	Pour faire la main il faut avoir:
 	- 9 exemplaires de Doigt1
 	- 5 exemplaires de Doigt2
 	- 1 exemplaire de paume_V3
 	- 1 bobine de PLA 2,75mm de large
 	
-	Pour assembler la main il faut faire 4 doigts et 1 pouce. Les doigt sont fait en connectant 2 Doigt1 et 1 Doigt2. Le pouce est fait en connectant 1 Doigt1 et 1 Doigt2. Pour faire la connexion il faut passer un bout de fil PLA dans les connecteurs rond puis faire fondre les bouts pour le garder en place.
+	Pour assembler la main il faut faire 4 doigts et 1 pouce. Les doigt sont fait en connectant 2 Doigt1 et 1 Doigt2. Le pouce est fait en connectant 1 Doigt1 et 1 Doigt2. Pour faire la connexion il faut passer un bout de filament PLA dans les connecteurs rond puis faire fondre les bouts pour le garder en place.
 	
 	Après, il faut passer le fil de pêche dans les doigts et l'attacher au bout du doigt. Il peut aussi être intéressant d'utiliser de la colle.
 	
@@ -51,4 +57,6 @@ ASSEMBLAGE DE LA MAIN:
 
 ASSEMBLAGE COMPLET
 	
-	Bicep et épaule : Il faut fixer le bicep à l'épaule à l'aide de 4 vis, 4 écrous et 4 washer. 
+	Bicep et épaule : Il faut fixer le biceps à l'épaule à l'aide de 4 vis M4 25LG, 4 écrous et 4 rondelles.
+	
+	Il faut ensuite fixer le bras à sa base à l'aide de 4 vis M6 50LG, 4 écrous et 4 rondelles.
