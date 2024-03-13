@@ -30,6 +30,9 @@ stageC = None
 counterD = 0
 stageD = None
 
+stage_main = None
+
+
 with (mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic):
     while cap.isOpened():
         ret, frame = cap.read()
@@ -54,6 +57,30 @@ with (mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence
                 angle = 360-angle
     
             return angle
+
+        def main(a, b, c, d, e, f, g, h, i, j):
+            a = np.array(a)
+            b = np.array(b)
+            c = np.array(c)
+            d = np.array(d)
+            e = np.array(e)
+            f = np.array(f)
+            g = np.array(g)
+            h = np.array(h)
+            i = np.array(i)
+            j = np.array(j)
+
+            if i[1]<a[1]<b[1] and i[1]<c[1]<d[1] and i[1]<e[1]<f[1] and i[1]<g[1]<h[1] and b[0]<j[0]<h[0]:
+                stage_m = 1
+
+            elif b[1]<a[1]<i[1] and d[1]<c[1]<i[1] and f[1]<e[1]<i[1] and h[1]<g[1]<i[1] and h[0]<j[0]<b[0]:
+                stage_m = 1
+
+            else:
+                stage_m = 0
+
+            return stage_m
+
         
         """def write_read(x):
             arduino.write(bytes(x,   'utf-8'))
@@ -67,36 +94,36 @@ with (mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence
             landmarks = results.pose_landmarks.landmark
 
             #detection de la main
-            landmarks2 = results.left_hand_landmarks.landmark
+            landmarks2 = results.right_hand_landmarks.landmark
 
-            shoulder = [landmarks[mp_holistic.PoseLandmark.LEFT_SHOULDER].x,
-                        landmarks[mp_holistic.PoseLandmark.LEFT_SHOULDER].y]
+            shoulder = [landmarks[mp_holistic.PoseLandmark.RIGHT_SHOULDER].x,
+                        landmarks[mp_holistic.PoseLandmark.RIGHT_SHOULDER].y]
 
-            elbow = [landmarks[mp_holistic.PoseLandmark.LEFT_ELBOW].x,
-                     landmarks[mp_holistic.PoseLandmark.LEFT_ELBOW].y]
+            elbow = [landmarks[mp_holistic.PoseLandmark.RIGHT_ELBOW].x,
+                     landmarks[mp_holistic.PoseLandmark.RIGHT_ELBOW].y]
 
-            wrist = [landmarks[mp_holistic.PoseLandmark.LEFT_WRIST].x,
-                     landmarks[mp_holistic.PoseLandmark.LEFT_WRIST].y]
+            wrist = [landmarks[mp_holistic.PoseLandmark.RIGHT_WRIST].x,
+                     landmarks[mp_holistic.PoseLandmark.RIGHT_WRIST].y]
 
-            hip = [landmarks[mp_holistic.PoseLandmark.LEFT_HIP].x,
+            hip = [landmarks[mp_holistic.PoseLandmark.RIGHT_HIP].x,
                      landmarks[mp_holistic.PoseLandmark.LEFT_HIP].y]
 
-            shoulderB = [landmarks[mp_holistic.PoseLandmark.LEFT_SHOULDER].y,
-                        landmarks[mp_holistic.PoseLandmark.LEFT_SHOULDER].z]
+            shoulderB = [landmarks[mp_holistic.PoseLandmark.RIGHT_SHOULDER].y,
+                        landmarks[mp_holistic.PoseLandmark.RIGHT_SHOULDER].z]
 
-            elbowB = [landmarks[mp_holistic.PoseLandmark.LEFT_ELBOW].y,
-                     landmarks[mp_holistic.PoseLandmark.LEFT_ELBOW].z]
+            elbowB = [landmarks[mp_holistic.PoseLandmark.RIGHT_ELBOW].y,
+                     landmarks[mp_holistic.PoseLandmark.RIGHT_ELBOW].z]
 
-            wristB = [landmarks[mp_holistic.PoseLandmark.LEFT_WRIST].y,
-                     landmarks[mp_holistic.PoseLandmark.LEFT_WRIST.value].z]
+            wristB = [landmarks[mp_holistic.PoseLandmark.RIGHT_WRIST].y,
+                     landmarks[mp_holistic.PoseLandmark.RIGHT_WRIST.value].z]
 
-            hipB = [landmarks[mp_holistic.PoseLandmark.LEFT_HIP.value].y,
+            hipB = [landmarks[mp_holistic.PoseLandmark.RIGHT_HIP.value].y,
                      landmarks[mp_holistic.PoseLandmark.LEFT_HIP.value].z]
 
             shoulderC = [landmarks[mp_holistic.PoseLandmark.RIGHT_SHOULDER.value].x,
                         landmarks[mp_holistic.PoseLandmark.RIGHT_SHOULDER.value].y]
 
-            """index = [landmarks2[mp_holistic.HandLandmark.INDEX_FINGER_TIP.value].x,
+            index = [landmarks2[mp_holistic.HandLandmark.INDEX_FINGER_TIP.value].x,
                         landmarks2[mp_holistic.HandLandmark.INDEX_FINGER_TIP.value].y]
 
             index2 = [landmarks2[mp_holistic.HandLandmark.INDEX_FINGER_MCP.value].x,
@@ -121,12 +148,16 @@ with (mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence
                            landmarks2[mp_holistic.HandLandmark.PINKY_MCP.value].y]
 
             poignet = [landmarks2[mp_holistic.HandLandmark.WRIST.value].x,
-                            landmarks2[mp_holistic.HandLandmark.WRIST.value].y]"""
+                            landmarks2[mp_holistic.HandLandmark.WRIST.value].y]
+
+            pouce = [landmarks2[mp_holistic.HandLandmark.THUMB_TIP.value].x,
+                            landmarks2[mp_holistic.HandLandmark.THUMB_TIP.value].y]
 
             angle = calculate_angle(shoulder, elbow, wrist)
             angleB = calculate_angle(hip, shoulder, elbow)
             angleC = calculate_angle(hipB, shoulderB, elbowB)
             angleD = calculate_angle(shoulderC, shoulder, elbow)
+            pos_main = main(index, index2, majeur, majeur2, annulaire, annulaire2, auriculaire, auriculaire2, poignet, pouce)
 
             cv2.putText(image, str(angle),
                         tuple(np.multiply(elbow,[640, 480]).astype(int)),
@@ -173,9 +204,15 @@ with (mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence
             if angleD > 170 and stageD == "down" and stageC != "up":
                 stageD = "up"
                 counterD += 1
-                #ret = write_read(4)
+                #ret = write_read("4")
             if ret != "rien":
                 print(ret)
+
+            if pos_main == 1:
+                stage_main = "down"
+            if pos_main == 0:
+                stage_main = "up"
+
                 
                 
 
@@ -239,7 +276,7 @@ with (mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence
         cv2.putText(image,'STAGE', (450, 12),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1, cv2.LINE_AA)
 
-        cv2.putText(image, stageC, (450, 60),
+        cv2.putText(image, stage_main, (450, 60),
                     cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 2, cv2.LINE_AA)
 
 
@@ -248,13 +285,10 @@ with (mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence
                                     mp_drawing.DrawingSpec(color=(255, 0, 0), thickness=2, circle_radius=2)
                                   )
 
-        mp_drawing.draw_landmarks(image, results.left_hand_landmarks,mp_holistic.HAND_CONNECTIONS,
+        mp_drawing.draw_landmarks(image, results.right_hand_landmarks,mp_holistic.HAND_CONNECTIONS,
                                   mp_drawing.DrawingSpec(color=(0, 255, 0), thickness=2,circle_radius=2),
                                     mp_drawing.DrawingSpec(color=(255, 0, 0), thickness=2, circle_radius=2)
                                   )
-
-
-  
 
 
         cv2.imshow('Mediapipe Feed', image)
