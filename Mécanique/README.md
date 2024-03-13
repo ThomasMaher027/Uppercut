@@ -3,9 +3,10 @@
 ## ASSEMBLAGE DE L'ÉPAULE
 
 Il faut d'abord imprimer les éléments suivant :
-- **1x** 0001.SLDPRT
-- **1x** 0002.SLDPRT
-- **1x** 0003.SLDPRT
+- **1x** [0001.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Épaule_test_2)
+- **1x** [0002.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Épaule_test_2)
+- **1x** [0003.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Épaule_test_2)
+
 Il faut ensuite se procurer les éléments suivant :
 - **2x** shaft 1/4 de longueur 180mm et 135mm
 - **2x** moteur dynamixel XM,H-430
@@ -21,15 +22,16 @@ Il faut ensuite refaire ces manipulations pour la pièce 0002 et 0003. Vous pouv
 
 ## ASSEMBLAGE DU BICEP
 Il faut d'abord imprimer les éléments suivant :
-- **2x** Bicep_base.SLDPRT
-- **1x** Fixation_moteur.SLDPRT
-- **1x** Fixation_bicep.SLDPRT
-- **1x** Adaptateur.SLDPRT
+- **2x** [Bicep_base.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Coude_VF)
+- **1x** [Fixation_moteur.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Coude_VF)
+- **1x** [Fixation_bicep.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Coude_VF)
+- **1x** [Adaptateur.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Coude_VF)
+
 Il faut ensuite se procurer les éléments suivant :
 - **2x** shaft de longueur 100mm et 50mm
 - **1x** moteur dynamixel XL,H-430
-- **1x** Gear 32T
-- **1x** Gear 16T
+- **1x** [32T, 0.250" (1/4) Bore 32P Shaft Mount Pinion Gear](https://www.servocity.com/32t-0-250-1-4-bore-32p-shaft-mount-pinion-gear/)
+- **1x** [16T, 0.250" (1/4) Bore 32P Shaft Mount Pinion Gear](https://www.servocity.com/16t-0-250-1-4-bore-32p-shaft-mount-pinion-gear/)
 
 Pour faire l'assemblage, il faut d'abord fixer les deux Bicep_base et Fixation_moteur à l'aide de la quincaillerie. Ensuite, il faut insérer la Fixation du moteur de la même orientation que la figure 2.
 	
@@ -45,16 +47,16 @@ Enfin, il faut insérer le deuxième shaft comme sur la figure 2, y ajouter l'en
 Pour faire l'avant-bras, il faut simplement fixer le rouleau_doigts au moteur et fixer le moteur à son support. Ensuite il faut assembler les 2 pièces d'Avant_Bras sur les côtés et les fixer au biceps avec le shaft ainsi qu'à la main à l'autre extrémité.
 	
 Liste de pièces:
-- **2x** Avant_Bras.SLDPRT
-- **1x** Support_Avant_Bras_moteur.SLDPRT
+- **2x** [Avant_Bras.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Avant_Bras)
+- **1x** [Support_Avant_Bras_moteur.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Support)
 - **1x** moteur dynamixel XL,H-430
 - **1x** rouleau_doigts
 
 ## ASSEMBLAGE DE LA MAIN:
 Pour faire la main il faut avoir:
-- **9x** Doigt1.SLDPRT
-- **5x** Doigt2.SLDPRT
-- **1x** paume_V3.SLPRT
+- **9x** [Doigt1.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/doigt)
+- **5x** [Doigt2.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/doigt)
+- **1x** [paume_V3.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Paume)
 - **1x** bobine de PLA 2,75mm de large
 	
 Pour assembler la main il faut faire 4 doigts et 1 pouce. Les doigt sont fait en connectant 2 Doigt1 et 1 Doigt2. Le pouce est fait en connectant 1 Doigt1 et 1 Doigt2. Pour faire la connexion il faut passer un bout de filament PLA dans les connecteurs rond puis faire fondre les bouts pour le garder en place.

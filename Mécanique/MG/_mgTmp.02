@@ -169,10 +169,55 @@
          sin(qc)*qb''-LMcmz*mM*cos(qc)*qb'')
 
    (119) %----------------- Resolution -----------------%
-   (120) %EvaluateToNumber(solve(Implicit,EQ, qe, Tb, Tc))
-   (121) %Input  qe = 0 deg,      qe' = 0 rad/sec
-   (122) Input  qb = 90 deg,      qb' = 0 rad/sec
-   (123) Input  tFinal = 2 sec,  tStep = 0.1 sec,  absError = 1.0E-07,  relError = 1.0E-07
-   (124) %OutputPlot  t sec,  qe'' deg/s^2,  Tb N*m, Tc N*m
-   (125) OutputPlot  t sec,  qb'' deg/s^2,  Te N*m, Tc N*m
-   (126) 
+   (120) %solve(Implicit,EQ, qe, Tb, Tc)
+   (121) solve(Implicit,EQ, qb'', Te, Tc)
+-> (122) qb'' = (dMotE*g*mMotg*sin(qe)+g*LBcmy*mB*sin(qe)+g*LMcmy*mM*sin(qe)+
+         Te+IAvxy*sin(qc+qb)*qb'^2+(IBxy-LBcmx*LBcmy*mB)*sin(qb)*qb'^2+(IMxy-
+         LMcmx*LMcmy*mM)*sin(qc+qb)*qb'^2-1.75*g*Lb*mMotp*cos(qe)*cos(qb)-g*Lb*
+         mAv*cos(qe)*cos(qb)-g*Lb*mM*cos(qe)*cos(qb)-g*LBcmx*mB*cos(qe)*sin(qb)
+         -g*LBcmz*mB*cos(qe)*cos(qb)-dMotM*g*mMotp*cos(qe)*cos(qc+qb)-g*LAv*mM*
+         cos(qe)*cos(qc+qb)-g*LAvcmx*mAv*cos(qe)*sin(qc+qb)-g*LAvcmz*mAv*cos(
+         qe)*cos(qc+qb)-g*LMcmx*mM*cos(qe)*sin(qc+qb)-g*LMcmz*mM*cos(qe)*cos(
+         qc+qb)-(IAvyz+LAv*LMcmy*mM)*cos(qc+qb)*qb'^2-(IMyz+LMcmy*LMcmz*mM)*cos
+         (qc+qb)*qb'^2-(IByz+Lb*LMcmy*mM+LBcmy*LBcmz*mB)*cos(qb)*qb'^2)/(IAvxy*
+         cos(qc+qb)+(IAvyz+LAv*LMcmy*mM)*sin(qc+qb)+(IBxy-LBcmx*LBcmy*mB)*cos(
+         qb)+(IMyz+LMcmy*LMcmz*mM)*sin(qc+qb)+(IMxy-LMcmx*LMcmy*mM)*cos(qc+qb)+
+         (IByz+Lb*LMcmy*mM+LBcmy*LBcmz*mB)*sin(qb))
+
+-> (123) Te = g*Lb*mAv*cos(qe)*cos(qb) + g*Lb*mM*cos(qe)*cos(qb) + g*LBcmx*mB*
+         cos(qe)*sin(qb) + g*LBcmz*mB*cos(qe)*cos(qb) + 1.75*g*Lb*mMotp*cos(qe)*cos(qb)
+         + dMotM*g*mMotp*cos(qe)*cos(qc+qb) + g*LAv*mM*cos(qe)*cos(qc+qb)
+         + g*LAvcmx*mAv*cos(qe)*sin(qc+qb) + g*LAvcmz*mAv*cos(qe)*cos(qc+qb)
+         + g*LMcmx*mM*cos(qe)*sin(qc+qb) + g*LMcmz*mM*cos(qe)*cos(qc+qb) + (IA
+         vxy*cos(qc+qb)+(IAvyz+LAv*LMcmy*mM)*sin(qc+qb)+(IBxy-LBcmx*LBcmy*mB)*
+         cos(qb)+(IMyz+LMcmy*LMcmz*mM)*sin(qc+qb)+(IMxy-LMcmx*LMcmy*mM)*cos(qc+
+         qb)+(IByz+Lb*LMcmy*mM+LBcmy*LBcmz*mB)*sin(qb))*(Tb-g*sin(qe)*(LBcmx*
+         mB*cos(qb)+LAvcmx*mAv*cos(qc+qb)+LMcmx*mM*cos(qc+qb)-1.75*Lb*mMotp*sin
+         (qb)-Lb*mAv*sin(qb)-Lb*mM*sin(qb)-LBcmz*mB*sin(qb)-dMotM*mMotp*sin(qc+
+         qb)-LAv*mM*sin(qc+qb)-LAvcmz*mAv*sin(qc+qb)-LMcmz*mM*sin(qc+qb)))/(IA
+         vyy+IByy+IMyy+mAv*LAvcmx^2+mAv*LAvcmz^2+mAv*Lb^2+mB*LBcmx^2+mB*LBcmz^2
+         +mM*LAv^2+mM*Lb^2+mM*LMcmx^2+mM*LMcmz^2+mMotp*dMotM^2+1.5625*mMotp*Lb^2
+         +2*LAv*LMcmz*mM+2*dMotM*Lb*mMotp*cos(qc)+2*LAv*Lb*mM*cos(qc)+2*LAvcmx*
+         Lb*mAv*sin(qc)+2*LAvcmz*Lb*mAv*cos(qc)+2*Lb*LMcmx*mM*sin(qc)+2*Lb*LMc
+         mz*mM*cos(qc)) + (IAvyz+LAv*LMcmy*mM)*cos(qc+qb)*qb'^2 + (IMyz+LMcmy*
+         LMcmz*mM)*cos(qc+qb)*qb'^2 + (IByz+Lb*LMcmy*mM+LBcmy*LBcmz*mB)*cos(qb)
+         *qb'^2 - dMotE*g*mMotg*sin(qe) - g*LBcmy*mB*sin(qe) - g*LMcmy*mM*sin(qe)
+         - IAvxy*sin(qc+qb)*qb'^2 - (IBxy-LBcmx*LBcmy*mB)*sin(qb)*qb'^2 - (IMxy
+         -LMcmx*LMcmy*mM)*sin(qc+qb)*qb'^2
+
+-> (124) Tc = g*sin(qe)*(LAvcmx*mAv*cos(qc+qb)+LMcmx*mM*cos(qc+qb)-dMotM*mMotp*
+         sin(qc+qb)-LAv*mM*sin(qc+qb)-LAvcmz*mAv*sin(qc+qb)-LMcmz*mM*sin(qc+qb))
+         + (IAvyy+IMyy+mAv*LAvcmx^2+mAv*LAvcmz^2+mM*LAv^2+mM*LMcmx^2+mM*LMcmz^2
+         +mMotp*dMotM^2+2*LAv*LMcmz*mM+Lb*(dMotM*mMotp*cos(qc)+LAv*mM*cos(qc)+
+         LAvcmx*mAv*sin(qc)+LAvcmz*mAv*cos(qc)+LMcmx*mM*sin(qc)+LMcmz*mM*cos(
+         qc)))*qb'' - Lb*(LAvcmx*mAv*cos(qc)+LMcmx*mM*cos(qc)-dMotM*mMotp*sin(
+         qc)-LAv*mM*sin(qc)-LAvcmz*mAv*sin(qc)-LMcmz*mM*sin(qc))*qb'^2
+
+   (125) %Input  qe = 0 deg,      qe' = 0 rad/sec
+   (126) Input  qb = 90 deg,      qb' = 0 rad/sec
+   (127) Input  tFinal = 1 sec,  tStep = 0.01 sec,  absError = 1.0E-07,  relError = 1.0E-07
+   (128) %OutputPlot  t sec, qe deg, qe' deg/s, qe'' deg/s^2,  Tb N*m, Tc N*m
+   (129) %OutputPlot  t sec, Tb N*m, Tc N*m
+   (130) OutputPlot  t sec, qb deg, qb' deg/s, qb'' deg/s^2,  Te N*m, Tc N*m
+   (131) %OutputPlot  t sec, Te N*m, Tc N*m
+   (132) 
