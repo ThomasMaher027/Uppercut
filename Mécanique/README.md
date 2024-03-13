@@ -16,6 +16,7 @@ Pour faire l'assemblage, il faut fixer 0001 et 0002 à l'aide d'un shaft. Ensuit
 Il faut ensuite refaire ces manipulations pour la pièce 0002 et 0003. Vous pouvez vous fier à la figure 1 pour visualiser le modèle correctement.Il faut faire attention à la bonne orientation des pièces. 
 
 ![Figure 1 : Modèle 3D de l'épaule](https://github.com/ThomasMaher027/Uppercut/blob/main/Mécanique/figure_1.png)
+
 Figure 1 : Modèle 3D de l'épaule
 
 ## ASSEMBLAGE DU BICEP
@@ -37,6 +38,7 @@ Il faut visser l'adaptateur sur le moteur et insérer un premier shaft au bout d
 Enfin, il faut insérer le deuxième shaft comme sur la figure 2, y ajouter l'engrenage 32T et positionner le moteur vis-à-vis les 4 trous de sa fixation. Il ne reste qu'à bien fixer le moteur et aligner les deux engrenages, en s'étant assuré de ne pas oublier de brancher les fils au moteur avant de le fixer.  
 
 ![Figure 2 : Modèle 3D du biceps](https://github.com/ThomasMaher027/Uppercut/blob/main/Mécanique/figure_2.png)
+
 Figure 2 : Modèle 3D du biceps
 
 ## ASSEMBLAGE DE L'AVANT-BRAS
