@@ -3,13 +3,13 @@
 ## ASSEMBLAGE DE L'ÉPAULE
 
 Il faut d'abord imprimer les éléments suivant :
-	- 1x 0001.SLDPRT
-	- 1x 0002.SLDPRT
-	- 1x 0003.SLDPRT
-	Il faut ensuite se procurer les éléments suivant :
-	- 2x shaft 1/4 de longueur 180mm et 135mm
-	- 2x moteur dynamixel XM,H-430
-	- 2x Adapteur_boost du moteur au shaft
+- 1x 0001.SLDPRT
+- 1x 0002.SLDPRT
+- 1x 0003.SLDPRT
+Il faut ensuite se procurer les éléments suivant :
+- 2x shaft 1/4 de longueur 180mm et 135mm
+- 2x moteur dynamixel XM,H-430
+- 2x Adapteur_boost du moteur au shaft
 	
 Pour faire l'assemblage, il faut fixer 0001 et 0002 à l'aide d'un shaft. Ensuite, il faut visser l'adaptateur à un moteur et positionner celui-ci du côté de son support. Il ne reste qu'à visser le moteur à sa base. 
 
@@ -17,15 +17,15 @@ Il faut ensuite refaire ces manipulations pour la pièce 0002 et 0003. Vous pouv
 
 ## ASSEMBLAGE DU BICEP
 Il faut d'abord imprimer les éléments suivant :
-	- 2x Bicep_base.SLDPRT
-	- 1x Fixation_moteur.SLDPRT
-	- 1x Fixation_bicep.SLDPRT
-	- 1x Adaptateur.SLDPRT
-	Il faut ensuite se procurer les éléments suivant :
-	- 2x shaft de longueur 100mm et 50mm
-	- 1x moteur dynamixel XL,H-430
-	- 1x Gear 32T
-	- 1x Gear 16T
+- 2x Bicep_base.SLDPRT
+- 1x Fixation_moteur.SLDPRT
+- 1x Fixation_bicep.SLDPRT
+- 1x Adaptateur.SLDPRT
+Il faut ensuite se procurer les éléments suivant :
+- 2x shaft de longueur 100mm et 50mm
+- 1x moteur dynamixel XL,H-430
+- 1x Gear 32T
+- 1x Gear 16T
 
 Pour faire l'assemblage, il faut d'abord fixer les deux Bicep_base et Fixation_moteur à l'aide de la quincaillerie. Ensuite, il faut insérer la Fixation du moteur de la même orientation que la figure 2.
 	
@@ -38,17 +38,17 @@ Enfin, il faut insérer le deuxième shaft comme sur la figure 2, y ajouter l'en
 Pour faire l'avant-bras, il faut simplement fixer le rouleau_doigts au moteur et fixer le moteur à son support. Ensuite il faut assembler les 2 pièces d'Avant_Bras sur les côtés et les fixer au biceps avec le shaft ainsi qu'à la main à l'autre extrémité.
 	
 Liste de pièces:
-	- 2x Avant_Bras.SLDPRT
-	- 1x Support_Avant_Bras_moteur.SLDPRT
-	- 1x moteur dynamixel XL,H-430
-	- 1x rouleau_doigts
+- 2x Avant_Bras.SLDPRT
+- 1x Support_Avant_Bras_moteur.SLDPRT
+- 1x moteur dynamixel XL,H-430
+- 1x rouleau_doigts
 
 ## ASSEMBLAGE DE LA MAIN:
 Pour faire la main il faut avoir:
-	- 9 exemplaires de Doigt1
-	- 5 exemplaires de Doigt2
-	- 1 exemplaire de paume_V3
-	- 1 bobine de PLA 2,75mm de large
+- 9 exemplaires de Doigt1
+- 5 exemplaires de Doigt2
+- 1 exemplaire de paume_V3
+- 1 bobine de PLA 2,75mm de large
 	
 Pour assembler la main il faut faire 4 doigts et 1 pouce. Les doigt sont fait en connectant 2 Doigt1 et 1 Doigt2. Le pouce est fait en connectant 1 Doigt1 et 1 Doigt2. Pour faire la connexion il faut passer un bout de filament PLA dans les connecteurs rond puis faire fondre les bouts pour le garder en place.
 	
