@@ -33,24 +33,27 @@ using namespace ControlTableItem;
 // put function declarations here:
 void set_speed(uint8_t id, float speedPct);
 void homing();
-void printPosition();
-int choiceMovement(int command);
+//void printPosition();
+//int choiceMovement(int command);
 void check_pos_achieved(float *target, int i);
 void setGoal_Position(float *target, int pos);
-void setGoalSpeed(float *target, int pos);
+//void setGoalSpeed(float *target, int pos);
 void limitPosition(float *target_angle);
 float getSpeed(int motor, float target);
-void setAngularSpeed(float *target, float delta_time);
+void setAngularSpeed(float *target);
 void setAngularPosition(float *target);
+void changeAngle(float* target);
 
+
+// ========== Variables à modifier selon le contexte d'utilisation ========== // 
 const int nb_motor = 3;
-const int nb_movement = 4;
+const int nb_movement = 3;
 const uint8_t DXL_ID[nb_motor] = {1, 20, 3}; //Motor ID
-float min_pos_motor[nb_motor] = {119, 92, 29};
-float max_pos_motor[nb_motor] = {317, 234, 219};
-float upper_speed_limit = 0.8;
+float min_pos_motor[nb_motor] = {115, 2, 43};
+float max_pos_motor[nb_motor] = {262, 143, 330};
+float upper_speed_limit = 0.9;
 float lower_speed_limit = 0.1;
-float msg_data[5];
+float msg_data[nb_motor] = {0,0,0};
 
 int nb_target = 12;
 struct structStance{ 
@@ -61,34 +64,22 @@ struct structStance{
 
 struct structStance stancePosition[nb_movement] = {
   // Home
-  {0, 1 ,{228.0, 92.0, 29.0,
-          228.0, 92.0, 29.0, 
-          228.0, 92.0, 29.0,
-          228.0, 92.0, 29.0,}},
+  {0, 1 ,{200.0, 170.0, 150.0,
+          200.0, 170.0, 150.0,
+          200.0, 170.0, 150.0,
+          200.0, 170.0, 150.0}},
 
   // Curl
-  {1, 1, {300.0, 92.0, 200.0, 
-          300.0, 92.0, 200.0,
-          300.0, 92.0, 200.0,
-          300.0, 92.0, 200.0}},
+  {1, 1, {150.0, 170.0, 280.0, 
+          150.0, 170.0, 280.0, 
+          150.0, 170.0, 280.0, 
+          150.0, 170.0, 280.0}},
 
   // Jab
-  {2, 3, {228.0, 195.0, 219.0, 
-          310.0, 195.0, 35.0, 
-          228.0, 195.0, 219.0,
-          228.0, 195.0, 219.0}},
-
-  // Question
-  {3, 1, {228.0, 92.0, 175.0,
-          228.0, 92.0, 175.0, 
-          228.0, 92.0, 175.0,
-          228.0, 92.0, 175.0,}},
-/*
-  // Corde
-  {4, 1, {90.0, 0.0, 90.0, 
-          90.0, 90.0, 0.0, 
-          90.0, 90.0, 90.0,
-          90.0, 90.0, 90.0}}*/
+  {2, 3, {196.0, 85.0, 305.0, 
+          110.4, 85.0, 178.5, 
+          196.0, 85.0, 305.0,
+          196.0, 85.0, 305.0}},
 };
 
 struct structStance stanceSpeed[nb_movement] = {
@@ -109,18 +100,6 @@ struct structStance stanceSpeed[nb_movement] = {
           0.35, 0.35, 0.6,
           0.35, 0.35, 0.6,
           0.35, 0.35, 0.6,}},
-
-  // Question
-  {3, 1, {0.1, 0.2, 0.3, 
-          0.2, 0.2, 0.3,
-          0.3, 0.3, 0.3, 
-          0.3, 0.3, 0.3}},
-   /*           
-  // Corde        
-  {4, 1, {0.1, 0.2, 0.3,
-          0.25, 0.25, 0.3, 
-          0.3, 0.3, 0.3, 
-          0.3, 0.3, 0.3}}*/
 };
 
 
@@ -142,19 +121,20 @@ void setup() {
     dxl.torqueOn(DXL_ID[i]);
     set_speed(DXL_ID[i],0.2);
   }
-  //limitPosition();
-  homing();
   
+   homing();
+
 }
 
 
-/*
+
 // fonction loop() pour les mouvements préenregistés
+/*
 void loop() {
-  while (!Serial.available());
+  while (!Serial.available()) {
     int chosen_command = 0;
     chosen_command = Serial.readString().toInt();
-    Serial.print(chosen_command);
+    //Serial.print(chosen_command);
     
     if (chosen_command <= 0){
       chosen_command = 0;
@@ -168,17 +148,34 @@ void loop() {
       }
       homing();
     }
+  }
 }*/
+
 
 // fonction loop() pour le temps réel
 void loop(){
-  while (!Serial.available());
-    // TODO : Lire et séparer les valeurs du port série
-    // J'ai besoin des cibles d'angle pour les 4 moteurs et le temps entre du écriture du port série
-    float* data = getSerialMessage();
-    limitPosition(data);
-    setAngularSpeed(data, data[nb_motor+1]);
-    setAngularPosition(data);
+  bool data_received = getSerialMessage(msg_data);
+  if (data_received){
+    limitPosition(msg_data);
+    setAngularSpeed(msg_data);
+    setAngularPosition(msg_data);
+  }
+}
+
+
+
+void homing(){
+  setGoal_Position(stancePosition[0].target,0);
+  check_pos_achieved(stancePosition[0].target, 0);
+}
+
+
+
+// ==================== Fonction pour temps réel =================== // 
+void changeAngle(float* target){
+  target[0] = 200.0;
+  target[1] = 140.0;
+  target[2] = -1.2*target[2]+366; 
 }
 
 void limitPosition(float *target_angle){
@@ -186,24 +183,26 @@ void limitPosition(float *target_angle){
     if (target_angle[i] < min_pos_motor[i]){
       target_angle[i] = min_pos_motor[i];
     }
-    if (target_angle[i] < min_pos_motor[i]){
-      target_angle[i] = min_pos_motor[i];
+    if (target_angle[i] > max_pos_motor[i]){
+      target_angle[i] = max_pos_motor[i];
     }
   }
 }
 
-void setAngularSpeed(float *target, float delta_time){
-  float conv_rad_enc = 162.82; // (valeur d'encodeur)/rad
+void setAngularSpeed(float *target){
+  float erreur_pos[nb_motor] = {0,0,0};
+  float max_erreur = 0;
   for(int i=0;i<nb_motor;i++){
     float present_pos = dxl.getPresentPosition(DXL_ID[i], UNIT_DEGREE);
-    float delta_pos = abs(target[i] - present_pos)*conv_rad_enc; // (valeur d'encodeur);
-    if (delta_pos>1023){
-      delta_pos = 1023;
+    erreur_pos[i] = abs(target[i] - present_pos);
+    if (erreur_pos[i] > max_erreur) {
+      max_erreur = erreur_pos[i];
     }
-    float speed = delta_pos/delta_time; // dq/dt
-    speed *= 0.229; // RPM/(valeur encodeur)
-    uint32_t writeTimeout = 100;
-    dxl.writeControlTableItem(PROFILE_VELOCITY, i, speed, writeTimeout);
+  }
+  float gain = 0.9/max_erreur;
+  for(int i=0;i<nb_motor;i++){
+    float speed_pct = erreur_pos[i]*gain;
+    set_speed(DXL_ID[i], speed_pct);
   }
 }
 
@@ -213,6 +212,9 @@ void setAngularPosition(float *target){
   }
 }
 
+
+
+// ==================== Fonction pour mouvements préenregistrés =================== // 
 void setGoal_Position(float *target, int pos){
   int motor=0;
   for(int i=pos;i<pos+nb_motor;i++){
@@ -229,14 +231,6 @@ float getSpeed(int motor, float target){
   float error = abs(dxl.getPresentPosition(DXL_ID[motor], UNIT_DEGREE) - target);
   float out_speed = error*p_gain;
   return out_speed; 
-}
-
-void setGoalSpeed(float *target, int pos){
-  int motor=0;
-  for(int i=pos;i<pos+nb_motor;i++){
-    set_speed(DXL_ID[motor], target[i]);
-    motor++;
-  }
 }
 
 void check_pos_achieved(float *target, int j){
@@ -261,12 +255,6 @@ void check_pos_achieved(float *target, int j){
   }
 }
 
-void homing(){
-  //setGoalSpeed(stanceSpeed[0].target,0);
-  setGoal_Position(stancePosition[0].target,0);
-  check_pos_achieved(stancePosition[0].target, 0);
-}
-
 void set_speed(uint8_t id, float speedPct) {
   if (speedPct > upper_speed_limit){
     speedPct = upper_speed_limit;
@@ -274,12 +262,17 @@ void set_speed(uint8_t id, float speedPct) {
   if (speedPct < lower_speed_limit){
     speedPct = lower_speed_limit;
   }
-  double maxDynamixelSpeed = 1023*0.229; //RPM
+  double maxDynamixelSpeed = 234.267; // Speed (RPM) = 1023*0.229 [valeurs provenant des fiches techniques des Dynamixels]
   uint32_t newSpeedRpm = speedPct*maxDynamixelSpeed;
   uint32_t writeTimeout = 100; //ms
   dxl.writeControlTableItem(PROFILE_VELOCITY, id, newSpeedRpm, writeTimeout);
 }
 
+
+
+
+// ==================== Anciennes fonctions =================== // 
+/*
 void printPosition(){
   for(int i=0;i<nb_motor;i++){
     float present_position = dxl.getPresentPosition(DXL_ID[i], UNIT_DEGREE);
@@ -288,9 +281,9 @@ void printPosition(){
     DEBUG_SERIAL.print(" (degree) : ");
     DEBUG_SERIAL.println(present_position);
   }
-}
+}*/
 
-
+/*
 int choiceMovement(int command){
   for (int i=0;i<nb_movement;i++){
     if (command == stancePosition[i].stance_id){
@@ -298,4 +291,13 @@ int choiceMovement(int command){
     } 
   }
   return -1;
-}
+}*/
+
+/*
+void setGoalSpeed(float *target, int pos){
+  int motor=0;
+  for(int i=pos;i<pos+nb_motor;i++){
+    set_speed(DXL_ID[motor], target[i]);
+    motor++;
+  }
+}*/

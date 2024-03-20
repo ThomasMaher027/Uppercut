@@ -7,15 +7,8 @@ const byte numChars = 32;
 char receivedChars[numChars];
 char tempChars[numChars];        // tableau temporaire utilisé quand on passe à travers les données
 
-      // variables pour conserver les données
-float target_pos1 = 0.0;
-float target_pos2 = 0.0;
-float target_pos3 = 0.0;
-float target_pos4 = 0.0;
-float delta_time = 0.0;
-
 const int nb_data = 4;
-float msg[nb_data] = {0, 0, 0, 0};
+
 
 
 boolean newData = false;
@@ -57,7 +50,7 @@ void recvWithStartEndMarkers() {
 
 //============
 
-void parseData() {      // sépare les données en partie
+void parseData(float* msg) {      // sépare les données en partie
 
     char * strtokIndx; // utilisé par strtok() comme un index
 
@@ -72,7 +65,7 @@ void parseData() {      // sépare les données en partie
 
 //============
 
-void showParsedData() {
+void showParsedData(float* msg) {
     for(int ii=0;ii<nb_data;ii++) {
         if(ii<(nb_data-1)) {
             Serial.print("Target ");
@@ -91,15 +84,17 @@ void showParsedData() {
 
 //============
 
-float* getSerialMessage(){
+bool getSerialMessage(float* msg){
+    bool data_received = 0;
     recvWithStartEndMarkers();
     if (newData == true) {
         strcpy(tempChars, receivedChars);
             // Copie nécessaire pour protéger les données originales,
             // à cause que strtok() utilisé dans parseData() remplace les virgules par \0 
-        parseData();
-        showParsedData();
+        parseData(msg);
+        showParsedData(msg);
         newData = false;
-        return msg;
+        data_received = 1;
     }
+    return data_received;
 }
