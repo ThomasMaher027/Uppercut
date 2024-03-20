@@ -3,8 +3,8 @@
 #include <Arduino.h>
 
 void recvWithStartEndMarkers();
-void parseData();
-void showParsedData();
-float* getSerialMessage(); 
+void parseData(float* msg);
+void showParsedData(float* msg);
+bool getSerialMessage(float* msg); 
 
-#endif SERIALCOM_H
+#endif SERIALCOM_H;
