@@ -5,10 +5,36 @@ import numpy as np
 import cv2
 import serial
 import time
+from threading import Timer
+
+class RepeatedTimer(object):
+    def __init__(self, interval, function, *args, **kwargs):
+        self._timer     = None
+        self.interval   = interval
+        self.function   = function
+        self.args       = args
+        self.kwargs     = kwargs
+        self.is_running = False
+        self.start()
+
+    def _run(self):
+        self.is_running = False
+        self.start()
+        self.function(*self.args, **self.kwargs)
+
+    def start(self):
+        if not self.is_running:
+            self._timer = Timer(self.interval, self._run)
+            self._timer.start()
+            self.is_running = True
+
+    def stop(self):
+        self._timer.cancel()
+        self.is_running = False
 
 mp_drawing = mp.solutions.drawing_utils
 mp_holistic = mp.solutions.holistic
-#arduino = serial.Serial(port='COM5',   baudrate=115200, timeout=.1)
+arduino = serial.Serial(port='COM5',   baudrate=115200, timeout=.1)
 
 # VIDEO FEED
 cap = cv2.VideoCapture(0)
@@ -82,13 +108,15 @@ with (mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence
 
             return stage_m
 
-        
-        """def write_read(x):
+        def write_read(x):
             arduino.write(bytes(x,   'utf-8'))
-            time.sleep(0.05)
+            """time.sleep(0.05)
             data = arduino.readline()
-            return   data"""
-        
+            """
+
+        def communication():
+            ret = write_read(f"<{angle}, {angleB}, {angleC}, {stage_main}>")
+
         #Extract Landmarks
         try:
             # pour utiliser detection du corps
@@ -215,13 +243,6 @@ with (mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence
             if pos_main == 0:
                 stage_main = "up"
 
-
-            """def communication(a, b, c, d, e, f)"""
-
-
-
-
-
         except:
             pass
 
@@ -296,9 +317,14 @@ with (mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence
                                     mp_drawing.DrawingSpec(color=(255, 0, 0), thickness=2, circle_radius=2)
                                   )
 
-        wait(0.5)
-        ret = write_read(f"<{angle}, {angleB}, {angleC}, {angleD}>")
+        message = RepeatedTimer(0.5, communication)
 
+
+        message.stop()
+
+        """wait(0.5)
+        ret = write_read(f"<{angle}, {angleB}, {angleC}, {angleD}>")
+        """
         cv2.imshow('Mediapipe Feed', image)
 
 
