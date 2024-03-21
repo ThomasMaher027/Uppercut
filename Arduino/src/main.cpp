@@ -173,9 +173,9 @@ void homing(){
 
 // ==================== Fonction pour temps réel =================== // 
 void changeAngle(float* target){
-  target[0] = 200.0;
-  target[1] = 140.0;
-  target[2] = -1.2*target[2]+366; 
+  target[0] = 90 - target[0];
+  target[0] = map(target[0],0,90,200, max_pos_motor[0]);
+  target[2] = map(target[2],0,180,min_pos_motor[2], max_pos_motor[2]);
 }
 
 void limitPosition(float *target_angle){

@@ -73,8 +73,8 @@ def write_read(x):
     print(data)
 
 def communication():
-    print(f"a' IN : <{angleA}, {angleB}, {angleD}, {pos_main}>")
-    ret = write_read(f"<{angleA}, {angleB}, {angleD}, {pos_main}>")
+    print(f"a' IN : <{angleC}, {angleD}, {angleA}, {pos_main}>")
+    write_read(f"<{angleC}, {angleD}, {angleA}, {pos_main}>")
     
 message = RepeatedTimer(0.5, communication)
 try:
