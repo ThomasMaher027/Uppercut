@@ -6,6 +6,7 @@ import cv2
 import serial
 import time
 from threading import Timer
+import real_time_peak_detection
 
 class RepeatedTimer(object):
     def __init__(self, interval, function, *args, **kwargs):
@@ -34,7 +35,7 @@ class RepeatedTimer(object):
 
 mp_drawing = mp.solutions.drawing_utils
 mp_holistic = mp.solutions.holistic
-arduino = serial.Serial(port='COM5',   baudrate=115200, timeout=.1)
+#arduino = serial.Serial(port='COM5',   baudrate=115200, timeout=.1)
 
 # VIDEO FEED
 cap = cv2.VideoCapture(0)
@@ -56,27 +57,70 @@ stageC = None
 counterD = 0
 stageD = None
 
-
-angleA = -900
-angleB = -900
-angleC = -900
-angleD = -900
-pos_main = -900
+defVal = -900
+angleA = defVal
+angleB = defVal
+angleC = defVal
+angleD = defVal
+pos_main = defVal
 stage_main = None
 
-start_time=time.time()
-
+"""
 def write_read(x):
     arduino.write(bytes(x,   'utf-8'))
     time.sleep(0.05)
     data = arduino.readline()
     print(data)
+"""
+
+dataAngle = real_time_peak_detection.data()
 
 def communication():
-    print(f"a' IN : <{angleC}, {angleD}, {angleA}, {pos_main}>")
-    write_read(f"<{angleC}, {angleD}, {angleA}, {pos_main}>")
+    #print(f"a' IN : <{angleC}, {angleD}, {angleA}, {pos_main}>")
+    #write_read(f"<{angleC}, {angleD}, {angleA}, {pos_main}>")
+    if((angleC!=defVal) and (angleD!=defVal) and (angleA!=defVal)):
+        dataAngle.setData(IN1=angleC, IN2=angleD, IN3=angleA)
+        dataAngle.setTempData(IN1=angleC, IN2=angleD, IN3=angleA)
+        dataAngle.moy()
+        
+def calculate_angle(a, b, c):
+    a = np.array(a)
+    b = np.array(b)
+    c = np.array(c)
+
+    radians = np.arctan2(c[1]-b[1], c[0]-b[0]) - np.arctan2(a[1]-b[1], a[0]-b[0])
+    angle = np.abs(radians*180.0/np.pi)
+
+    if angle >180.0:
+        angle = 360-angle
+
+    return int(angle)
+
     
-message = RepeatedTimer(0.5, communication)
+def main(a, b, c, d, e, f, g, h, i, j):
+    a = np.array(a)
+    b = np.array(b)
+    c = np.array(c)
+    d = np.array(d)
+    e = np.array(e)
+    f = np.array(f)
+    g = np.array(g)
+    h = np.array(h)
+    i = np.array(i)
+    j = np.array(j)
+
+    if i[1]<a[1]<b[1] and i[1]<c[1]<d[1] and i[1]<e[1]<f[1] and i[1]<g[1]<h[1] and b[0]<j[0]<h[0]:
+        stage_m = 1
+
+    elif b[1]<a[1]<i[1] and d[1]<c[1]<i[1] and f[1]<e[1]<i[1] and h[1]<g[1]<i[1] and h[0]<j[0]<b[0]:
+        stage_m = 1
+
+    else:
+        stage_m = 0
+
+    return stage_m
+    
+message = RepeatedTimer(0.05, communication)
 try:
     with (mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic):
         while cap.isOpened():
@@ -90,45 +134,6 @@ try:
             image.flags.writeable = True
             image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
     
-            def calculate_angle(a, b, c):
-                a = np.array(a)
-                b = np.array(b)
-                c = np.array(c)
-        
-                radians = np.arctan2(c[1]-b[1], c[0]-b[0]) - np.arctan2(a[1]-b[1], a[0]-b[0])
-                angle = np.abs(radians*180.0/np.pi)
-        
-                if angle >180.0:
-                    angle = 360-angle
-        
-                return int(angle)
-    
-            def main(a, b, c, d, e, f, g, h, i, j):
-                a = np.array(a)
-                b = np.array(b)
-                c = np.array(c)
-                d = np.array(d)
-                e = np.array(e)
-                f = np.array(f)
-                g = np.array(g)
-                h = np.array(h)
-                i = np.array(i)
-                j = np.array(j)
-    
-                if i[1]<a[1]<b[1] and i[1]<c[1]<d[1] and i[1]<e[1]<f[1] and i[1]<g[1]<h[1] and b[0]<j[0]<h[0]:
-                    stage_m = 1
-    
-                elif b[1]<a[1]<i[1] and d[1]<c[1]<i[1] and f[1]<e[1]<i[1] and h[1]<g[1]<i[1] and h[0]<j[0]<b[0]:
-                    stage_m = 1
-    
-                else:
-                    stage_m = 0
-    
-                return stage_m
-    
-    
-    
-            
             #Extract Landmarks
             try:
                 # pour utiliser detection du corps
@@ -200,6 +205,7 @@ try:
                 angleD = calculate_angle(shoulderC, shoulder, elbow)
                 pos_main = main(index, index2, majeur, majeur2, annulaire, annulaire2, auriculaire, auriculaire2, poignet, pouce)
                 
+                    
                 
     
                 cv2.putText(image, str(angleA),
@@ -355,4 +361,6 @@ try:
         
 finally:
   message.stop() 
+  dataAngle.tradData()
+  dataAngle.graph()
 
