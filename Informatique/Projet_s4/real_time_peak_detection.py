@@ -30,6 +30,8 @@ class data():
         self.data3.append(IN3)
         
     def setTempData(self, IN1, IN2, IN3):
+        if IN1 > 90:
+            IN1 = 90
         self.temp_data1.append(IN1)
         self.temp_data2.append(IN2)
         self.temp_data3.append(IN3)

@@ -49,8 +49,8 @@ void changeAngle(float* target);
 const int nb_motor = 3;
 const int nb_movement = 3;
 const uint8_t DXL_ID[nb_motor] = {1, 20, 3}; //Motor ID
-float min_pos_motor[nb_motor] = {115, 2, 43};
-float max_pos_motor[nb_motor] = {262, 143, 330};
+float min_pos_motor[nb_motor] = {115, 2, 0};
+float max_pos_motor[nb_motor] = {278, 143, 227};
 float upper_speed_limit = 0.9;
 float lower_speed_limit = 0.1;
 float msg_data[nb_motor] = {0,0,0};
@@ -64,7 +64,7 @@ struct structStance{
 
 struct structStance stancePosition[nb_movement] = {
   // Home
-  {0, 1 ,{200.0, 170.0, 150.0,
+  {0, 1 ,{190.0, 140.0, 65.0,
           200.0, 170.0, 150.0,
           200.0, 170.0, 150.0,
           200.0, 170.0, 150.0}},
@@ -173,8 +173,9 @@ void homing(){
 
 // ==================== Fonction pour temps réel =================== // 
 void changeAngle(float* target){
-  target[0] = 90 - target[0];
-  target[0] = map(target[0],0,90,200, max_pos_motor[0]);
+  target[0] = 360 - target[0];
+  target[2] = 90 - target[2];
+  target[0] = map(target[0],270,360,min_pos_motor[0], 190);
   target[2] = map(target[2],0,180,min_pos_motor[2], max_pos_motor[2]);
 }
 

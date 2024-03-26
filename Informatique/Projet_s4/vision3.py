@@ -35,7 +35,7 @@ class RepeatedTimer(object):
 
 mp_drawing = mp.solutions.drawing_utils
 mp_holistic = mp.solutions.holistic
-#arduino = serial.Serial(port='COM5',   baudrate=115200, timeout=.1)
+arduino = serial.Serial(port='COM5',   baudrate=115200, timeout=.1)
 
 # VIDEO FEED
 cap = cv2.VideoCapture(0)
@@ -65,23 +65,24 @@ angleD = defVal
 pos_main = defVal
 stage_main = None
 
-"""
+
 def write_read(x):
     arduino.write(bytes(x,   'utf-8'))
-    time.sleep(0.05)
+    time.sleep(0.2)
     data = arduino.readline()
     print(data)
-"""
+
 
 dataAngle = real_time_peak_detection.data()
 
 def communication():
     #print(f"a' IN : <{angleC}, {angleD}, {angleA}, {pos_main}>")
-    #write_read(f"<{angleC}, {angleD}, {angleA}, {pos_main}>")
+    
     if((angleC!=defVal) and (angleD!=defVal) and (angleA!=defVal)):
-        dataAngle.setData(IN1=angleC, IN2=angleD, IN3=angleA)
+        # dataAngle.setData(IN1=angleC, IN2=angleD, IN3=angleA)
         dataAngle.setTempData(IN1=angleC, IN2=angleD, IN3=angleA)
         dataAngle.moy()
+        write_read(f"<{angleC}, {angleD}, {angleA}, {pos_main}>")    
         
 def calculate_angle(a, b, c):
     a = np.array(a)
