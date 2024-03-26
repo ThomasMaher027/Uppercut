@@ -35,7 +35,7 @@ class RepeatedTimer(object):
 
 mp_drawing = mp.solutions.drawing_utils
 mp_holistic = mp.solutions.holistic
-arduino = serial.Serial(port='COM5',   baudrate=115200, timeout=.1)
+#arduino = serial.Serial(port='COM5',   baudrate=115200, timeout=.1) # TODO
 
 # VIDEO FEED
 cap = cv2.VideoCapture(0)
@@ -65,13 +65,13 @@ angleD = defVal
 pos_main = defVal
 stage_main = None
 
-
+"""
 def write_read(x):
     arduino.write(bytes(x,   'utf-8'))
-    time.sleep(0.2)
+    time.sleep(0.05)
     data = arduino.readline()
     print(data)
-
+"""
 
 dataAngle = real_time_peak_detection.data()
 
@@ -79,10 +79,10 @@ def communication():
     #print(f"a' IN : <{angleC}, {angleD}, {angleA}, {pos_main}>")
     
     if((angleC!=defVal) and (angleD!=defVal) and (angleA!=defVal)):
-        # dataAngle.setData(IN1=angleC, IN2=angleD, IN3=angleA)
+        dataAngle.setData(IN1=angleC, IN2=angleD, IN3=angleA)
         dataAngle.setTempData(IN1=angleC, IN2=angleD, IN3=angleA)
         dataAngle.moy()
-        write_read(f"<{angleC}, {angleD}, {angleA}, {pos_main}>")    
+        #write_read(f"<{angleC}, {angleD}, {angleA}, {pos_main}>")    
         
 def calculate_angle(a, b, c):
     a = np.array(a)
@@ -121,7 +121,7 @@ def main(a, b, c, d, e, f, g, h, i, j):
 
     return stage_m
     
-message = RepeatedTimer(0.05, communication)
+message = RepeatedTimer(0.1, communication)
 try:
     with (mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic):
         while cap.isOpened():
@@ -363,5 +363,7 @@ try:
 finally:
   message.stop() 
   dataAngle.tradData()
-  dataAngle.graph()
+  dataAngle.graph(data1=dataAngle.data1, data2=dataAngle.moy1, leg1="Angles calculés", leg2="Moyenne mobile", xlabel = "Temps (s)", ylabel = "Angle (deg)", title="Angle du moteur1 - contraction biceps\nFe=10Hz, Ordre=10")
+  dataAngle.graph(data1=dataAngle.data2, data2=dataAngle.moy2, leg1="Angles calculés", leg2="Moyenne mobile", xlabel = "Temps (s)", ylabel = "Angle (deg)", title="Angle du moteur2 - contraction biceps\nFe=10Hz, Ordre=10")
+  dataAngle.graph(data1=dataAngle.data3, data2=dataAngle.moy3, leg1="Angles calculés", leg2="Moyenne mobile", xlabel = "Temps (s)", ylabel = "Angle (deg)", title="Angle du moteur3 - contraction biceps\nFe=10Hz, Ordre=10")
 

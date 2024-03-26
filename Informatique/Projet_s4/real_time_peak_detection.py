@@ -51,22 +51,29 @@ class data():
     def getMoy(self):
         return self.moy1, self.moy2, self.moy3
     
-    def graph(self):
+    def graph(self, data1, data2, leg1, leg2, xlabel, ylabel, title):
         fig, ax = plt.subplots()
-        ax.plot(self.data1)
-        ax.plot(self.moy1)
+        ax.plot(np.linspace(0,len(data1),len(data1))*0.1, data1)
+        ax.plot(np.linspace(0,len(data2),len(data2))*0.1,data2)
+        ax.legend([leg1,leg2])
+        ax.set_xlabel(xlabel)
+        ax.set_ylabel(ylabel)
+        plt.title(title)
         plt.show()
-        
+        """
         fig, ax = plt.subplots()
         ax.plot(self.data2)
         ax.plot(self.moy2)
+        ax.legend(['Angles calculés','Moyenne mobile'])
         plt.show()
         
         fig, ax = plt.subplots()
         ax.plot(self.data3)
         ax.plot(self.moy3)
+        ax.legend(['Angles calculés','Moyenne mobile'])
         plt.show()
-        
+        """
+        """
         fig, ax = plt.subplots()
         ax.plot(self.trad_moy1)
         plt.show()
@@ -74,6 +81,7 @@ class data():
         fig, ax = plt.subplots()
         ax.plot(self.trad_moy3)
         plt.show()
+        """
         
     def outputData(self):
         data =  [self.data1, self.data2, self.data3, self.moy1, self.moy2, self.moy3]
