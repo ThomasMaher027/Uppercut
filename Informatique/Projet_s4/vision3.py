@@ -7,6 +7,8 @@ import serial
 import time
 from threading import Timer
 import real_time_peak_detection
+import matplotlib.pyplot as plt
+import scipy
 
 class RepeatedTimer(object):
     def __init__(self, interval, function, *args, **kwargs):
@@ -33,9 +35,13 @@ class RepeatedTimer(object):
         self._timer.cancel()
         self.is_running = False
 
+
+
+
+
 mp_drawing = mp.solutions.drawing_utils
 mp_holistic = mp.solutions.holistic
-#arduino = serial.Serial(port='COM5',   baudrate=115200, timeout=.1) # TODO
+arduino = serial.Serial(port='COM5',   baudrate=115200, timeout=.1) # TODO
 
 # VIDEO FEED
 cap = cv2.VideoCapture(0)
@@ -62,27 +68,32 @@ angleA = defVal
 angleB = defVal
 angleC = defVal
 angleD = defVal
-pos_main = defVal
+pos_main = 0
 stage_main = None
 
-"""
-def write_read(x):
+fs = 10
+ts = 1/fs
+
+
+def write_read(x): # TODO
     arduino.write(bytes(x,   'utf-8'))
     time.sleep(0.05)
     data = arduino.readline()
     print(data)
-"""
 
-dataAngle = real_time_peak_detection.data()
 
 def communication():
-    #print(f"a' IN : <{angleC}, {angleD}, {angleA}, {pos_main}>")
+    
     
     if((angleC!=defVal) and (angleD!=defVal) and (angleA!=defVal)):
-        dataAngle.setData(IN1=angleC, IN2=angleD, IN3=angleA)
+        #dataAngle.setData(IN1=angleC, IN2=angleD, IN3=angleA)
         dataAngle.setTempData(IN1=angleC, IN2=angleD, IN3=angleA)
         dataAngle.moy()
-        #write_read(f"<{angleC}, {angleD}, {angleA}, {pos_main}>")    
+        #dataAngle.filterSignal()
+        write_read(f"<{dataAngle.moy1[-1]}, {dataAngle.moy2[-1]}, {dataAngle.moy3[-1]}, {pos_main}>")
+        #print(f"a' IN : <{dataAngle.moy1}, {dataAngle.moy2}, {dataAngle.moy3}, {pos_main}>")
+        #write_read(f"<{angleC}, {angleD}, {angleA}, {pos_main}>")   
+        #write_read(f"<{angleD}>")
         
 def calculate_angle(a, b, c):
     a = np.array(a)
@@ -119,11 +130,14 @@ def main(a, b, c, d, e, f, g, h, i, j):
     else:
         stage_m = 0
 
-    return stage_m
+
+dataAngle = real_time_peak_detection.data(10)
+
+
     
-message = RepeatedTimer(0.1, communication)
+message = RepeatedTimer(0.05, communication)
 try:
-    with (mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic):
+    with (mp_holistic.Holistic(min_detection_confidence=0.9, min_tracking_confidence=0.9) as holistic):
         while cap.isOpened():
             ret, frame = cap.read()
             #recolor image to rgb
@@ -153,7 +167,7 @@ try:
                          landmarks[mp_holistic.PoseLandmark.RIGHT_WRIST].y]
     
                 hip = [landmarks[mp_holistic.PoseLandmark.RIGHT_HIP].x,
-                         landmarks[mp_holistic.PoseLandmark.LEFT_HIP].y]
+                         landmarks[mp_holistic.PoseLandmark.RIGHT_HIP].y]
     
                 shoulderB = [landmarks[mp_holistic.PoseLandmark.RIGHT_SHOULDER].y,
                             landmarks[mp_holistic.PoseLandmark.RIGHT_SHOULDER].z]
@@ -165,7 +179,7 @@ try:
                          landmarks[mp_holistic.PoseLandmark.RIGHT_WRIST.value].z]
     
                 hipB = [landmarks[mp_holistic.PoseLandmark.RIGHT_HIP.value].y,
-                         landmarks[mp_holistic.PoseLandmark.LEFT_HIP.value].z]
+                         landmarks[mp_holistic.PoseLandmark.RIGHT_HIP.value].z]
     
                 shoulderC = [landmarks[mp_holistic.PoseLandmark.RIGHT_SHOULDER.value].x,
                             landmarks[mp_holistic.PoseLandmark.RIGHT_SHOULDER.value].y]
@@ -216,7 +230,7 @@ try:
                 """cv2.putText(image, str(angleB),
                             tuple(np.multiply(shoulder, [640, 480]).astype(int)),
                                   cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA, )"""
-                cv2.putText(image, str(angleC),
+                cv2.putText(image, str(angleD),
                             tuple(np.multiply(shoulder, [640, 480]).astype(int)),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA, )
     
@@ -362,8 +376,19 @@ try:
         
 finally:
   message.stop() 
-  dataAngle.tradData()
-  dataAngle.graph(data1=dataAngle.data1, data2=dataAngle.moy1, leg1="Angles calculés", leg2="Moyenne mobile", xlabel = "Temps (s)", ylabel = "Angle (deg)", title="Angle du moteur1 - contraction biceps\nFe=10Hz, Ordre=10")
-  dataAngle.graph(data1=dataAngle.data2, data2=dataAngle.moy2, leg1="Angles calculés", leg2="Moyenne mobile", xlabel = "Temps (s)", ylabel = "Angle (deg)", title="Angle du moteur2 - contraction biceps\nFe=10Hz, Ordre=10")
-  dataAngle.graph(data1=dataAngle.data3, data2=dataAngle.moy3, leg1="Angles calculés", leg2="Moyenne mobile", xlabel = "Temps (s)", ylabel = "Angle (deg)", title="Angle du moteur3 - contraction biceps\nFe=10Hz, Ordre=10")
-
+  
+  """
+  dataAngle.graph(data1=dataAngle.data1, data2=dataAngle.moy1, data3=dataAngle.filt1, leg1="Angles calculés", leg2="Moyenne mobile", leg3='Angles filtrés', xlabel = "Temps (s)", ylabel = "Angle (deg)", title=f"Angle du biceps (moteur1)\nFe={fs}Hz, Ordre=10")
+  dataAngle.graph(data1=dataAngle.data2, data2=dataAngle.moy2, data3=dataAngle.filt2, leg1="Angles calculés", leg2="Moyenne mobile", leg3='Angles filtrés', xlabel = "Temps (s)", ylabel = "Angle (deg)", title=f"Angle de l'épaule (moteur2)\nFe={fs}Hz, Ordre=10")
+  dataAngle.graph(data1=dataAngle.data3, data2=dataAngle.moy3, data3=dataAngle.filt3, leg1="Angles calculés", leg2="Moyenne mobile", leg3='Angles filtrés', xlabel = "Temps (s)", ylabel = "Angle (deg)", title=f"Angle du coude (moteur3)\nFe={fs}Hz, Ordre=")
+  
+  plt.psd(dataAngle.data1,Fs=fs,NFFT=len(dataAngle.data1))
+  plt.psd(dataAngle.filt1,Fs=fs,NFFT=len(dataAngle.filt1))
+  plt.show()
+  plt.psd(dataAngle.data2,Fs=fs,NFFT=len(dataAngle.data2))
+  plt.psd(dataAngle.filt2,Fs=fs,NFFT=len(dataAngle.filt2))
+  plt.show()
+  plt.psd(dataAngle.data3,Fs=fs,NFFT=len(dataAngle.data3))
+  plt.psd(dataAngle.filt3,Fs=fs,NFFT=len(dataAngle.filt3))
+  plt.show()
+  """
