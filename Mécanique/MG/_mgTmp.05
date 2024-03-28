@@ -66,4 +66,5 @@ Input  tFinal = 0.42 sec,  tStep = 0.01 sec,  absError = 1.0E-07,  relError = 1.
 %OutputPlot  t sec, Tb N*m, Tc N*m
 OutputPlot  t sec, qb deg, qb' deg/s, qb'' deg/s^2,  Te N*m, Tc N*m
 %OutputPlot  t sec, Te N*m, Tc N*m
-
+ODE() 
+quit
