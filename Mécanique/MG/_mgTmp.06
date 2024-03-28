@@ -222,4 +222,4 @@
    (131) %OutputPlot  t sec, Te N*m, Tc N*m
    (132) ODE() 
 
-   (133) 
+   (133) quit

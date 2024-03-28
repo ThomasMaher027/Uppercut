@@ -169,7 +169,7 @@
          sin(qc)*qb''-LMcmz*mM*cos(qc)*qb'')
 
    (119) %----------------- Resolution -----------------%
-   (120) %solve(Implicit,EQ, qe, Tb, Tc)
+   (120) %solve(Implicit,EQ, qe'', Tb, Tc)
    (121) solve(Implicit,EQ, qb'', Te, Tc)
 -> (122) qb'' = (dMotE*g*mMotg*sin(qe)+g*LBcmy*mB*sin(qe)+g*LMcmy*mM*sin(qe)+
          Te+IAvxy*sin(qc+qb)*qb'^2+(IBxy-LBcmx*LBcmy*mB)*sin(qb)*qb'^2+(IMxy-
@@ -215,7 +215,7 @@
 
    (125) %Input  qe = 0 deg,      qe' = 0 rad/sec
    (126) Input  qb = 90 deg,      qb' = 0 rad/sec
-   (127) Input  tFinal = 1 sec,  tStep = 0.01 sec,  absError = 1.0E-07,  relError = 1.0E-07
+   (127) Input  tFinal = 0.42 sec,  tStep = 0.01 sec,  absError = 1.0E-07,  relError = 1.0E-07
    (128) %OutputPlot  t sec, qe deg, qe' deg/s, qe'' deg/s^2,  Tb N*m, Tc N*m
    (129) %OutputPlot  t sec, Tb N*m, Tc N*m
    (130) OutputPlot  t sec, qb deg, qb' deg/s, qb'' deg/s^2,  Te N*m, Tc N*m

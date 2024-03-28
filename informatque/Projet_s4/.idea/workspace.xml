@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b9267519-8b34-4191-81df-24fc734a3555" name="Changes" comment="" />
+    <list default="true" id="b9267519-8b34-4191-81df-24fc734a3555" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../Mécanique/MG/ODE.1" beforeDir="false" afterPath="$PROJECT_DIR$/../../Mécanique/MG/ODE.1" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Mécanique/MG/_mgTmp.01" beforeDir="false" afterPath="$PROJECT_DIR$/../../Mécanique/MG/_mgTmp.01" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Mécanique/MG/_mgTmp.02" beforeDir="false" afterPath="$PROJECT_DIR$/../../Mécanique/MG/_mgTmp.02" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Mécanique/MG/_mgTmp.07" beforeDir="false" afterPath="$PROJECT_DIR$/../../Mécanique/MG/_mgTmp.07" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Mécanique/MG/_mgTmp.08" beforeDir="false" afterPath="$PROJECT_DIR$/../../Mécanique/MG/_mgTmp.08" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Mécanique/MG/dynamiqueBras.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../Mécanique/MG/dynamiqueBras.txt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -28,25 +35,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.vision.executor&quot;: &quot;Run&quot;,
-    &quot;Python.vision1.executor&quot;: &quot;Run&quot;,
-    &quot;Python.vision2.executor&quot;: &quot;Run&quot;,
-    &quot;Python.vision3.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Université/S4/Projet&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Git&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.vision.executor": "Run",
+    "Python.vision1.executor": "Run",
+    "Python.vision2.executor": "Run",
+    "Python.vision3.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/Lasju/OneDrive - USherbrooke/Documents/H24/Projet/projet_tour/Camera",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "vcs.Git",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Université\S4\Projet" />
@@ -84,6 +91,7 @@
       <workItem from="1710343376504" duration="255000" />
       <workItem from="1710346743131" duration="4661000" />
       <workItem from="1710356039549" duration="399000" />
+      <workItem from="1711547868057" duration="87000" />
     </task>
     <servers />
   </component>
