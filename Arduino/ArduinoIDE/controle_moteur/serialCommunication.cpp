@@ -5,7 +5,7 @@ const byte numChars = 64;
 char receivedChars[numChars];
 char tempChars[numChars];        // tableau temporaire utilisé quand on passe à travers les données
 const int nb_data = 4;
-
+ 
 void recvWithStartEndMarkers() {
     static boolean recvInProgress = false;
     static byte ndx = 0;

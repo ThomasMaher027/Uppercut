@@ -105,6 +105,8 @@ stage_main = None
 
 fs = 20
 ts = 1/fs
+pres_t = time.time()
+last_t = 0
 
 """
 fonction permettant la communication par port série
@@ -218,6 +220,8 @@ def main(a, b, c, d, e, f, g, h, i, j):
 
     else:
         stage_m = 0
+        
+    return stage_m
 
 
 dataAngle = real_time_peak_detection.data(fs)
@@ -317,7 +321,10 @@ try:
                 angleB = calculate_angle(hip, shoulder, elbow)
                 angleC = calculate_angle(hipB, shoulderB, elbowB)
                 angleD = calculate_angle(shoulderC, shoulder, elbow)
-                pos_main = main(index, index2, majeur, majeur2, annulaire, annulaire2, auriculaire, auriculaire2, poignet, pouce)
+                if (pres_t-last_t >=5):
+                    pos_main = main(index, index2, majeur, majeur2, annulaire, annulaire2, auriculaire, auriculaire2, poignet, pouce)
+                    last_t = pres_t
+                pres_t = time.time()
                 
                     
                 
@@ -350,7 +357,7 @@ try:
                 pass
             
 
-            cv2.putText(image, stage_main, (450, 60),
+            cv2.putText(image, stage_main, (450, 30),
                         cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 2, cv2.LINE_AA)
     
     
