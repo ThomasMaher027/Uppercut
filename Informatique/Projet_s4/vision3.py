@@ -1,5 +1,8 @@
 #import time
 
+"""
+Voici les imports nécessaire pour que le programme soit fonctionnel
+"""
 import mediapipe as mp
 import numpy as np
 import cv2
@@ -10,8 +13,21 @@ import real_time_peak_detection
 import matplotlib.pyplot as plt
 import scipy
 
+
+"""
+class qui permet de faire l'envoie des données pendant la lecture des angles
+"""
 class RepeatedTimer(object):
     def __init__(self, interval, function, *args, **kwargs):
+        """
+
+        Parameters
+        ----------
+        interval : période
+        function : fonction exécuter
+        args : argument de la fonction
+        kwargs : argument de la fonction
+        """
         self._timer     = None
         self.interval   = interval
         self.function   = function
@@ -20,7 +36,14 @@ class RepeatedTimer(object):
         self.is_running = False
         self.start()
 
+
     def _run(self):
+        """
+        roule le programme
+        Returns
+        -------
+
+        """
         self.is_running = False
         self.start()
         self.function(*self.args, **self.kwargs)
@@ -38,9 +61,15 @@ class RepeatedTimer(object):
 
 
 
-
+"""
+le frame utiliser pour analyser le corps
+"""
 mp_drawing = mp.solutions.drawing_utils
 mp_holistic = mp.solutions.holistic
+
+"""
+communication par port serie
+"""
 arduino = serial.Serial(port='COM5',   baudrate=115200, timeout=.1) # TODO
 
 # VIDEO FEED
@@ -51,18 +80,21 @@ cap = cv2.VideoCapture(0)
 counter = 0
 stage = None
 
-# shoulder counter
+# shoulder counter overhead
 counterB = 0
 stageB = None
 
-#shoulder counter
+#shoulder counter perpendicular
 counterC = 0
 stageC = None
 
-#shoulder counter
+#shoulder counter épaule droite, épaule gauche, coude parallèle
 counterD = 0
 stageD = None
 
+"""
+initialisation des angles et la position de la main
+"""
 defVal = -900
 angleA = defVal
 angleB = defVal
@@ -74,15 +106,33 @@ stage_main = None
 fs = 20
 ts = 1/fs
 
-
+"""
+fonction permettant la communication par port série
+"""
 def write_read(x): # TODO
+    """
+
+    Parameters
+    ----------
+    x : données envoyées
+
+    Returns
+    -------
+
+    """
     arduino.write(bytes(x,   'utf-8'))
     #time.sleep(0.05)
     #data = arduino.readline()
     #print(data)
 
-
 def communication():
+
+    """
+    applique les filtre sur les données et les envoient dans le port serie
+    Returns
+    -------
+
+    """
     
     
     if((angleC!=defVal) and (angleD!=defVal) and (angleA!=defVal)):
@@ -102,8 +152,21 @@ def communication():
         
         #print(f"a' IN : <{dataAngle.moy1}, {dataAngle.moy2}, {dataAngle.moy3}, {pos_main}>")
 
-        
+
 def calculate_angle(a, b, c):
+
+    """
+
+    Parameters
+    ----------
+    a : position articulation 1
+    b : position articulation 2
+    c : position articulation 3
+
+    Returns
+    -------
+
+    """
     a = np.array(a)
     b = np.array(b)
     c = np.array(c)
@@ -116,8 +179,26 @@ def calculate_angle(a, b, c):
 
     return int(angle)
 
-    
 def main(a, b, c, d, e, f, g, h, i, j):
+    """
+
+    Parameters
+    ----------
+    a : position phalange 1 index
+    b : position phalange 2 index
+    c : position phalange 1 majeur
+    d : position phalange 2 majeur
+    e : position phalange 1 annulaire
+    f : position phalange 2 annulaire
+    g : position phalange 1 auriculaire
+    h : position phalange 2 auriculaire
+    i : position poignet
+    j : position pouce
+
+    Returns
+    -------
+
+    """
     a = np.array(a)
     b = np.array(b)
     c = np.array(c)
@@ -141,7 +222,9 @@ def main(a, b, c, d, e, f, g, h, i, j):
 
 dataAngle = real_time_peak_detection.data(fs)
 
-
+"""
+ouverture de la caméra avec le modèle avec son modèle (holistic)
+"""
     
 message = RepeatedTimer(ts, communication)
 try:
@@ -164,6 +247,10 @@ try:
     
                 #detection de la main
                 landmarks2 = results.right_hand_landmarks.landmark
+
+                """
+                position des différents membres dans la liste
+                """
     
                 shoulder = [landmarks[mp_holistic.PoseLandmark.RIGHT_SHOULDER].x,
                             landmarks[mp_holistic.PoseLandmark.RIGHT_SHOULDER].y]
@@ -221,6 +308,10 @@ try:
     
                 pouce = [landmarks2[mp_holistic.HandLandmark.THUMB_TIP.value].x,
                                 landmarks2[mp_holistic.HandLandmark.THUMB_TIP.value].y]
+
+                """
+                calcul des différents angles et la position de la main
+                """
     
                 angleA = calculate_angle(shoulder, elbow, wrist)
                 angleB = calculate_angle(hip, shoulder, elbow)
@@ -230,7 +321,9 @@ try:
                 
                     
                 
-    
+                """
+                permet d'afficher l'angle du coude sur le coude
+                """
                 cv2.putText(image, str(angleA),
                             tuple(np.multiply(elbow,[640, 480]).astype(int)),
                                   cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA, )
@@ -238,49 +331,16 @@ try:
                 """cv2.putText(image, str(angleB),
                             tuple(np.multiply(shoulder, [640, 480]).astype(int)),
                                   cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA, )"""
+
+                """
+                permet d'afficher l'anlge de l'épaule droite sur l'épaule droite
+                """
                 cv2.putText(image, str(angleD),
                             tuple(np.multiply(shoulder, [640, 480]).astype(int)),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA, )
     
                 ret = "rien"
-                """
-                # curl counter logic
-                if angle > 160 and angleB < 10:
-                    stage = "down"
-                if angle < 30 and stage == "down" and angleB < 20:
-                    stage = "up"
-                    counter += 1
-                    #ret = write_read("1")
-    
-    
-    
-                #Shoulder counter logic
-                if angleC < 50:
-                    stageC = "down"
-                if 80 < angleC < 100 and stageC == "down" and angleD < 170 and stageD != "up":
-                    stageC = "up"
-                    counterC += 1
-                    #ret = write_read("3")
-    
-    
-                # shoulder counter logic
-                if angleB > 150:
-                    stageB = "down"
-                if angleB < 30 and stageB == "down" and angleC < 150 and stageC != "up":
-                    stageB = "up"
-                    counterB += 1
-                    #ret = write_read("2")
-    
-                #Shoulder counter logic
-                if angleD < 110:
-                    stageD = "down"
-                if angleD > 170 and stageD == "down" and stageC != "up":
-                    stageD = "up"
-                    counterD += 1
-                    #ret = write_read("4")
-                if ret != "rien":
-                    print(ret)
-                """
+
                 if pos_main == 1:
                     stage_main = "down"
                 if pos_main == 0:
@@ -289,64 +349,7 @@ try:
             except:
                 pass
             
-           
-            """cv2.rectangle(image, (0, 0), (112, 72), (245, 117, 16), -1)
-    
-            cv2.putText(image,'REPS', (15, 12),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1,cv2.LINE_AA)
-    
-            cv2.putText(image, str(counter), (10, 60),
-                        cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 2,cv2.LINE_AA)
-                        
-            a mettre en commentaire{
-            cv2.putText(image,'STAGE', (65, 12),                                    
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1,cv2.LINE_AA)  
-    
-            cv2.putText(image, stage, (60, 60),
-                        cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 2,cv2.LINE_AA)           
-            }
-    
-            cv2.rectangle(image, (112, 0), (224, 72), (30, 240, 16), -1)
-    
-            cv2.putText(image,'REPS', (120, 12),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1,cv2.LINE_AA)
-    
-            cv2.putText(image, str(counterB), (120, 60),
-                        cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 2,cv2.LINE_AA)
-            a mettre en commentaire{
-            cv2.putText(image,'STAGE', (310, 12),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1,cv2.LINE_AA)
-    
-            cv2.putText(image, stageB, (290, 60),
-                        cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 2,cv2.LINE_AA)
-            }
-    
-            cv2.rectangle(image, (224, 0), (336, 72), (30, 16, 240), -1)
-    
-            cv2.putText(image, 'REPS', (240, 12),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1,cv2.LINE_AA)
-    
-            cv2.putText(image, str(counterC), (240, 60),
-                        cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 2,cv2.LINE_AA)
-            a mettre en commentaire{
-            cv2.putText(image,'STAGE', (530, 12),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1,cv2.LINE_AA)
-    
-            cv2.putText(image, stageC, (530, 60),
-                        cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 2,cv2.LINE_AA)
-            }
-    
-            cv2.rectangle(image, (336, 0), (448, 72), (100, 100, 100), -1)
-    
-            cv2.putText(image,'REPS', (350, 12),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1, cv2.LINE_AA)
-    
-            cv2.putText(image, str(counterD), (350, 60),
-                        cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 2, cv2.LINE_AA)
-    
-            cv2.putText(image,'STAGE', (450, 12),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1, cv2.LINE_AA)
-            """
+
             cv2.putText(image, stage_main, (450, 60),
                         cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 2, cv2.LINE_AA)
     
@@ -360,23 +363,18 @@ try:
                                       mp_drawing.DrawingSpec(color=(0, 255, 0), thickness=2,circle_radius=2),
                                         mp_drawing.DrawingSpec(color=(255, 0, 0), thickness=2, circle_radius=2)
                                       )
-    
-           
-    
-    
-            
-    
-            """wait(0.5)
-            ret = write_read(f"<{angle}, {angleB}, {angleC}, {angleD}>")
-            """
+
             cv2.imshow('Mediapipe Feed', image)
     
-            
-    
+            """
+            permet de quitter le programme
+            """
             if cv2.waitKey(10) & 0xFF == ord('q'):
                 break
     
-            
+        """
+        ferme la caméra et détruite la fenêtre de la caméra
+        """
         cap.release()
         cv2.destroyAllWindows()
              
