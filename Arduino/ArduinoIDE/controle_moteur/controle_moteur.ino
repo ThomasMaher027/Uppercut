@@ -18,6 +18,8 @@
 #include <Arduino.h>
 #include <Dynamixel2Arduino.h>
 #include "serialCommunication.h"
+#include "real_time.h"
+#include "mouv_preenregistres.h"
 
 //OpenRB does not require the DIR control pin.
 #define DXL_SERIAL Serial1
@@ -31,6 +33,7 @@ Dynamixel2Arduino dxl(DXL_SERIAL, DXL_DIR_PIN);
 using namespace ControlTableItem;
 
 // put function declarations here:
+/*
 void set_speed(uint8_t id, float speedPct);
 void homing();
 void printPosition();
@@ -40,99 +43,30 @@ void setGoal_Position(float *target, int pos);
 void setGoalSpeed(float *target, int pos);
 float getSpeed(int motor, float target);
 
+
 void limitPosition(float *target_angle);
 void setAngularSpeed(float *target);
 void setAngularPosition(float *target);
 void changeAngle(float* target);
-/*
+
 void recvWithStartEndMarkers();
 void parseData(float* msg);
 void showParsedData(float* msg);
 bool getSerialMessage(float* msg); 
-bool dataRead = 0;*/
+bool dataRead = 0;
+*/
 
 
-const int nb_motor = 3;
+const int nb_motor = 4;
 const int nb_movement = 3;
-const uint8_t DXL_ID[nb_motor] = {1, 20, 3}; //Motor ID
-float min_pos_motor[nb_motor] = {115, 120, 70};
-float max_pos_motor[nb_motor] = {278, 258, 232};
-float upper_speed_limit = 0.8;
-float lower_speed_limit = 0;
-float msg_data[4] = {0,0,0,0};
-
-int nb_target = 12;
-struct structStance{ 
-  int stance_id;
-  int nb_sub_movement;
-  float target[12]; // motor position (in degree)
-};
-
-struct structStance stancePosition[nb_movement] = {
-  // Home
-  
-  {0, 1 ,{190.0, 258.0, 70.0,
-          200.0, 140.0, 150.0,
-          200.0, 140.0, 150.0,
-          200.0, 140.0, 150.0}},
-
-  // Curl
-  {1, 1, {110.0, 140.0, 325.0, 
-          150.0, 140.0, 280.0, 
-          150.0, 140.0, 280.0, 
-          150.0, 140.0, 280.0}},
-
-  // Jab
-  {2, 3, {196.0, 50.0, 305.0, 
-          110.4, 50.0, 178.5, 
-          196.0, 50.0, 305.0,
-          196.0, 50.0, 305.0}},
-
-  // Question
-  /*
-  {3, 1 ,{200.0, 254.0, 150.0,
-          200.0, 254.0, 150.0,
-          200.0, 254.0, 150.0,
-          200.0, 254.0, 150.0}},*/
+const uint8_t DXL_ID[nb_motor] = {1, 20, 3, 4};
 /*
-  // Corde
-  {4, 1, {90.0, 0.0, 90.0, 
-          90.0, 90.0, 0.0, 
-          90.0, 90.0, 90.0,
-          90.0, 90.0, 90.0}}*/
-};
+const uint8_t DXL_ID[nb_motor] = {1, 20, 3, 4}; //Motor ID
+float min_pos_motor[nb_motor] = {115, 120, 70, 90};
+float max_pos_motor[nb_motor] = {278, 258, 232, 270};
+float home_pos[nb_motor] = {190.0, 258.0, 70.0, 180.0};*/
 
-struct structStance stanceSpeed[nb_movement] = {
-  // Home
-  {0, 1 ,{0.3, 0.3, 0.3,
-          0.3, 0.3, 0.3,
-          0.3, 0.3, 0.3, 
-          0.3, 0.3, 0.3}},
-  
-  // Curl
-  {1, 1, {0.2, 0.3, 0.2,
-          0.3, 0.3, 0.3,
-          0.3, 0.3, 0.3, 
-          0.3, 0.3, 0.3}},
-
-  // Jab
-  {2, 3, {0.35, 0.35, 0.6, 
-          0.35, 0.35, 0.6,
-          0.35, 0.35, 0.6,
-          0.35, 0.35, 0.6,}},
-
-  // Question
-  /*{3, 1, {0.1, 0.2, 0.3, 
-          0.2, 0.2, 0.3,
-          0.3, 0.3, 0.3, 
-          0.3, 0.3, 0.3}},*/
-   /*           
-  // Corde        
-  {4, 1, {0.1, 0.2, 0.3,
-          0.25, 0.25, 0.3, 
-          0.3, 0.3, 0.3, 
-          0.3, 0.3, 0.3}}*/
-};
+float msg_data[nb_motor] = {0,0,0,0};
 
 
 void setup() {
@@ -151,9 +85,9 @@ void setup() {
     dxl.torqueOff(DXL_ID[i]);
     dxl.setOperatingMode(DXL_ID[i], OP_POSITION);
     dxl.torqueOn(DXL_ID[i]);
-    set_speed(DXL_ID[i],0.2);
+    set_speed(dxl,DXL_ID[i],0.5);
   }
-   homing();
+   homing(dxl);
 }
 
 
@@ -169,14 +103,7 @@ void loop() {
     if (chosen_command <= 0){
       chosen_command = 0;
     }
-
-    if (chosen_command < nb_movement){
-      for (int i=0; i<stancePosition[chosen_command].nb_sub_movement*nb_motor; i+=nb_motor){
-        setGoal_Position(stancePosition[chosen_command].target,i);
-        check_pos_achieved(stancePosition[chosen_command].target,i);
-      }
-      homing();
-    }
+    envoiCommande(dxl,chosen_command);
   }
 }*/
 
@@ -189,10 +116,11 @@ void loop(){
   if (data_received){
     changeAngle(msg_data);
     limitPosition(msg_data);
-    setAngularSpeed(msg_data);
-    setAngularPosition(msg_data);
+    setAngularSpeed(dxl, msg_data, 0);
+    setAngularPosition(dxl, msg_data, 0);
   }
 }
+/*
 void changeAngle(float* target){
   target[0] = 360 - target[0];
   target[1] = 180 - target[1];
@@ -234,17 +162,17 @@ void setAngularPosition(float *target){
   for (int i=0;i<nb_motor;i++){
     dxl.setGoalPosition(DXL_ID[i], target[i], UNIT_DEGREE);
   }
-}
-
+}*/
+/*
 void homing(){
   //setGoalSpeed(stanceSpeed[0].target,0);
-  setGoal_Position(stancePosition[0].target,0);
-  check_pos_achieved(stancePosition[0].target, 0);
-}
-
+  setGoal_Position(dxl, stancePosition[0].target,0);
+  check_pos_achieved(dxl, stancePosition[0].target, 0);
+}*/
+/*
 void set_speed(uint8_t id, float speedPct) {
-  if (speedPct > upper_speed_limit){
-    speedPct = upper_speed_limit;
+  if (speedPct > max_vit){
+    speedPct = max_vit;
   }
   if (speedPct < lower_speed_limit){
     speedPct = lower_speed_limit;
@@ -253,12 +181,12 @@ void set_speed(uint8_t id, float speedPct) {
   uint32_t newSpeedRpm = speedPct*maxDynamixelSpeed;
   uint32_t writeTimeout = 100; //ms
   dxl.writeControlTableItem(PROFILE_VELOCITY, id, newSpeedRpm, writeTimeout);
-}
+}*/
 
 
 //=================================================================================================//
 
-
+/*
 void setGoal_Position(float *target, int pos){
   int motor=0;
   for(int i=pos;i<pos+nb_motor;i++){
@@ -326,8 +254,7 @@ int choiceMovement(int command){
     } 
   }
   return -1;
-}
-
+}*/
 
 
 //============
