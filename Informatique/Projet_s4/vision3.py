@@ -71,29 +71,37 @@ angleD = defVal
 pos_main = 0
 stage_main = None
 
-fs = 10
+fs = 20
 ts = 1/fs
 
 
 def write_read(x): # TODO
     arduino.write(bytes(x,   'utf-8'))
-    time.sleep(0.05)
-    data = arduino.readline()
-    print(data)
+    #time.sleep(0.05)
+    #data = arduino.readline()
+    #print(data)
 
 
 def communication():
     
     
     if((angleC!=defVal) and (angleD!=defVal) and (angleA!=defVal)):
-        #dataAngle.setData(IN1=angleC, IN2=angleD, IN3=angleA)
+        #write_read(f"<{angleC}, {angleD}, {angleA}, {pos_main}>")  
+        """
         dataAngle.setTempData(IN1=angleC, IN2=angleD, IN3=angleA)
         dataAngle.moy()
+        write_read(f"<{dataAngle.moy1[-1]}, {dataAngle.moy2[-1]}, {dataAngle.moy3[-1]}, {pos_main}>")"""
+        
+        
+        dataAngle.setData(IN1=angleC, IN2=angleD, IN3=angleA)
+        
         #dataAngle.filterSignal()
-        write_read(f"<{dataAngle.moy1[-1]}, {dataAngle.moy2[-1]}, {dataAngle.moy3[-1]}, {pos_main}>")
+        dataAngle.callIIRFilter()
+        #write_read(f"<{dataAngle.filt1[-1]}, {dataAngle.filt2[-1]}, {dataAngle.filt3[-1]}, {pos_main}>")
+        write_read(f"<{dataAngle.filt_IIR1[-1]}, {dataAngle.filt_IIR2[-1]}, {dataAngle.filt_IIR3[-1]}, {pos_main}>")
+        
         #print(f"a' IN : <{dataAngle.moy1}, {dataAngle.moy2}, {dataAngle.moy3}, {pos_main}>")
-        #write_read(f"<{angleC}, {angleD}, {angleA}, {pos_main}>")   
-        #write_read(f"<{angleD}>")
+
         
 def calculate_angle(a, b, c):
     a = np.array(a)
@@ -131,11 +139,11 @@ def main(a, b, c, d, e, f, g, h, i, j):
         stage_m = 0
 
 
-dataAngle = real_time_peak_detection.data(10)
+dataAngle = real_time_peak_detection.data(fs)
 
 
     
-message = RepeatedTimer(0.05, communication)
+message = RepeatedTimer(ts, communication)
 try:
     with (mp_holistic.Holistic(min_detection_confidence=0.9, min_tracking_confidence=0.9) as holistic):
         while cap.isOpened():
@@ -378,10 +386,11 @@ finally:
   message.stop() 
   
   """
-  dataAngle.graph(data1=dataAngle.data1, data2=dataAngle.moy1, data3=dataAngle.filt1, leg1="Angles calculés", leg2="Moyenne mobile", leg3='Angles filtrés', xlabel = "Temps (s)", ylabel = "Angle (deg)", title=f"Angle du biceps (moteur1)\nFe={fs}Hz, Ordre=10")
-  dataAngle.graph(data1=dataAngle.data2, data2=dataAngle.moy2, data3=dataAngle.filt2, leg1="Angles calculés", leg2="Moyenne mobile", leg3='Angles filtrés', xlabel = "Temps (s)", ylabel = "Angle (deg)", title=f"Angle de l'épaule (moteur2)\nFe={fs}Hz, Ordre=10")
-  dataAngle.graph(data1=dataAngle.data3, data2=dataAngle.moy3, data3=dataAngle.filt3, leg1="Angles calculés", leg2="Moyenne mobile", leg3='Angles filtrés', xlabel = "Temps (s)", ylabel = "Angle (deg)", title=f"Angle du coude (moteur3)\nFe={fs}Hz, Ordre=")
-  
+  dataAngle.graph(data1=dataAngle.data1, data2=dataAngle.filt1, data3=dataAngle.filt_IIR1, leg1="Angles calculés", leg2="Moyenne mobile", leg3='Angles filtrés', xlabel = "Temps (s)", ylabel = "Angle (deg)", title=f"Angle du biceps (moteur1)\nFe={fs}Hz, Ordre=10")
+  dataAngle.graph(data1=dataAngle.data2, data2=dataAngle.filt2, data3=dataAngle.filt_IIR2, leg1="Angles calculés", leg2="Moyenne mobile", leg3='Angles filtrés', xlabel = "Temps (s)", ylabel = "Angle (deg)", title=f"Angle de l'épaule (moteur2)\nFe={fs}Hz, Ordre=10")
+  dataAngle.graph(data1=dataAngle.data3, data2=dataAngle.filt3, data3=dataAngle.filt_IIR3, leg1="Angles calculés", leg2="Moyenne mobile", leg3='Angles filtrés', xlabel = "Temps (s)", ylabel = "Angle (deg)", title=f"Angle du coude (moteur3)\nFe={fs}Hz, Ordre=")
+  """
+  """
   plt.psd(dataAngle.data1,Fs=fs,NFFT=len(dataAngle.data1))
   plt.psd(dataAngle.filt1,Fs=fs,NFFT=len(dataAngle.filt1))
   plt.show()
@@ -390,5 +399,5 @@ finally:
   plt.show()
   plt.psd(dataAngle.data3,Fs=fs,NFFT=len(dataAngle.data3))
   plt.psd(dataAngle.filt3,Fs=fs,NFFT=len(dataAngle.filt3))
-  plt.show()
-  """
+  plt.show()"""
+  
