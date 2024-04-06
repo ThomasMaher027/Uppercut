@@ -2,11 +2,11 @@
 
 
 
-temps_reel::temps_reel(int* id, float* min_pos, float* max_pos, float* home_pos){
-  for(int ii=0;ii<nb_motor;ii++){
+temps_reel::temps_reel(int* id, float* min_pos, float* max_pos, float* pos_home){
+  for(int ii=0;ii<nb_moteur;ii++){
       DXL_ID[ii] = id[ii];
-      min_pos_motor[ii] = min_pos[ii]; 
-      max_pos_motor[nb_motor] = max_pos[ii];
+      min_pos_moteur[ii] = min_pos[ii]; 
+      max_pos_moteur[nb_moteur] = max_pos[ii];
   }
 }
 
@@ -17,66 +17,66 @@ temps_reel::~temps_reel(){
 
 
 
-void temps_reel::changeAngle(float* target){
-  target[0] = 360 - target[0];
-  target[1] = 180 - target[1];
-  target[2] = 90 - target[2];
-  target[0] = map(target[0],270,360,min_pos_motor[0], 190);
-  target[1] = map(target[1],0,90,(max_pos_motor[1]-90), max_pos_motor[1]);
-  target[2] = map(target[2],0,180,min_pos_motor[2], max_pos_motor[2])*2;
+void temps_reel::changeAngle(float* cibles){
+  cibles[0] = 360 - cibles[0];
+  cibles[1] = 180 - cibles[1];
+  cibles[2] = 90 - cibles[2];
+  cibles[0] = map(cibles[0],270,360,min_pos_moteur[0], 190);
+  cibles[1] = map(cibles[1],0,90,(max_pos_moteur[1]-90), max_pos_moteur[1]);
+  cibles[2] = map(cibles[2],0,180,min_pos_moteur[2], max_pos_moteur[2])*2;
 }
 
 
 
-void temps_reel::limitPosition(float *target_angle){
-  for(int i=0;i<nb_motor;i++){
-    if (target_angle[i] < min_pos_motor[i]){
-      target_angle[i] = min_pos_motor[i];
+void temps_reel::limitePosition(float *cibles_angle){
+  for(int i=0;i<nb_moteur;i++){
+    if (cibles_angle[i] < min_pos_moteur[i]){
+      cibles_angle[i] = min_pos_moteur[i];
     }
-    if (target_angle[i] > max_pos_motor[i]){
-      target_angle[i] = max_pos_motor[i];
+    if (cibles_angle[i] > max_pos_moteur[i]){
+      cibles_angle[i] = max_pos_moteur[i];
     }
   }
 }
 
 
 
-void temps_reel::setAngularSpeed(float *target){
-  float erreur_pos[nb_motor] = {0,0,0};
+void temps_reel::defVitesseAng(float *cibles){
+  float erreur_pos[nb_moteur] = {0,0,0};
   float max_erreur = 0;
-  for(int i=0;i<nb_motor;i++){
-    float present_pos = dxl.getPresentPosition(DXL_ID[i], UNIT_DEGREE);
-    erreur_pos[i] = abs(target[i] - present_pos);
+  for(int i=0;i<nb_moteur;i++){
+    float pos_actuelle = dxl.getPresentPosition(DXL_ID[i], UNIT_DEGREE);
+    erreur_pos[i] = abs(cibles[i] - pos_actuelle);
     if (erreur_pos[i] > max_erreur) {
       max_erreur = erreur_pos[i];
     }
   }
   float gain = 0.9/max_erreur;
-  for(int i=0;i<nb_motor;i++){
-    float speed_pct = erreur_pos[i]*gain;
-    set_speed(DXL_ID[i], speed_pct);
+  for(int i=0;i<nb_moteur;i++){
+    float pct_vitesse = erreur_pos[i]*gain;
+    defVitesse(DXL_ID[i], pct_vitesse);
   }
 }
 
 
 
-void temps_reel::setAngularPosition(float *target){
-  for (int i=0;i<nb_motor;i++){
-    dxl.setGoalPosition(DXL_ID[i], target[i], UNIT_DEGREE);
+void temps_reel::defPosAng(float *cibles){
+  for (int i=0;i<nb_moteur;i++){
+    dxl.setGoalPosition(DXL_ID[i], cibles[i], UNIT_DEGREE);
   }
 }
 
 
 
-void temps_reel::set_speed(uint8_t id, float speedPct) {
-  if (speedPct > max_vit){
-    speedPct = max_vit;
+void temps_reel::defVitesse(uint8_t id, float pct_vitesse) {
+  if (pct_vitesse > vit_max){
+    pct_vitesse = vit_max;
   }
-  if (speedPct < lower_speed_limit){
-    speedPct = lower_speed_limit;
+  if (pct_vitesse < vit_min){
+    pct_vitesse = vit_min;
   }
-  double maxDynamixelSpeed = 1023*0.229; //RPM
-  uint32_t newSpeedRpm = speedPct*maxDynamixelSpeed;
+  double vitesse_max_Dynamixel = 1023*0.229; //RPM
+  uint32_t nouv_vitesse_rpm = pct_vitesse*vitesse_max_Dynamixel;
   uint32_t writeTimeout = 100; //ms
-  dxl.writeControlTableItem(PROFILE_VELOCITY, id, newSpeedRpm, writeTimeout);
+  dxl.writeControlTableItem(PROFILE_VELOCITY, id, nouv_vitesse_rpm, writeTimeout);
 }*/

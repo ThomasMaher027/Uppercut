@@ -1,16 +1,16 @@
 #include "mouv_preenregistres.h"
 using namespace ControlTableItem;
 
-const int nb_motor = 4;
-const uint8_t DXL_ID[nb_motor] = {1, 20, 3, 4}; //Motor ID
+const int nb_moteur = 4;
+const uint8_t DXL_ID[nb_moteur] = {1, 20, 3, 4}; //moteur ID
 
 
 const int nb_movement = 3;
-int nb_target = 12;
+int nb_cibles = 12;
 struct structStance{ 
   int stance_id;
   int nb_sub_movement;
-  float target[12]; // motor position (in degree)
+  float cibles[12]; // moteur position (in degree)
 };
 
 struct structStance stancePosition[nb_movement] = {
@@ -54,23 +54,23 @@ struct structStance stanceSpeed[nb_movement] = {
           0.35, 0.35, 0.6,}},
 };
 
-void check_pos_achieved(Dynamixel2Arduino dxl, float *target, int j){
+void check_pos_achieved(Dynamixel2Arduino dxl, float *cibles, int j){
   bool ready = false;
   float interval = 2.0;
   while (ready == false){
     int total = 0;
-    int target_index = j;
-    for (int i=0;i<nb_motor;i++){
-      float pos_motor = dxl.getPresentPosition(DXL_ID[i], UNIT_DEGREE);
-      if (abs(target[target_index]-pos_motor)<interval){
+    int cibles_index = j;
+    for (int i=0;i<nb_moteur;i++){
+      float pos_moteur = dxl.getPresentPosition(DXL_ID[i], UNIT_DEGREE);
+      if (abs(cibles[cibles_index]-pos_moteur)<interval){
         total += 1;
       }
-      target_index += 1;
+      cibles_index += 1;
     }
-    if (total == nb_motor){
+    if (total == nb_moteur){
       ready = true;
     }
-    else if (total > nb_motor){
+    else if (total > nb_moteur){
       Serial.println("Le check pour savoir si les moteurs sont arrives a destination n'est pas bien fait");
     }
   }
@@ -78,10 +78,10 @@ void check_pos_achieved(Dynamixel2Arduino dxl, float *target, int j){
 
 void envoiCommande(Dynamixel2Arduino dxl, int chosen_command){
   if (chosen_command < nb_movement){
-      for (int i=0; i<stancePosition[chosen_command].nb_sub_movement*nb_motor; i+=nb_motor){
-          setAngularSpeed(dxl, stancePosition[chosen_command].target, i);
-          setAngularPosition(dxl, stancePosition[chosen_command].target, i);
-          check_pos_achieved(dxl, stancePosition[chosen_command].target, i);
+      for (int i=0; i<stancePosition[chosen_command].nb_sub_movement*nb_moteur; i+=nb_moteur){
+          defVitesseAng(dxl, stancePosition[chosen_command].cibles, i);
+          defPosAng(dxl, stancePosition[chosen_command].cibles, i);
+          check_pos_achieved(dxl, stancePosition[chosen_command].cibles, i);
       homing(dxl);
     }
   }
@@ -89,29 +89,29 @@ void envoiCommande(Dynamixel2Arduino dxl, int chosen_command){
 
 
 /*
-void setGoal_Position(Dynamixel2Arduino dxl, float *target, int pos){
-  int motor=0;
-  for(int i=pos;i<pos+nb_motor;i++){
-    float speed_pct = getSpeed(dxl, motor, target[i]);
-    set_speed(dxl, DXL_ID[motor], speed_pct);
-    dxl.setGoalPosition(DXL_ID[motor], target[i], UNIT_DEGREE);
-    motor++;
+void setGoal_Position(Dynamixel2Arduino dxl, float *cibles, int pos){
+  int moteur=0;
+  for(int i=pos;i<pos+nb_moteur;i++){
+    float pct_vitesse = calculVitesse(dxl, moteur, cibles[i]);
+    defVitesse(dxl, DXL_ID[moteur], pct_vitesse);
+    dxl.setGoalPosition(DXL_ID[moteur], cibles[i], UNIT_DEGREE);
+    moteur++;
   }
 }*/
 /*
-float getSpeed(Dynamixel2Arduino dxl, int motor, float target){
+float calculVitesse(Dynamixel2Arduino dxl, int moteur, float cibles){
   // Égal à 1/220. Donc, pour une erreur d'angle de 220 deg, la vitesse est 100% (les moteurs ne tourneront pas plus de 270 deg) 
   float p_gain = 0.004545455;
-  float error = abs(dxl.getPresentPosition(DXL_ID[motor], UNIT_DEGREE) - target);
+  float error = abs(dxl.getPresentPosition(DXL_ID[moteur], UNIT_DEGREE) - cibles);
   float out_speed = error*p_gain;
   return out_speed; 
 }*/
 /*
-void setGoalSpeed(Dynamixel2Arduino dxl, float *target, int pos){
-  int motor=0;
-  for(int i=pos;i<pos+nb_motor;i++){
-    set_speed(dxl, DXL_ID[motor], target[i]);
-    motor++;
+void setGoalSpeed(Dynamixel2Arduino dxl, float *cibles, int pos){
+  int moteur=0;
+  for(int i=pos;i<pos+nb_moteur;i++){
+    defVitesse(dxl, DXL_ID[moteur], cibles[i]);
+    moteur++;
   }
 }*/
 
@@ -119,12 +119,12 @@ void setGoalSpeed(Dynamixel2Arduino dxl, float *target, int pos){
 
 /*
 void printPosition(Dynamixel2Arduino dxl){
-  for(int i=0;i<nb_motor;i++){
-    float present_position = dxl.getPresentPosition(DXL_ID[i], UNIT_DEGREE);
-    DEBUG_SERIAL.print("Present_Position ");
+  for(int i=0;i<nb_moteur;i++){
+    float pos_actuelleition = dxl.getPresentPosition(DXL_ID[i], UNIT_DEGREE);
+    DEBUG_SERIAL.print("pos_actuelleition ");
     DEBUG_SERIAL.print(i);
     DEBUG_SERIAL.print(" (degree) : ");
-    DEBUG_SERIAL.println(present_position);
+    DEBUG_SERIAL.println(pos_actuelleition);
   }
 }
 */

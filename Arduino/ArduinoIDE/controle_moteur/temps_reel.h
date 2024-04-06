@@ -17,21 +17,21 @@ using namespace ControlTableItem;
 
 class temps_reel{
   public:
-  temps_reel(int* id, float* min_pos, float* max_pos, float* home_pos);
+  temps_reel(int* id, float* min_pos, float* max_pos, float* pos_home);
   ~temps_reel();
-  void limitPosition(float *target_angle);
-  float getSpeed(int motor, float target);
-  void setAngularSpeed(float *target);
-  void setAngularPosition(float *target);
-  void changeAngle(float* target);
-  void set_speed(uint8_t id, float speedPct);
+  void limitePosition(float *cibles_angle);
+  float calculVitesse(int moteur, float cibles);
+  void defVitesseAng(float *cibles);
+  void defPosAng(float *cibles);
+  void changeAngle(float* cibles);
+  void defVitesse(uint8_t id, float pct_vitesse);
   void homing();
 
   Dynamixel2Arduino dxl(DXL_SERIAL, DXL_DIR_PIN);
-  const int nb_motor = 3;
-  const uint8_t DXL_ID[nb_motor];
-  float min_pos_motor[nb_motor];
-  float max_pos_motor[nb_motor];
+  const int nb_moteur = 3;
+  const uint8_t DXL_ID[nb_moteur];
+  float min_pos_moteur[nb_moteur];
+  float max_pos_moteur[nb_moteur];
 };
 
 
