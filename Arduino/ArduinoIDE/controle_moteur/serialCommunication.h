@@ -6,5 +6,5 @@ void recvWithStartEndMarkers();
 void parseData(float* msg);
 void showParsedData(float* msg);
 bool getSerialMessage(float* msg); 
-
+ 
 #endif SERIALCOM_H;
