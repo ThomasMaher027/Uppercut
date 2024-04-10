@@ -51,6 +51,10 @@ Liste de pièces:
 - **1x** moteur dynamixel XL,H-430
 - **1x** rouleau_doigts
 
+![Figure 3 : Modèle 3D de l'avant-bras](https://github.com/ThomasMaher027/Uppercut/blob/main/Mécanique/figure_3.png)
+
+*Figure 3 : Modèle 3D de l'avant-bras*
+
 ## ASSEMBLAGE DE LA MAIN:
 Pour faire la main il faut avoir:
 - **9x** [Doigt1.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/doigt)
@@ -73,3 +77,7 @@ Ensuite il faut connecter les doigts à la paume de la même façon que les segm
 Bicep et épaule : Il faut fixer le biceps à l'épaule à l'aide de 4 vis M4 25LG, 4 écrous et 4 rondelles.
 	
 Il faut ensuite fixer le bras à sa base à l'aide de 4 vis M6 50LG, 4 écrous et 4 rondelles.
+
+![Figure 5 : Modèle 3D du bras entier](https://github.com/ThomasMaher027/Uppercut/blob/main/Mécanique/figure_5.png)
+
+*Figure 5 : Modèle 3D du bras entier*
