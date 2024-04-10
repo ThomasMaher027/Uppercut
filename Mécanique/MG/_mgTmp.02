@@ -213,11 +213,21 @@
          qc)))*qb'' - Lb*(LAvcmx*mAv*cos(qc)+LMcmx*mM*cos(qc)-dMotM*mMotp*sin(
          qc)-LAv*mM*sin(qc)-LAvcmz*mAv*sin(qc)-LMcmz*mM*sin(qc))*qb'^2
 
-   (125) %Input  qe = 0 deg,      qe' = 0 rad/sec
-   (126) Input  qb = 90 deg,      qb' = 0 rad/sec
-   (127) Input  tFinal = 0.42 sec,  tStep = 0.01 sec,  absError = 1.0E-07,  relError = 1.0E-07
-   (128) %OutputPlot  t sec, qe deg, qe' deg/s, qe'' deg/s^2,  Tb N*m, Tc N*m
-   (129) %OutputPlot  t sec, Tb N*m, Tc N*m
-   (130) OutputPlot  t sec, qb deg, qb' deg/s, qb'' deg/s^2,  Te N*m, Tc N*m
-   (131) %OutputPlot  t sec, Te N*m, Tc N*m
-   (132) 
+   (125) systemPower = Av.GetPowerTorque(M) %GetPowerForce()
+-> (126) systemPower = 0
+
+   (127) Variable workDone' = systemPower
+-> (128) workDone' = 0
+
+   (129) Input  workDone = 0 Joules
+   (130) %Input  qe = 0 deg,      qe' = 0 rad/sec
+   (131) Input  qb = 90 deg,      qb' = 0 rad/sec
+   (132) Input  tFinal = 0.42 sec,  tStep = 0.01 sec,  absError = 1.0E-07,  relError = 1.0E-07
+   (133) %OutputPlot  t sec, qe deg, qe' deg/s, qe'' deg/s^2,  Tb N*m, Tc N*m
+   (134) %OutputPlot  t sec, Tb N*m, Tc N*m
+   (135) %OutputPlot  t sec, qb deg, qb' deg/s, qb'' deg/s^2,  Te N*m, Tc N*m, systemPower
+   (136) OutputPlot  t sec, systemPower
+   (137) %OutputPlot  t sec, Te N*m, Tc N*m
+   (138) ODE() 
+
+   (139) 

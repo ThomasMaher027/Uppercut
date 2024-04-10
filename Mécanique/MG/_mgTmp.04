@@ -21,10 +21,10 @@
    (21) Constant dMotM = 0.040 m
    (22) Constant dMotE = 0.040 m
    (23) Constant qc = 0 deg
-   (24) Variable qe'', Tb, Tc
-   (25) Constant qb = 0 deg, Te = 2.95 N*m
-   (26) %Variable qb'', Te, Tc
-   (27) %Constant qe = -90 deg, Tb = 2.95 N*m
+   (24) %Variable qe'', Tb, Tc
+   (25) %Constant qb = 0 deg, Te = 2.95 N*m
+   (26) Variable qb'', Te, Tc
+   (27) Constant qe = -90 deg, Tb = 2.95 N*m
    (28) M.SetMass(mM)
    (29) Av.SetMass(mAv)
    (30) B.SetMass(mB)
@@ -36,29 +36,29 @@
    (36) M.SetInertia(Mcm, IMxx = 0.00016081 kg*m^2, IMyy = 0.00012716 kg*m^2, IMzz = 0.00003633 kg*m^2,  IMxy = 0.00000009 kg*m^2, IMyz =  -0.00000214 kg*m^2, IMzx = -0.00000098 kg*m^2)
    (37) E.RotateX(N, qe)
 -> (38) E_N = [1, 0, 0;  0, cos(qe), sin(qe);  0, -sin(qe), cos(qe)]
--> (39) w_E_N> = qe'*Ex>
--> (40) alf_E_N> = qe''*Ex>
+-> (39) w_E_N> = 0>
+-> (40) alf_E_N> = 0>
 
    (41) B.RotateY(E, qb)
 -> (42) B_E = [cos(qb), 0, -sin(qb);  0, 1, 0;  sin(qb), 0, cos(qb)]
--> (43) w_B_E> = 0>
--> (44) w_B_N> = cos(qb)*qe'*Bx> + sin(qb)*qe'*Bz>
--> (45) alf_B_E> = 0>
--> (46) alf_B_N> = cos(qb)*qe''*Bx> + sin(qb)*qe''*Bz>
+-> (43) w_B_E> = qb'*By>
+-> (44) w_B_N> = qb'*By>
+-> (45) alf_B_E> = qb''*By>
+-> (46) alf_B_N> = qb''*By>
 
    (47) Av.RotateY(B, qc)
 -> (48) Av_B = [cos(qc), 0, -sin(qc);  0, 1, 0;  sin(qc), 0, cos(qc)]
 -> (49) w_Av_B> = 0>
--> (50) w_Av_N> = cos(qb+qc)*qe'*Avx> + sin(qb+qc)*qe'*Avz>
+-> (50) w_Av_N> = qb'*Avy>
 -> (51) alf_Av_B> = 0>
--> (52) alf_Av_N> = cos(qb+qc)*qe''*Avx> + sin(qb+qc)*qe''*Avz>
+-> (52) alf_Av_N> = qb''*Avy>
 
    (53) M.RotateY(B, qc)
 -> (54) M_B = [cos(qc), 0, -sin(qc);  0, 1, 0;  sin(qc), 0, cos(qc)]
 -> (55) w_M_B> = 0>
--> (56) w_M_N> = cos(qb+qc)*qe'*Mx> + sin(qb+qc)*qe'*Mz>
+-> (56) w_M_N> = qb'*My>
 -> (57) alf_M_B> = 0>
--> (58) alf_M_N> = cos(qb+qc)*qe''*Mx> + sin(qb+qc)*qe''*Mz>
+-> (58) alf_M_N> = qb''*My>
 
    (59) Eo.Translate(No, 0>)
 -> (60) p_No_Eo> = 0>
@@ -67,8 +67,8 @@
 
    (63) MotE.Translate(Eo, dMotE*ey>)
 -> (64) p_Eo_MotE> = dMotE*Ey>
--> (65) v_MotE_N> = dMotE*qe'*Ez>
--> (66) a_MotE_N> = -dMotE*qe'^2*Ey> + dMotE*qe''*Ez>
+-> (65) v_MotE_N> = 0>
+-> (66) a_MotE_N> = 0>
 
    (67) Bo.Translate(Eo, 0>)
 -> (68) p_Eo_Bo> = 0>
@@ -77,56 +77,40 @@
 
    (71) Bcm.Translate(Bo,-LBcmz*bz> + LBcmy*by> + LBcmx*bx>) 
 -> (72) p_Bo_Bcm> = LBcmx*Bx> + LBcmy*By> - LBcmz*Bz>
--> (73) v_Bcm_N> = -LBcmy*sin(qb)*qe'*Bx> + (LBcmx*sin(qb)+LBcmz*cos(qb))*qe'*By>
-        + LBcmy*cos(qb)*qe'*Bz>
--> (74) a_Bcm_N> = -sin(qb)*((LBcmx*sin(qb)+LBcmz*cos(qb))*qe'^2+LBcmy*qe'')*Bx>
-        + ((LBcmx*sin(qb)+LBcmz*cos(qb))*qe''-LBcmy*qe'^2)*By> + cos(qb)*((LBc
-        mx*sin(qb)+LBcmz*cos(qb))*qe'^2+LBcmy*qe'')*Bz>
+-> (73) v_Bcm_N> = -LBcmz*qb'*Bx> - LBcmx*qb'*Bz>
+-> (74) a_Bcm_N> = (-LBcmx*qb'^2-LBcmz*qb'')*Bx> + (LBcmz*qb'^2-LBcmx*qb'')*Bz>
 
    (75) MotC.Translate(Bo, (-(3*Lb)/4)*bz>)
 -> (76) p_Bo_MotC> = -0.75*Lb*Bz>
--> (77) v_MotC_N> = 0.75*Lb*cos(qb)*qe'*By>
--> (78) a_MotC_N> = -0.75*Lb*sin(qb)*cos(qb)*qe'^2*Bx> + 0.75*Lb*cos(qb)*qe''*By>
-        + 0.75*Lb*cos(qb)^2*qe'^2*Bz>
+-> (77) v_MotC_N> = -0.75*Lb*qb'*Bx>
+-> (78) a_MotC_N> = -0.75*Lb*qb''*Bx> + 0.75*Lb*qb'^2*Bz>
 
    (79) Avo.Translate(Bo, -Lb*bz>)
 -> (80) p_Bo_Avo> = -Lb*Bz>
--> (81) v_Avo_N> = Lb*cos(qb)*qe'*By>
--> (82) a_Avo_N> = -Lb*sin(qb)*cos(qb)*qe'^2*Bx> + Lb*cos(qb)*qe''*By> + Lb*cos
-        (qb)^2*qe'^2*Bz>
+-> (81) v_Avo_N> = -Lb*qb'*Bx>
+-> (82) a_Avo_N> = -Lb*qb''*Bx> + Lb*qb'^2*Bz>
 
    (83) Avcm.Translate(Avo,-LAvcmz*Avz> + LAvcmx*Avx>)
 -> (84) p_Avo_Avcm> = LAvcmx*Avx> - LAvcmz*Avz>
--> (85) v_Avcm_N> = (Lb*cos(qb)+LAvcmx*sin(qb+qc)+LAvcmz*cos(qb+qc))*qe'*By>
--> (86) a_Avcm_N> = -sin(qb+qc)*(LAvcmx*sin(qb+qc)+LAvcmz*cos(qb+qc))*qe'^2*Avx>
-        + cos(qb+qc)*(LAvcmx*sin(qb+qc)+LAvcmz*cos(qb+qc))*qe'^2*Avz> - Lb*sin(
-        qb)*cos(qb)*qe'^2*Bx> + (Lb*cos(qb)+LAvcmx*sin(qb+qc)+LAvcmz*cos(qb+qc))
-        *qe''*By> + Lb*cos(qb)^2*qe'^2*Bz>
+-> (85) v_Avcm_N> = -LAvcmz*qb'*Avx> - LAvcmx*qb'*Avz> - Lb*qb'*Bx>
+-> (86) a_Avcm_N> = (-LAvcmx*qb'^2-LAvcmz*qb'')*Avx> + (LAvcmz*qb'^2-LAvcmx*qb
+        '')*Avz> - Lb*qb''*Bx> + Lb*qb'^2*Bz>
 
    (87) MotM.Translate(Avo, -dMotM*Avz>)
 -> (88) p_Avo_MotM> = -dMotM*Avz>
--> (89) v_MotM_N> = (Lb*cos(qb)+dMotM*cos(qb+qc))*qe'*By>
--> (90) a_MotM_N> = -dMotM*sin(qb+qc)*cos(qb+qc)*qe'^2*Avx> + dMotM*cos(qb+qc)^2
-        *qe'^2*Avz> - Lb*sin(qb)*cos(qb)*qe'^2*Bx> + (Lb*cos(qb)+dMotM*cos(qb+
-        qc))*qe''*By> + Lb*cos(qb)^2*qe'^2*Bz>
+-> (89) v_MotM_N> = -dMotM*qb'*Avx> - Lb*qb'*Bx>
+-> (90) a_MotM_N> = -dMotM*qb''*Avx> + dMotM*qb'^2*Avz> - Lb*qb''*Bx> + Lb*qb'^2*Bz>
 
    (91) Mo.Translate(Avo, -LAv*Avz>)
 -> (92) p_Avo_Mo> = -LAv*Avz>
--> (93) v_Mo_N> = (Lb*cos(qb)+LAv*cos(qb+qc))*qe'*By>
--> (94) a_Mo_N> = -LAv*sin(qb+qc)*cos(qb+qc)*qe'^2*Avx> + LAv*cos(qb+qc)^2*qe'^2*Avz>
-        - Lb*sin(qb)*cos(qb)*qe'^2*Bx> + (Lb*cos(qb)+LAv*cos(qb+qc))*qe''*By>
-        + Lb*cos(qb)^2*qe'^2*Bz>
+-> (93) v_Mo_N> = -LAv*qb'*Avx> - Lb*qb'*Bx>
+-> (94) a_Mo_N> = -LAv*qb''*Avx> + LAv*qb'^2*Avz> - Lb*qb''*Bx> + Lb*qb'^2*Bz>
 
    (95) Mcm.Translate(Mo, -LMcmz*Mz> + LMcmy*My> + LMcmx*Mx>) 
 -> (96) p_Mo_Mcm> = LMcmx*Mx> + LMcmy*My> - LMcmz*Mz>
--> (97) v_Mcm_N> = (Lb*cos(qb)+LAv*cos(qb+qc)+LMcmx*sin(qb+qc)+LMcmz*cos(qb+qc))
-        *qe'*By> - LMcmy*sin(qb+qc)*qe'*Mx> + LMcmy*cos(qb+qc)*qe'*Mz>
-
--> (98) a_Mcm_N> = -LAv*sin(qb+qc)*cos(qb+qc)*qe'^2*Avx> + LAv*cos(qb+qc)^2*qe'^2*Avz>
-        - Lb*sin(qb)*cos(qb)*qe'^2*Bx> + ((Lb*cos(qb)+LAv*cos(qb+qc))*qe''+(LM
-        cmx*sin(qb+qc)+LMcmz*cos(qb+qc))*qe''-LMcmy*qe'^2)*By> + Lb*cos(qb)^2*qe'^2*Bz>
-        - sin(qb+qc)*((LMcmx*sin(qb+qc)+LMcmz*cos(qb+qc))*qe'^2+LMcmy*qe'')*Mx>
-        + cos(qb+qc)*((LMcmx*sin(qb+qc)+LMcmz*cos(qb+qc))*qe'^2+LMcmy*qe'')*Mz>
+-> (97) v_Mcm_N> = -LAv*qb'*Avx> - Lb*qb'*Bx> - LMcmz*qb'*Mx> - LMcmx*qb'*Mz>
+-> (98) a_Mcm_N> = -LAv*qb''*Avx> + LAv*qb'^2*Avz> - Lb*qb''*Bx> + Lb*qb'^2*Bz>
+        + (-LMcmx*qb'^2-LMcmz*qb'')*Mx> + (LMcmz*qb'^2-LMcmx*qb'')*Mz>
 
    (99) System.AddForceGravity(-g*Ny>)            % Add's gravity force to each massive object.
 -> (100) Force_Avcm> = -g*mAv*Ny>
@@ -147,149 +131,106 @@
 
    (112) %-------------- Définition des équations scalaires ----------%
    (113) EQ[1] = Dot(S1.GetDynamics(Eo), nx>)
--> (114) EQ[1] = g*Lb*mAv*cos(qb)*cos(qe) + g*Lb*mM*cos(qb)*cos(qe) + g*LBcmx*
-         mB*sin(qb)*cos(qe) + g*LBcmz*mB*cos(qb)*cos(qe) + 1.75*g*Lb*mMotp*cos(
-         qb)*cos(qe) + dMotM*g*mMotp*cos(qb+qc)*cos(qe) + g*LAv*mM*cos(qb+qc)*cos(qe)
-         + g*LAvcmx*mAv*sin(qb+qc)*cos(qe) + g*LAvcmz*mAv*cos(qb+qc)*cos(qe)
-         + g*LMcmx*mM*sin(qb+qc)*cos(qe) + g*LMcmz*mM*cos(qb+qc)*cos(qe) + mB*LBcmy^2
-         *qe'' + mM*LMcmy^2*qe'' + mMotg*dMotE^2*qe'' + sin(qb)*(Lb*LMcmy*mM*
-         sin(qb)*cos(qb)*qe'^2+IBzz*sin(qb)*qe''+LBcmx*mB*(LBcmx*sin(qb)+2*LBc
-         mz*cos(qb))*qe'') + sin(qb+qc)*(IMzz*sin(qb+qc)+2*IMzx*cos(qb+qc)+LMc
-         mx*mM*(2*Lb*cos(qb)+LMcmx*sin(qb+qc)+2*LAv*cos(qb+qc)))*qe'' + cos(qb+
-         qc)*(IMxx*cos(qb+qc)+LMcmz*mM*(2*Lb*cos(qb)+LMcmz*cos(qb+qc)+2*LAv*cos
-         (qb+qc)+2*LMcmx*sin(qb+qc)))*qe'' + sin(qb+qc)*(LAv*LMcmy*mM*sin(qb+
-         qc)*cos(qb+qc)*qe'^2+IAvzz*sin(qb+qc)*qe''+2*IAvzx*cos(qb+qc)*qe''+LA
-         vcmx*mAv*(2*Lb*cos(qb)+LAvcmx*sin(qb+qc)+2*LAvcmz*cos(qb+qc))*qe'')
-         + cos(qb)*(Lb*LMcmy*mM*cos(qb)^2*qe'^2+IBxx*cos(qb)*qe''+2*IBzx*sin(
-         qb)*qe''+mAv*Lb^2*cos(qb)*qe''+mB*LBcmz^2*cos(qb)*qe''+1.5625*mMotp*Lb^2
-         *cos(qb)*qe''-Lb*mM*(LMcmy*qe'^2-(Lb*cos(qb)+2*LAv*cos(qb+qc))*qe''))
-         - Te - dMotE*g*mMotg*sin(qe) - g*LBcmy*mB*sin(qe) - g*LMcmy*mM*sin(qe)
-         - cos(qb+qc)*(LAv*mM*(LMcmy*qe'^2-LAv*cos(qb+qc)*qe'')-LAv*LMcmy*mM*
-         cos(qb+qc)^2*qe'^2-IAvxx*cos(qb+qc)*qe''-dMotM*mMotp*(2*Lb*cos(qb)+dM
-         otM*cos(qb+qc))*qe''-LAvcmz*mAv*(2*Lb*cos(qb)+LAvcmz*cos(qb+qc))*qe'')
+-> (114) EQ[1] = g*Lb*mAv*cos(qe)*cos(qb) + g*Lb*mM*cos(qe)*cos(qb) + g*LBcmx*
+         mB*cos(qe)*sin(qb) + g*LBcmz*mB*cos(qe)*cos(qb) + 1.75*g*Lb*mMotp*cos(
+         qe)*cos(qb) + dMotM*g*mMotp*cos(qe)*cos(qc+qb) + g*LAv*mM*cos(qe)*cos(
+         qc+qb) + g*LAvcmx*mAv*cos(qe)*sin(qc+qb) + g*LAvcmz*mAv*cos(qe)*cos(
+         qc+qb) + g*LMcmx*mM*cos(qe)*sin(qc+qb) + g*LMcmz*mM*cos(qe)*cos(qc+qb)
+         + cos(qc+qb)*(IAvyz*qb'^2+LAv*LMcmy*mM*qb'^2+IAvxy*qb'') + cos(qc+qb)*
+         (IMyz*qb'^2+IMxy*qb''+LMcmy*mM*(LMcmz*qb'^2-LMcmx*qb'')) + cos(qb)*(
+         IByz*qb'^2+Lb*LMcmy*mM*qb'^2+IBxy*qb''+LBcmy*mB*(LBcmz*qb'^2-LBcmx*qb
+         '')) - dMotE*g*mMotg*sin(qe) - g*LBcmy*mB*sin(qe) - g*LMcmy*mM*sin(qe)
+         - Te - sin(qc+qb)*(IAvxy*qb'^2-IAvyz*qb''-LAv*LMcmy*mM*qb'') - sin(qc+
+         qb)*(IMxy*qb'^2-IMyz*qb''-LMcmy*mM*(LMcmx*qb'^2+LMcmz*qb'')) - sin(qb)
+         *(IBxy*qb'^2-IByz*qb''-Lb*LMcmy*mM*qb''-LBcmy*mB*(LBcmx*qb'^2+LBcmz*
+         qb''))
 
    (115) EQ[2] = Dot(S2.GetDynamics(Bo), ey>)
--> (116) EQ[2] = g*(LBcmx*mB*cos(qb)+LAvcmx*mAv*cos(qb+qc)+LMcmx*mM*cos(qb+qc)-
-         1.75*Lb*mMotp*sin(qb)-Lb*mAv*sin(qb)-Lb*mM*sin(qb)-LBcmz*mB*sin(qb)-
-         dMotM*mMotp*sin(qb+qc)-LAv*mM*sin(qb+qc)-LAvcmz*mAv*sin(qb+qc)-LMcmz*
-         mM*sin(qb+qc))*sin(qe) + mAv*Lb^2*sin(qb)*cos(qb)*qe'^2 + mM*Lb^2*sin(
-         qb)*cos(qb)*qe'^2 + 1.5625*mMotp*Lb^2*sin(qb)*cos(qb)*qe'^2 + dMotM*
-         Lb*mMotp*sin(qb)*cos(qb+qc)*qe'^2 + dMotM*Lb*mMotp*sin(qc)*cos(qb)^2*qe'^2
-         + LAv*Lb*mM*sin(qb)*cos(qb+qc)*qe'^2 + LAv*Lb*mM*sin(qc)*cos(qb)^2*qe'^2
-         + LAvcmz*Lb*mAv*sin(qc)*cos(qb)^2*qe'^2 + Lb*LMcmz*mM*sin(qc)*cos(qb)^2
-         *qe'^2 + mM*LAv^2*sin(qb+qc)*cos(qb+qc)*qe'^2 + mMotp*dMotM^2*sin(qb+
-         qc)*cos(qb+qc)*qe'^2 + dMotM*Lb*mMotp*sin(qb)*cos(qb)*cos(qc)*qe'^2
-         + LAv*Lb*mM*sin(qb)*cos(qb)*cos(qc)*qe'^2 + LAvcmz*Lb*mAv*sin(qb)*cos(
-         qb)*cos(qc)*qe'^2 + Lb*LMcmz*mM*sin(qb)*cos(qb)*cos(qc)*qe'^2 + 2*LAv*
-         LMcmz*mM*sin(qb+qc)*cos(qb+qc)*qe'^2 + Lb*mAv*sin(qb)*(LAvcmx*sin(qb+
-         qc)+LAvcmz*cos(qb+qc))*qe'^2 + LAvcmz*mAv*sin(qb+qc)*(LAvcmx*sin(qb+
-         qc)+LAvcmz*cos(qb+qc))*qe'^2 + (sin(qb)*(IBxx*cos(qb)+IBzx*sin(qb))-
-         cos(qb)*(IBzx*cos(qb)+IBzz*sin(qb)))*qe'^2 + (sin(qb+qc)*(IAvxx*cos(
-         qb+qc)+IAvzx*sin(qb+qc))-cos(qb+qc)*(IAvzx*cos(qb+qc)+IAvzz*sin(qb+qc)))
-         *qe'^2 + (sin(qb+qc)*(IMxx*cos(qb+qc)+IMzx*sin(qb+qc))-cos(qb+qc)*(IM
-         zx*cos(qb+qc)+IMzz*sin(qb+qc)))*qe'^2 + IBxy*cos(qb)*qe'' + IByz*sin(
-         qb)*qe'' + IAvxy*cos(qb+qc)*qe'' + IAvyz*sin(qb+qc)*qe'' + IMxy*cos(
-         qb+qc)*qe'' + IMyz*sin(qb+qc)*qe'' + LAv*mM*sin(qb+qc)*(LMcmx*sin(qb+
-         qc)*qe'^2+LMcmy*qe'') + LBcmz*mB*sin(qb)*((LBcmx*sin(qb)+LBcmz*cos(qb))
-         *qe'^2+LBcmy*qe'') + Lb*mM*sin(qb)*((LMcmx*sin(qb+qc)+LMcmz*cos(qb+qc))
-         *qe'^2+LMcmy*qe'') + LMcmz*mM*sin(qb+qc)*((LMcmx*sin(qb+qc)+LMcmz*cos(
-         qb+qc))*qe'^2+LMcmy*qe'') - Tb - LAv*LMcmx*mM*cos(qb+qc)^2*qe'^2
-         - LAvcmx*Lb*mAv*cos(qb)*cos(qb+qc)*qe'^2 - Lb*LMcmx*mM*cos(qb)*cos(qb+
-         qc)*qe'^2 - LAvcmx*mAv*cos(qb+qc)*(LAvcmx*sin(qb+qc)+LAvcmz*cos(qb+qc))
-         *qe'^2 - LBcmx*mB*cos(qb)*((LBcmx*sin(qb)+LBcmz*cos(qb))*qe'^2+LBcmy*
-         qe'') - LMcmx*mM*cos(qb+qc)*((LMcmx*sin(qb+qc)+LMcmz*cos(qb+qc))*qe'^2
-         +LMcmy*qe'')
+-> (116) EQ[2] = g*sin(qe)*(LBcmx*mB*cos(qb)+LAvcmx*mAv*cos(qc+qb)+LMcmx*mM*cos
+         (qc+qb)-1.75*Lb*mMotp*sin(qb)-Lb*mAv*sin(qb)-Lb*mM*sin(qb)-LBcmz*mB*
+         sin(qb)-dMotM*mMotp*sin(qc+qb)-LAv*mM*sin(qc+qb)-LAvcmz*mAv*sin(qc+qb)
+         -LMcmz*mM*sin(qc+qb)) + IAvyy*qb'' + IByy*qb'' + IMyy*qb'' + mAv*LAvcmx^2*qb''
+         + mAv*LAvcmz^2*qb'' + mAv*Lb^2*qb'' + mB*LBcmx^2*qb'' + mB*LBcmz^2*qb''
+         + mM*LAv^2*qb'' + mM*Lb^2*qb'' + mM*LMcmx^2*qb'' + mM*LMcmz^2*qb''
+         + mMotp*dMotM^2*qb'' + 1.5625*mMotp*Lb^2*qb'' + 2*LAv*LMcmz*mM*qb''
+         + 2*dMotM*Lb*mMotp*cos(qc)*qb'' + 2*LAv*Lb*mM*cos(qc)*qb'' + 2*LAvcmx*
+         Lb*mAv*sin(qc)*qb'' + 2*LAvcmz*Lb*mAv*cos(qc)*qb'' + 2*Lb*LMcmx*mM*sin
+         (qc)*qb'' + 2*Lb*LMcmz*mM*cos(qc)*qb'' - Tb
 
    (117) EQ[3] = Dot(S3.GetDynamics(Avo), Avy>)
--> (118) EQ[3] = g*(LAvcmx*mAv*cos(qb+qc)+LMcmx*mM*cos(qb+qc)-dMotM*mMotp*sin(
-         qb+qc)-LAv*mM*sin(qb+qc)-LAvcmz*mAv*sin(qb+qc)-LMcmz*mM*sin(qb+qc))*sin(qe)
-         + mM*LAv^2*sin(qb+qc)*cos(qb+qc)*qe'^2 + mMotp*dMotM^2*sin(qb+qc)*cos(
-         qb+qc)*qe'^2 + 2*LAv*LMcmz*mM*sin(qb+qc)*cos(qb+qc)*qe'^2 + LAvcmz*mAv
-         *sin(qb+qc)*(LAvcmx*sin(qb+qc)+LAvcmz*cos(qb+qc))*qe'^2 + (sin(qb+qc)*
-         (IAvxx*cos(qb+qc)+IAvzx*sin(qb+qc))-cos(qb+qc)*(IAvzx*cos(qb+qc)+IAvzz
-         *sin(qb+qc)))*qe'^2 + (sin(qb+qc)*(IMxx*cos(qb+qc)+IMzx*sin(qb+qc))-
-         cos(qb+qc)*(IMzx*cos(qb+qc)+IMzz*sin(qb+qc)))*qe'^2 + IAvxy*cos(qb+qc)*qe''
-         + IAvyz*sin(qb+qc)*qe'' + IMxy*cos(qb+qc)*qe'' + IMyz*sin(qb+qc)*qe''
-         + LAv*mM*sin(qb+qc)*(LMcmx*sin(qb+qc)*qe'^2+LMcmy*qe'') + LMcmz*mM*sin
-         (qb+qc)*((LMcmx*sin(qb+qc)+LMcmz*cos(qb+qc))*qe'^2+LMcmy*qe'') - Tc
-         - LAv*LMcmx*mM*cos(qb+qc)^2*qe'^2 - LAvcmx*mAv*cos(qb+qc)*(LAvcmx*sin(
-         qb+qc)+LAvcmz*cos(qb+qc))*qe'^2 - Lb*cos(qb)*(LAvcmx*mAv*cos(qb+qc)+
-         LMcmx*mM*cos(qb+qc)-dMotM*mMotp*sin(qb+qc)-LAv*mM*sin(qb+qc)-LAvcmz*
-         mAv*sin(qb+qc)-LMcmz*mM*sin(qb+qc))*qe'^2 - LMcmx*mM*cos(qb+qc)*((LMc
-         mx*sin(qb+qc)+LMcmz*cos(qb+qc))*qe'^2+LMcmy*qe'')
+-> (118) EQ[3] = g*sin(qe)*(LAvcmx*mAv*cos(qc+qb)+LMcmx*mM*cos(qc+qb)-dMotM*mM
+         otp*sin(qc+qb)-LAv*mM*sin(qc+qb)-LAvcmz*mAv*sin(qc+qb)-LMcmz*mM*sin(
+         qc+qb)) + IAvyy*qb'' + IMyy*qb'' + mAv*LAvcmx^2*qb'' + mAv*LAvcmz^2*qb''
+         + mM*LAv^2*qb'' + mM*LMcmx^2*qb'' + mM*LMcmz^2*qb'' + mMotp*dMotM^2*qb''
+         + 2*LAv*LMcmz*mM*qb'' - Tc - Lb*(LAvcmx*mAv*cos(qc)*qb'^2+LMcmx*mM*cos
+         (qc)*qb'^2-dMotM*mMotp*sin(qc)*qb'^2-LAv*mM*sin(qc)*qb'^2-LAvcmz*mAv*
+         sin(qc)*qb'^2-LMcmz*mM*sin(qc)*qb'^2-dMotM*mMotp*cos(qc)*qb''-LAv*mM*
+         cos(qc)*qb''-LAvcmx*mAv*sin(qc)*qb''-LAvcmz*mAv*cos(qc)*qb''-LMcmx*mM*
+         sin(qc)*qb''-LMcmz*mM*cos(qc)*qb'')
 
    (119) %----------------- Resolution -----------------%
-   (120) solve(Implicit,EQ, qe'', Tb, Tc)
--> (121) qe'' = (Te+dMotE*g*mMotg*sin(qe)+g*LBcmy*mB*sin(qe)+g*LMcmy*mM*sin(qe)
-         -1.75*g*Lb*mMotp*cos(qb)*cos(qe)-g*Lb*mAv*cos(qb)*cos(qe)-g*Lb*mM*cos(
-         qb)*cos(qe)-g*LBcmx*mB*sin(qb)*cos(qe)-g*LBcmz*mB*cos(qb)*cos(qe)-dMo
-         tM*g*mMotp*cos(qb+qc)*cos(qe)-g*LAv*mM*cos(qb+qc)*cos(qe)-g*LAvcmx*mAv
-         *sin(qb+qc)*cos(qe)-g*LAvcmz*mAv*cos(qb+qc)*cos(qe)-g*LMcmx*mM*sin(qb+
-         qc)*cos(qe)-g*LMcmz*mM*cos(qb+qc)*cos(qe))/(mB*LBcmy^2+mM*LMcmy^2+mMo
-         tg*dMotE^2+sin(qb)*(IBzz*sin(qb)+LBcmx*mB*(LBcmx*sin(qb)+2*LBcmz*cos(
-         qb)))+sin(qb+qc)*(IAvzz*sin(qb+qc)+2*IAvzx*cos(qb+qc)+LAvcmx*mAv*(2*
-         Lb*cos(qb)+LAvcmx*sin(qb+qc)+2*LAvcmz*cos(qb+qc)))+sin(qb+qc)*(IMzz*
-         sin(qb+qc)+2*IMzx*cos(qb+qc)+LMcmx*mM*(2*Lb*cos(qb)+LMcmx*sin(qb+qc)+2
-         *LAv*cos(qb+qc)))+cos(qb+qc)*(IMxx*cos(qb+qc)+LMcmz*mM*(2*Lb*cos(qb)+
-         LMcmz*cos(qb+qc)+2*LAv*cos(qb+qc)+2*LMcmx*sin(qb+qc)))+cos(qb+qc)*(IA
-         vxx*cos(qb+qc)+mM*LAv^2*cos(qb+qc)+dMotM*mMotp*(2*Lb*cos(qb)+dMotM*cos
-         (qb+qc))+LAvcmz*mAv*(2*Lb*cos(qb)+LAvcmz*cos(qb+qc)))+cos(qb)*(IBxx*
-         cos(qb)+2*IBzx*sin(qb)+mAv*Lb^2*cos(qb)+mB*LBcmz^2*cos(qb)+1.5625*mMo
-         tp*Lb^2*cos(qb)+Lb*mM*(Lb*cos(qb)+2*LAv*cos(qb+qc))))
+   (120) %solve(Implicit,EQ, qe'', Tb, Tc)
+   (121) solve(Implicit,EQ, qb'', Te, Tc)
+-> (122) qb'' = (dMotE*g*mMotg*sin(qe)+g*LBcmy*mB*sin(qe)+g*LMcmy*mM*sin(qe)+
+         Te+IAvxy*sin(qc+qb)*qb'^2+(IBxy-LBcmx*LBcmy*mB)*sin(qb)*qb'^2+(IMxy-
+         LMcmx*LMcmy*mM)*sin(qc+qb)*qb'^2-1.75*g*Lb*mMotp*cos(qe)*cos(qb)-g*Lb*
+         mAv*cos(qe)*cos(qb)-g*Lb*mM*cos(qe)*cos(qb)-g*LBcmx*mB*cos(qe)*sin(qb)
+         -g*LBcmz*mB*cos(qe)*cos(qb)-dMotM*g*mMotp*cos(qe)*cos(qc+qb)-g*LAv*mM*
+         cos(qe)*cos(qc+qb)-g*LAvcmx*mAv*cos(qe)*sin(qc+qb)-g*LAvcmz*mAv*cos(
+         qe)*cos(qc+qb)-g*LMcmx*mM*cos(qe)*sin(qc+qb)-g*LMcmz*mM*cos(qe)*cos(
+         qc+qb)-(IAvyz+LAv*LMcmy*mM)*cos(qc+qb)*qb'^2-(IMyz+LMcmy*LMcmz*mM)*cos
+         (qc+qb)*qb'^2-(IByz+Lb*LMcmy*mM+LBcmy*LBcmz*mB)*cos(qb)*qb'^2)/(IAvxy*
+         cos(qc+qb)+(IAvyz+LAv*LMcmy*mM)*sin(qc+qb)+(IBxy-LBcmx*LBcmy*mB)*cos(
+         qb)+(IMyz+LMcmy*LMcmz*mM)*sin(qc+qb)+(IMxy-LMcmx*LMcmy*mM)*cos(qc+qb)+
+         (IByz+Lb*LMcmy*mM+LBcmy*LBcmz*mB)*sin(qb))
 
--> (122) Tb = g*(LBcmx*mB*cos(qb)+LAvcmx*mAv*cos(qb+qc)+LMcmx*mM*cos(qb+qc)-1.75
-         *Lb*mMotp*sin(qb)-Lb*mAv*sin(qb)-Lb*mM*sin(qb)-LBcmz*mB*sin(qb)-dMotM*
-         mMotp*sin(qb+qc)-LAv*mM*sin(qb+qc)-LAvcmz*mAv*sin(qb+qc)-LMcmz*mM*sin(
-         qb+qc))*sin(qe) + mAv*Lb^2*sin(qb)*cos(qb)*qe'^2 + mM*Lb^2*sin(qb)*cos
-         (qb)*qe'^2 + 1.5625*mMotp*Lb^2*sin(qb)*cos(qb)*qe'^2 + dMotM*Lb*mMotp*
-         sin(qb)*cos(qb+qc)*qe'^2 + dMotM*Lb*mMotp*sin(qc)*cos(qb)^2*qe'^2
-         + LAv*Lb*mM*sin(qb)*cos(qb+qc)*qe'^2 + LAv*Lb*mM*sin(qc)*cos(qb)^2*qe'^2
-         + LAvcmz*Lb*mAv*sin(qc)*cos(qb)^2*qe'^2 + Lb*LMcmz*mM*sin(qc)*cos(qb)^2
-         *qe'^2 + dMotM*Lb*mMotp*sin(qb)*cos(qb)*cos(qc)*qe'^2 + LAv*Lb*mM*sin(
-         qb)*cos(qb)*cos(qc)*qe'^2 + LAvcmz*Lb*mAv*sin(qb)*cos(qb)*cos(qc)*qe'^2
-         + Lb*LMcmz*mM*sin(qb)*cos(qb)*cos(qc)*qe'^2 + LBcmz*mB*sin(qb)*(LBcmx*
-         sin(qb)+LBcmz*cos(qb))*qe'^2 + Lb*mAv*sin(qb)*(LAvcmx*sin(qb+qc)+LAvc
-         mz*cos(qb+qc))*qe'^2 + Lb*mM*sin(qb)*(LMcmx*sin(qb+qc)+LMcmz*cos(qb+
-         qc))*qe'^2 + (sin(qb)*(IBxx*cos(qb)+IBzx*sin(qb))-cos(qb)*(IBzx*cos(
-         qb)+IBzz*sin(qb)))*qe'^2 + (sin(qb+qc)*(IAvxx*cos(qb+qc)+IAvzx*sin(qb+
-         qc))-cos(qb+qc)*(IAvzx*cos(qb+qc)+IAvzz*sin(qb+qc)))*qe'^2 + (sin(qb+
-         qc)*(IMxx*cos(qb+qc)+IMzx*sin(qb+qc))-cos(qb+qc)*(IMzx*cos(qb+qc)+IMzz
-         *sin(qb+qc)))*qe'^2 + sin(qb+qc)*(mM*LAv^2*cos(qb+qc)+mMotp*dMotM^2*
-         cos(qb+qc)+2*LAv*LMcmx*mM*sin(qb+qc)+2*LAv*LMcmz*mM*cos(qb+qc)+LAvcmz*
-         mAv*(LAvcmx*sin(qb+qc)+LAvcmz*cos(qb+qc))+LMcmz*mM*(LMcmx*sin(qb+qc)+
-         LMcmz*cos(qb+qc)))*qe'^2 - LAv*LMcmx*mM*qe'^2 - LAvcmx*Lb*mAv*cos(qb)*
-         cos(qb+qc)*qe'^2 - Lb*LMcmx*mM*cos(qb)*cos(qb+qc)*qe'^2 - LBcmx*mB*cos
-         (qb)*(LBcmx*sin(qb)+LBcmz*cos(qb))*qe'^2 - LAvcmx*mAv*cos(qb+qc)*(LAv
-         cmx*sin(qb+qc)+LAvcmz*cos(qb+qc))*qe'^2 - LMcmx*mM*cos(qb+qc)*(LMcmx*
-         sin(qb+qc)+LMcmz*cos(qb+qc))*qe'^2 - (LBcmx*LBcmy*mB*cos(qb)+LMcmx*LM
-         cmy*mM*cos(qb+qc)-IBxy*cos(qb)-IByz*sin(qb)-IAvxy*cos(qb+qc)-IAvyz*sin
-         (qb+qc)-IMxy*cos(qb+qc)-IMyz*sin(qb+qc)-Lb*LMcmy*mM*sin(qb)-LBcmy*LBc
-         mz*mB*sin(qb)-LAv*LMcmy*mM*sin(qb+qc)-LMcmy*LMcmz*mM*sin(qb+qc))*qe''
+-> (123) Te = g*Lb*mAv*cos(qe)*cos(qb) + g*Lb*mM*cos(qe)*cos(qb) + g*LBcmx*mB*
+         cos(qe)*sin(qb) + g*LBcmz*mB*cos(qe)*cos(qb) + 1.75*g*Lb*mMotp*cos(qe)*cos(qb)
+         + dMotM*g*mMotp*cos(qe)*cos(qc+qb) + g*LAv*mM*cos(qe)*cos(qc+qb)
+         + g*LAvcmx*mAv*cos(qe)*sin(qc+qb) + g*LAvcmz*mAv*cos(qe)*cos(qc+qb)
+         + g*LMcmx*mM*cos(qe)*sin(qc+qb) + g*LMcmz*mM*cos(qe)*cos(qc+qb) + (IA
+         vxy*cos(qc+qb)+(IAvyz+LAv*LMcmy*mM)*sin(qc+qb)+(IBxy-LBcmx*LBcmy*mB)*
+         cos(qb)+(IMyz+LMcmy*LMcmz*mM)*sin(qc+qb)+(IMxy-LMcmx*LMcmy*mM)*cos(qc+
+         qb)+(IByz+Lb*LMcmy*mM+LBcmy*LBcmz*mB)*sin(qb))*(Tb-g*sin(qe)*(LBcmx*
+         mB*cos(qb)+LAvcmx*mAv*cos(qc+qb)+LMcmx*mM*cos(qc+qb)-1.75*Lb*mMotp*sin
+         (qb)-Lb*mAv*sin(qb)-Lb*mM*sin(qb)-LBcmz*mB*sin(qb)-dMotM*mMotp*sin(qc+
+         qb)-LAv*mM*sin(qc+qb)-LAvcmz*mAv*sin(qc+qb)-LMcmz*mM*sin(qc+qb)))/(IA
+         vyy+IByy+IMyy+mAv*LAvcmx^2+mAv*LAvcmz^2+mAv*Lb^2+mB*LBcmx^2+mB*LBcmz^2
+         +mM*LAv^2+mM*Lb^2+mM*LMcmx^2+mM*LMcmz^2+mMotp*dMotM^2+1.5625*mMotp*Lb^2
+         +2*LAv*LMcmz*mM+2*dMotM*Lb*mMotp*cos(qc)+2*LAv*Lb*mM*cos(qc)+2*LAvcmx*
+         Lb*mAv*sin(qc)+2*LAvcmz*Lb*mAv*cos(qc)+2*Lb*LMcmx*mM*sin(qc)+2*Lb*LMc
+         mz*mM*cos(qc)) + (IAvyz+LAv*LMcmy*mM)*cos(qc+qb)*qb'^2 + (IMyz+LMcmy*
+         LMcmz*mM)*cos(qc+qb)*qb'^2 + (IByz+Lb*LMcmy*mM+LBcmy*LBcmz*mB)*cos(qb)
+         *qb'^2 - dMotE*g*mMotg*sin(qe) - g*LBcmy*mB*sin(qe) - g*LMcmy*mM*sin(qe)
+         - IAvxy*sin(qc+qb)*qb'^2 - (IBxy-LBcmx*LBcmy*mB)*sin(qb)*qb'^2 - (IMxy
+         -LMcmx*LMcmy*mM)*sin(qc+qb)*qb'^2
 
--> (123) Tc = g*(LAvcmx*mAv*cos(qb+qc)+LMcmx*mM*cos(qb+qc)-dMotM*mMotp*sin(qb+
-         qc)-LAv*mM*sin(qb+qc)-LAvcmz*mAv*sin(qb+qc)-LMcmz*mM*sin(qb+qc))*sin(qe)
-         + (sin(qb+qc)*(IAvxx*cos(qb+qc)+IAvzx*sin(qb+qc))-cos(qb+qc)*(IAvzx*
-         cos(qb+qc)+IAvzz*sin(qb+qc)))*qe'^2 + (sin(qb+qc)*(IMxx*cos(qb+qc)+IM
-         zx*sin(qb+qc))-cos(qb+qc)*(IMzx*cos(qb+qc)+IMzz*sin(qb+qc)))*qe'^2
-         + sin(qb+qc)*(mM*LAv^2*cos(qb+qc)+mMotp*dMotM^2*cos(qb+qc)+2*LAv*LMcmx
-         *mM*sin(qb+qc)+2*LAv*LMcmz*mM*cos(qb+qc)+LAvcmz*mAv*(LAvcmx*sin(qb+qc)
-         +LAvcmz*cos(qb+qc))+LMcmz*mM*(LMcmx*sin(qb+qc)+LMcmz*cos(qb+qc)))*qe'^2
-         - LAv*LMcmx*mM*qe'^2 - LAvcmx*mAv*cos(qb+qc)*(LAvcmx*sin(qb+qc)+LAvcmz
-         *cos(qb+qc))*qe'^2 - LMcmx*mM*cos(qb+qc)*(LMcmx*sin(qb+qc)+LMcmz*cos(
-         qb+qc))*qe'^2 - Lb*cos(qb)*(LAvcmx*mAv*cos(qb+qc)+LMcmx*mM*cos(qb+qc)-
-         dMotM*mMotp*sin(qb+qc)-LAv*mM*sin(qb+qc)-LAvcmz*mAv*sin(qb+qc)-LMcmz*
-         mM*sin(qb+qc))*qe'^2 - (LMcmx*LMcmy*mM*cos(qb+qc)-IAvxy*cos(qb+qc)-IA
-         vyz*sin(qb+qc)-IMxy*cos(qb+qc)-IMyz*sin(qb+qc)-LAv*LMcmy*mM*sin(qb+qc)
-         -LMcmy*LMcmz*mM*sin(qb+qc))*qe''
+-> (124) Tc = g*sin(qe)*(LAvcmx*mAv*cos(qc+qb)+LMcmx*mM*cos(qc+qb)-dMotM*mMotp*
+         sin(qc+qb)-LAv*mM*sin(qc+qb)-LAvcmz*mAv*sin(qc+qb)-LMcmz*mM*sin(qc+qb))
+         + (IAvyy+IMyy+mAv*LAvcmx^2+mAv*LAvcmz^2+mM*LAv^2+mM*LMcmx^2+mM*LMcmz^2
+         +mMotp*dMotM^2+2*LAv*LMcmz*mM+Lb*(dMotM*mMotp*cos(qc)+LAv*mM*cos(qc)+
+         LAvcmx*mAv*sin(qc)+LAvcmz*mAv*cos(qc)+LMcmx*mM*sin(qc)+LMcmz*mM*cos(
+         qc)))*qb'' - Lb*(LAvcmx*mAv*cos(qc)+LMcmx*mM*cos(qc)-dMotM*mMotp*sin(
+         qc)-LAv*mM*sin(qc)-LAvcmz*mAv*sin(qc)-LMcmz*mM*sin(qc))*qb'^2
 
-   (124) %solve(Implicit,EQ, qb'', Te, Tc)
-   (125) Input  qe = 0 deg,      qe' = 0 rad/sec
-   (126) %Input  qb = 90 deg,      qb' = 0 rad/sec
-   (127) Input  tFinal = 0.42 sec,  tStep = 0.01 sec,  absError = 1.0E-07,  relError = 1.0E-07
-   (128) OutputPlot  t sec, qe deg, qe' deg/s, qe'' deg/s^2,  Tb N*m, Tc N*m
-   (129) %OutputPlot  t sec, Tb N*m, Tc N*m
-   (130) %OutputPlot  t sec, qb deg, qb' deg/s, qb'' deg/s^2,  Te N*m, Tc N*m
-   (131) %OutputPlot  t sec, Te N*m, Tc N*m
-   (132) ODE() 
+   (125) systemPower = System.GetPower()
+-> (126) systemPower = (Tb+1.75*g*Lb*mMotp*sin(qe)*sin(qb)+dMotM*g*mMotp*sin(
+         qe)*sin(qc+qb)-g*mB*sin(qe)*(LBcmx*cos(qb)-LBcmz*sin(qb))-g*mAv*sin(
+         qe)*(LAvcmx*cos(qc+qb)-Lb*sin(qb)-LAvcmz*sin(qc+qb))-g*mM*sin(qe)*(LM
+         cmx*cos(qc+qb)-Lb*sin(qb)-LAv*sin(qc+qb)-LMcmz*sin(qc+qb)))*qb'
 
-   (133) quit
+   (127) Variable workDone' = systemPower
+-> (128) workDone' = systemPower
+
+   (129) Input  workDone = 0 Joules
+   (130) %Input  qe = 0 deg,      qe' = 0 rad/sec
+   (131) Input  qb = 90 deg,      qb' = 0 rad/sec
+   (132) Input  tFinal = 0.42 sec,  tStep = 0.01 sec,  absError = 1.0E-07,  relError = 1.0E-07
+   (133) %OutputPlot  t sec, qe deg, qe' deg/s, qe'' deg/s^2,  Tb N*m, Tc N*m
+   (134) %OutputPlot  t sec, Tb N*m, Tc N*m
+   (135) %OutputPlot  t sec, qb deg, qb' deg/s, qb'' deg/s^2,  Te N*m, Tc N*m, systemPower
+   (136) OutputPlot  t sec, systemPower
+   (137) %OutputPlot  t sec, Te N*m, Tc N*m
+   (138) ODE() 
+
+   (139) quit

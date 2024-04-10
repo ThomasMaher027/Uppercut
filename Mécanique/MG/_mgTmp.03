@@ -21,10 +21,10 @@ Constant LMcmz = 0.03170 m, LMcmy = 0.001 m, LMcmx = 0.0002 m
 Constant dMotM = 0.040 m
 Constant dMotE = 0.040 m
 Constant qc = 0 deg
-Variable qe'', Tb, Tc
-Constant qb = 0 deg, Te = 2.95 N*m
-%Variable qb'', Te, Tc
-%Constant qe = -90 deg, Tb = 2.95 N*m
+%Variable qe'', Tb, Tc
+%Constant qb = 0 deg, Te = 2.95 N*m
+Variable qb'', Te, Tc
+Constant qe = -90 deg, Tb = 2.95 N*m
 M.SetMass(mM)
 Av.SetMass(mAv)
 B.SetMass(mB)
@@ -57,14 +57,18 @@ EQ[1] = Dot(S1.GetDynamics(Eo), nx>)
 EQ[2] = Dot(S2.GetDynamics(Bo), ey>)
 EQ[3] = Dot(S3.GetDynamics(Avo), Avy>)
 %----------------- Resolution -----------------%
-solve(Implicit,EQ, qe'', Tb, Tc)
-%solve(Implicit,EQ, qb'', Te, Tc)
-Input  qe = 0 deg,      qe' = 0 rad/sec
-%Input  qb = 90 deg,      qb' = 0 rad/sec
+%solve(Implicit,EQ, qe'', Tb, Tc)
+solve(Implicit,EQ, qb'', Te, Tc)
+systemPower = System.GetPower()
+Variable workDone' = systemPower
+Input  workDone = 0 Joules
+%Input  qe = 0 deg,      qe' = 0 rad/sec
+Input  qb = 90 deg,      qb' = 0 rad/sec
 Input  tFinal = 0.42 sec,  tStep = 0.01 sec,  absError = 1.0E-07,  relError = 1.0E-07
-OutputPlot  t sec, qe deg, qe' deg/s, qe'' deg/s^2,  Tb N*m, Tc N*m
+%OutputPlot  t sec, qe deg, qe' deg/s, qe'' deg/s^2,  Tb N*m, Tc N*m
 %OutputPlot  t sec, Tb N*m, Tc N*m
-%OutputPlot  t sec, qb deg, qb' deg/s, qb'' deg/s^2,  Te N*m, Tc N*m
+%OutputPlot  t sec, qb deg, qb' deg/s, qb'' deg/s^2,  Te N*m, Tc N*m, systemPower
+OutputPlot  t sec, systemPower
 %OutputPlot  t sec, Te N*m, Tc N*m
 ODE() 
 quit
