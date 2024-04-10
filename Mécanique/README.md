@@ -64,6 +64,10 @@ Après, il faut passer le fil de pêche dans les doigts et l'attacher au bout du
 	
 Ensuite il faut connecter les doigts à la paume de la même façon que les segments de doigt se connectent ensemble.
 
+![Figure 4 : Modèle 3D de la main](https://github.com/ThomasMaher027/Uppercut/blob/main/Mécanique/figure_4.png)
+
+*Figure 4 : Modèle 3D de la main*
+
 ## ASSEMBLAGE COMPLET:
 	
 Bicep et épaule : Il faut fixer le biceps à l'épaule à l'aide de 4 vis M4 25LG, 4 écrous et 4 rondelles.
