@@ -30,8 +30,7 @@ Il faut d'abord imprimer les éléments suivant :
 Il faut ensuite se procurer les éléments suivant :
 - **2x** shaft de longueur 100mm et 50mm
 - **1x** moteur dynamixel XL,H-430
-- **1x** [32T, 0.250" (1/4) Bore 32P Shaft Mount Pinion Gear](https://www.servocity.com/32t-0-250-1-4-bore-32p-shaft-mount-pinion-gear/)
-- **1x** [16T, 0.250" (1/4) Bore 32P Shaft Mount Pinion Gear](https://www.servocity.com/16t-0-250-1-4-bore-32p-shaft-mount-pinion-gear/)
+- **2x** [32T, 0.250" (1/4) Bore 32P Shaft Mount Pinion Gear](https://www.servocity.com/32t-0-250-1-4-bore-32p-shaft-mount-pinion-gear/)
 
 Pour faire l'assemblage, il faut d'abord fixer les deux Bicep_base et Fixation_moteur à l'aide de la quincaillerie. Ensuite, il faut insérer la Fixation du moteur de la même orientation que la figure 2.
 	
@@ -64,6 +63,10 @@ Pour assembler la main il faut faire 4 doigts et 1 pouce. Les doigt sont fait en
 Après, il faut passer le fil de pêche dans les doigts et l'attacher au bout du doigt. Il peut aussi être intéressant d'utiliser de la colle.
 	
 Ensuite il faut connecter les doigts à la paume de la même façon que les segments de doigt se connectent ensemble.
+
+![Figure 4 : Modèle 3D de la main](https://github.com/ThomasMaher027/Uppercut/blob/main/Mécanique/figure_4.png)
+
+*Figure 4 : Modèle 3D de la main*
 
 ## ASSEMBLAGE COMPLET:
 	
