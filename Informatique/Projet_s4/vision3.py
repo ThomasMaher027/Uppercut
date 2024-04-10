@@ -58,12 +58,15 @@ class RepeatedTimer(object):
         self._timer.cancel()
         self.is_running = False
 
+<<<<<<< Updated upstream
 
 
 
 """
 le frame utiliser pour analyser le corps
 """
+=======
+>>>>>>> Stashed changes
 mp_drawing = mp.solutions.drawing_utils
 mp_holistic = mp.solutions.holistic
 
@@ -216,6 +219,7 @@ def main(a, b, c, d, e, f, g, h, i, j):
         
     return stage_m
 
+<<<<<<< Updated upstream
 
 dataAngle = filtreDonnees.dataAngle(fs, 2, 5, 4)
 
@@ -224,6 +228,11 @@ ouverture de la caméra avec le modèle avec son modèle (holistic)
 """
     
 message = RepeatedTimer(ts, communication)
+=======
+dataAngle = real_time_peak_detection.data(10)
+
+message = RepeatedTimer(0.05, communication)
+>>>>>>> Stashed changes
 try:
     with (mp_holistic.Holistic(min_detection_confidence=0.9, min_tracking_confidence=0.9) as holistic):
         while cap.isOpened():
@@ -314,6 +323,7 @@ try:
                 angleB = calculate_angle(hip, shoulder, elbow)
                 angleC = calculate_angle(hipB, shoulderB, elbowB)
                 angleD = calculate_angle(shoulderC, shoulder, elbow)
+<<<<<<< Updated upstream
                 if (pres_t-last_t >=5):
                     pos_main = main(index, index2, majeur, majeur2, annulaire, annulaire2, auriculaire, auriculaire2, poignet, pouce)
                     last_t = pres_t
@@ -324,6 +334,10 @@ try:
                 """
                 permet d'afficher l'angle du coude sur le coude
                 """
+=======
+                pos_main = main(index, index2, majeur, majeur2, annulaire, annulaire2, auriculaire, auriculaire2, poignet, pouce)
+
+>>>>>>> Stashed changes
                 cv2.putText(image, str(angleA),
                             tuple(np.multiply(elbow,[640, 480]).astype(int)),
                                   cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA, )
@@ -340,7 +354,45 @@ try:
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA, )
     
                 ret = "rien"
+<<<<<<< Updated upstream
 
+=======
+                """
+                # curl counter logic
+                if angle > 160 and angleB < 10:
+                    stage = "down"
+                if angle < 30 and stage == "down" and angleB < 20:
+                    stage = "up"
+                    counter += 1
+                    #ret = write_read("1")
+
+                #Shoulder counter logic
+                if angleC < 50:
+                    stageC = "down"
+                if 80 < angleC < 100 and stageC == "down" and angleD < 170 and stageD != "up":
+                    stageC = "up"
+                    counterC += 1
+                    #ret = write_read("3")
+    
+                # shoulder counter logic
+                if angleB > 150:
+                    stageB = "down"
+                if angleB < 30 and stageB == "down" and angleC < 150 and stageC != "up":
+                    stageB = "up"
+                    counterB += 1
+                    #ret = write_read("2")
+    
+                #Shoulder counter logic
+                if angleD < 110:
+                    stageD = "down"
+                if angleD > 170 and stageD == "down" and stageC != "up":
+                    stageD = "up"
+                    counterD += 1
+                    #ret = write_read("4")
+                if ret != "rien":
+                    print(ret)
+                """
+>>>>>>> Stashed changes
                 if pos_main == 1:
                     stage_main = "down"
                 if pos_main == 0:
@@ -348,9 +400,71 @@ try:
     
             except:
                 pass
+<<<<<<< Updated upstream
             
 
             cv2.putText(image, stage_main, (450, 30),
+=======
+           
+            """cv2.rectangle(image, (0, 0), (112, 72), (245, 117, 16), -1)
+    
+            cv2.putText(image,'REPS', (15, 12),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1,cv2.LINE_AA)
+    
+            cv2.putText(image, str(counter), (10, 60),
+                        cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 2,cv2.LINE_AA)
+                        
+            a mettre en commentaire{
+            cv2.putText(image,'STAGE', (65, 12),                                    
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1,cv2.LINE_AA)  
+    
+            cv2.putText(image, stage, (60, 60),
+                        cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 2,cv2.LINE_AA)           
+            }
+    
+            cv2.rectangle(image, (112, 0), (224, 72), (30, 240, 16), -1)
+    
+            cv2.putText(image,'REPS', (120, 12),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1,cv2.LINE_AA)
+    
+            cv2.putText(image, str(counterB), (120, 60),
+                        cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 2,cv2.LINE_AA)
+            a mettre en commentaire{
+            cv2.putText(image,'STAGE', (310, 12),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1,cv2.LINE_AA)
+    
+            cv2.putText(image, stageB, (290, 60),
+                        cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 2,cv2.LINE_AA)
+            }
+    
+            cv2.rectangle(image, (224, 0), (336, 72), (30, 16, 240), -1)
+    
+            cv2.putText(image, 'REPS', (240, 12),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1,cv2.LINE_AA)
+    
+            cv2.putText(image, str(counterC), (240, 60),
+                        cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 2,cv2.LINE_AA)
+            a mettre en commentaire{
+            cv2.putText(image,'STAGE', (530, 12),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1,cv2.LINE_AA)
+    
+            cv2.putText(image, stageC, (530, 60),
+                        cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 2,cv2.LINE_AA)
+            }
+    
+            cv2.rectangle(image, (336, 0), (448, 72), (100, 100, 100), -1)
+    
+            cv2.putText(image,'REPS', (350, 12),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1, cv2.LINE_AA)
+    
+            cv2.putText(image, str(counterD), (350, 60),
+                        cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 2, cv2.LINE_AA)
+    
+            cv2.putText(image,'STAGE', (450, 12),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1, cv2.LINE_AA)
+            """
+            cv2.putText(image, stage_main, (450, 60),
+>>>>>>> Stashed changes
                         cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 2, cv2.LINE_AA)
     
     
@@ -364,6 +478,7 @@ try:
                                         mp_drawing.DrawingSpec(color=(255, 0, 0), thickness=2, circle_radius=2)
                                       )
 
+<<<<<<< Updated upstream
             cv2.imshow('Mediapipe Feed', image)
     
             """
@@ -375,6 +490,16 @@ try:
         """
         ferme la caméra et détruite la fenêtre de la caméra
         """
+=======
+            """wait(0.5)
+            ret = write_read(f"<{angle}, {angleB}, {angleC}, {angleD}>")
+            """
+            cv2.imshow('Mediapipe Feed', image)
+
+            if cv2.waitKey(10) & 0xFF == ord('q'):
+                break
+
+>>>>>>> Stashed changes
         cap.release()
         cv2.destroyAllWindows()
              
