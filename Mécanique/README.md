@@ -48,6 +48,7 @@ Pour faire l'avant-bras, il faut simplement fixer le rouleau_doigts au moteur et
 Liste de pièces:
 - **2x** [Avant_Bras.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Avant_Bras)
 - **1x** [Support_Avant_Bras_moteur.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Support)
+- **1x** [Support_files_main.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Avant_Bras)
 - **1x** moteur dynamixel XL,H-430
 - **1x** rouleau_doigts
 
