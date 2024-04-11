@@ -6,11 +6,11 @@ Il faut d'abord imprimer les éléments suivant :
 - **1x** [0001.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Épaule_test_2)
 - **1x** [0002.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Épaule_test_2)
 - **1x** [0003.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Épaule_test_2)
+- **2x** [Adapteur_boost.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Coude_VF)
 
 Il faut ensuite se procurer les éléments suivant :
 - **2x** shaft 1/4 de longueur 180mm et 135mm
 - **2x** [moteur dynamixel XM430-W350-T](https://emanual.robotis.com/docs/en/dxl/x/xm430-w350/)
-- **2x** Adapteur_boost du moteur au shaft
 	
 Pour faire l'assemblage, il faut fixer 0001 et 0002 à l'aide d'un shaft. Ensuite, il faut visser l'adaptateur à un moteur et positionner celui-ci du côté de son support. Il ne reste qu'à visser le moteur à sa base. 
 
