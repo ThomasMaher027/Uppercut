@@ -70,7 +70,7 @@ Il faut d'abord imprimer les éléments suivant :
 - **1x** [paume_V3.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Paume)
 
 Il faut ensuite se procurer l'élément suivant :
-- **1x** bobine de PLA 2,85mm de diamètre
+- **1x** Environ 30 cm de PLA 2,85mm de diamètre pour assembler les doigts
 	
 Pour assembler la main il faut faire 4 doigts et 1 pouce. Les doigt sont fait en connectant 2 Doigt1 et 1 Doigt2. Le pouce est fait en connectant 1 Doigt1 et 1 Doigt2. Pour faire la connexion il faut passer un bout de filament PLA dans les connecteurs rond puis faire fondre les bouts pour le garder en place.
 	
