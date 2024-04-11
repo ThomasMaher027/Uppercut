@@ -4,7 +4,7 @@
 #include <Dynamixel2Arduino.h>
 
 void limitePosition(float *cibles);
-float calculVitesse(int moteur, float cibles);
+// float calculVitesse(int moteur, float cibles);
 void defVitesseAng(Dynamixel2Arduino dx1, float *cibles, int ind);
 void defPosAng(Dynamixel2Arduino dx1, float *cibles, int ind);
 void changeAngle(float* cibles);

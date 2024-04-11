@@ -36,7 +36,7 @@ using namespace ControlTableItem;
 const int nb_moteur = 4;
 const uint8_t DXL_ID[nb_moteur] = {1, 20, 3, 4};
 float mgs_donnees[nb_moteur] = {0,0,0,0};
-float home_pos[nb_moteur] = {121.0, 255.0, 283.0, 35.0};
+float home_pos[nb_moteur] = {121.0, 255.0, 283.0, 230.0};
 int combinaison[5] = {2, 3, 4,3, 5}; // Pour effectuer la séquence de mouvement, entrer 6 dans le port série
 
 
@@ -65,7 +65,7 @@ void setup() {
 
 
 // fonction loop() pour les mouvements préenregistés
-
+/*
 void loop() {
   while (!Serial.available()) {
     //int chosen_command = 0;
@@ -84,7 +84,7 @@ void loop() {
     
     envoiCommande(dxl,chosen_command);
   }
-}
+}*/
 
 
 // fonction loop() pour le temps réel

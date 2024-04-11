@@ -11,7 +11,7 @@ import time
 from threading import Timer
 import filtreDonnees
 import matplotlib.pyplot as plt
-from scipy import signal 
+
 
 
 """
@@ -70,7 +70,7 @@ mp_holistic = mp.solutions.holistic
 """
 communication par port serie
 """
-#arduino = serial.Serial(port='COM5',   baudrate=115200, timeout=.1) # TODO
+arduino = serial.Serial(port='COM5',   baudrate=115200, timeout=.1) # TODO
 
 # VIDEO FEED
 cap = cv2.VideoCapture(0)
@@ -122,7 +122,7 @@ def write_read(x): # TODO
     -------
 
     """
-    #arduino.write(bytes(x,   'utf-8'))
+    arduino.write(bytes(x,   'utf-8'))
     #time.sleep(0.05)
     #data = arduino.readline()
     #print(data)
@@ -140,10 +140,12 @@ def communication():
     if((angleC!=defVal) and (angleD!=defVal) and (angleA!=defVal)):
         dataAngle.setData(IN1=angleC, IN2=angleD, IN3=angleA, IN4=pos_main)
         dataAngle.filtreRII()
+        dataAngle.moy()
         angle_moteur_0 = dataAngle.filt_RII['moteur_0'][-1]
         angle_moteur_1 = dataAngle.filt_RII['moteur_1'][-1]
         angle_moteur_2 = dataAngle.filt_RII['moteur_2'][-1]
-        write_read(f"<{angle_moteur_0}, {angle_moteur_1}, {angle_moteur_2}, {pos_main}>")
+        angle_moteur_3 = dataAngle.val_moy['moteur_3'][-1]
+        write_read(f"<{angle_moteur_0}, {angle_moteur_1}, {angle_moteur_2}, {angle_moteur_3}>")
         
         #print(f"a' IN : <{dataAngle.moy1}, {dataAngle.moy2}, {dataAngle.moy3}, {pos_main}>")
 
@@ -218,13 +220,13 @@ def main(a, b, c, d, e, f, g, h, i, j):
 
 
 
-dataAngle = filtreDonnees.dataAngle(fs, 2, 5, 4)
+dataAngle = filtreDonnees.dataAngle(fs, 2, 10, 4)
 
 """
 ouverture de la caméra avec le modèle avec son modèle (holistic)
 """
 
-message = RepeatedTimer(0.05, communication)
+message = RepeatedTimer(ts, communication)
 
 try:
     with (mp_holistic.Holistic(min_detection_confidence=0.9, min_tracking_confidence=0.9) as holistic):
@@ -317,7 +319,7 @@ try:
                 angleC = calculate_angle(hipB, shoulderB, elbowB)
                 angleD = calculate_angle(shoulderC, shoulder, elbow)
 
-                if (pres_t-last_t >=1):
+                if (pres_t-last_t >=0):
                     pos_main = main(index, index2, majeur, majeur2, annulaire, annulaire2, auriculaire, auriculaire2, poignet, pouce)
                     last_t = pres_t
                 pres_t = time.time()
@@ -486,24 +488,24 @@ try:
 finally:
   message.stop() 
   
-  
-  dataAngle.graph(data1=dataAngle.val_angles["moteur_2"], data2=dataAngle.filt_RII["moteur_2"], leg1="Angles calculés", leg2="Filtre RII", xlabel = "Temps (s)", ylabel = "Angle (deg)", title=f"Angle du coude (moteur3)\nFe={fs}Hz, Ordre=2")
-  """dataAngle.graph(data1=dataAngle.data2, data2=dataAngle.filt2, data3=dataAngle.filt_IIR2, leg1="Angles calculés", leg2="Moyenne mobile", leg3='Angles filtrés', xlabel = "Temps (s)", ylabel = "Angle (deg)", title=f"Angle de l'épaule (moteur2)\nFe={fs}Hz, Ordre=10")
-  dataAngle.graph(data1=dataAngle.data3, data2=dataAngle.filt3, data3=dataAngle.filt_IIR3, leg1="Angles calculés", leg2="Moyenne mobile", leg3='Angles filtrés', xlabel = "Temps (s)", ylabel = "Angle (deg)", title=f"Angle du coude (moteur3)\nFe={fs}Hz, Ordre=")
   """
+  dataAngle.graph(data1=dataAngle.val_angles["moteur_2"], data2=dataAngle.filt_RII["moteur_2"], leg1="Angles calculés", leg2="Filtre RII", xlabel = "Temps (s)", ylabel = "Angle (deg)", title=f"Angle du coude (moteur3)\nFe={fs}Hz, Ordre=2")
+  dataAngle.graph(data1=dataAngle.data2, data2=dataAngle.filt2, data3=dataAngle.filt_IIR2, leg1="Angles calculés", leg2="Moyenne mobile", leg3='Angles filtrés', xlabel = "Temps (s)", ylabel = "Angle (deg)", title=f"Angle de l'épaule (moteur2)\nFe={fs}Hz, Ordre=10")
+  dataAngle.graph(data1=dataAngle.data3, data2=dataAngle.filt3, data3=dataAngle.filt_IIR3, leg1="Angles calculés", leg2="Moyenne mobile", leg3='Angles filtrés', xlabel = "Temps (s)", ylabel = "Angle (deg)", title=f"Angle du coude (moteur3)\nFe={fs}Hz, Ordre=")
+  
   
   plt.psd(dataAngle.val_angles["moteur_2"],Fs=fs,NFFT=len(dataAngle.val_angles["moteur_2"]))
   plt.psd(dataAngle.filt_RII["moteur_2"],Fs=fs,NFFT=len(dataAngle.filt_RII["moteur_2"]))
   plt.legend(["Angles calculés","Filtre RII"])
   plt.title("Densité spectrale des angles du biceps")
   plt.show()
-  """
+  
   plt.psd(dataAngle.data2,Fs=fs,NFFT=len(dataAngle.data2))
   plt.psd(dataAngle.filt2,Fs=fs,NFFT=len(dataAngle.filt2))
   plt.show()
   plt.psd(dataAngle.data3,Fs=fs,NFFT=len(dataAngle.data3))
   plt.psd(dataAngle.filt3,Fs=fs,NFFT=len(dataAngle.filt3))
-  plt.show()"""
+  plt.show()
   
   
   w, h = signal.freqz(dataAngle.b_RII,dataAngle.a_RII)
@@ -514,3 +516,4 @@ finally:
   ax1.set_ylabel('Amplitude [dB]')
   ax1.set_xlabel('Frequency [rad/sample]')
   plt.show()
+  """

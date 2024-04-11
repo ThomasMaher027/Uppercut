@@ -2,9 +2,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import csv
-#from functions import clamp, arduinoMap
 from scipy import signal 
-#import detectionHauteFreq
+
 
 class dataAngle():
     def __init__(self, Fe, Fc, delai, NB_moteur):
@@ -102,13 +101,14 @@ class dataAngle():
         None.
 
         """
-        for ii in range(self.nb_moteur-1):
-            if len(self.val_angles[f"moteur_{ii}"]) >= self.lag: # S'il y a assez de données enregistrées, on peut calculer la moyenne. Sinon, on passe la dernière mesure d'angle
-                moy = int(np.mean(self.val_angles[f"moteur_{ii}"][-self.lag:])) 
-            else:
-                moy = int(self.val_angles[f"moteur_{ii}"][-1])
-                
-            self.val_moy[f"moteur_{ii}"].append(moy)
+       # for ii in range(self.nb_moteur-1):
+        ii = 3
+        if len(self.val_angles[f"moteur_{ii}"]) >= self.lag: # S'il y a assez de données enregistrées, on peut calculer la moyenne. Sinon, on passe la dernière mesure d'angle
+            moy = (np.mean(self.val_angles[f"moteur_{ii}"][-self.lag:])) 
+        else:
+            moy = (self.val_angles[f"moteur_{ii}"][-1])
+            
+        self.val_moy[f"moteur_{ii}"].append(round(moy))
 
 
     """============================================================================"""   
