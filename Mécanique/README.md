@@ -61,7 +61,7 @@ Il faut ensuite se procurer l'élément suivant :
 
 *Figure 3 : Modèle 3D de l'avant-bras*
 
-## ASSEMBLAGE DE LA MAIN:
+## ASSEMBLAGE DE LA MAINMAIN
 Il faut d'abord imprimer les éléments suivant :
 - **9x** [Doigt1.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/doigt)
     - À imprimer avec plus de précison, par exemple : Fine (0.1mm), 20% infill.
@@ -82,7 +82,7 @@ Ensuite il faut connecter les doigts à la paume de la même façon que les segm
 
 *Figure 4 : Modèle 3D de la main*
 
-## ASSEMBLAGE COMPLET:
+## ASSEMBLAGE COMPLET
 	
 Il faut fixer le biceps à l'épaule à l'aide de 4 vis M4 25LG, 4 écrous et 4 rondelles. Il faut ensuite fixer le bras à sa base à l'aide de 4 vis M6 50LG, 4 écrous et 4 rondelles et de même pour la main, en s'assurant que les fils de pêche puisse bien s'enrouler autour de la poulie de l'avant-bras et passer dans les trous correspondant. Il faut les enrouler de manière opposé afin qu'il ouvre et/ou ferme la main.
 
