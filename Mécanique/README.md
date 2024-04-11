@@ -62,7 +62,9 @@ Liste de pièces:
 ## ASSEMBLAGE DE LA MAIN:
 Pour faire la main il faut avoir:
 - **9x** [Doigt1.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/doigt)
+    - À imprimer avec plus de précison, par exemple : Fine (0.1mm), 20% infill.
 - **5x** [Doigt2.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/doigt)
+    - À imprimer avec plus de précison, par exemple : Fine (0.1mm), 20% infill.
 - **1x** [paume_V3.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Paume)
 - **1x** bobine de PLA 2,85mm de diamètre
 	
