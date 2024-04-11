@@ -10,3 +10,14 @@ Voici un guide de l'organisation des dossiers :
 - Le dossier [*Électrique*](https://github.com/ThomasMaher027/Uppercut/tree/main/Électrique) contient ...
 - Le dossier [*informatique*](https://github.com/ThomasMaher027/Uppercut/tree/main/Informatique) contient le code Python pour analyser l'information de la caméra.
 - Le dossier [*Mécanique*](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique) contient l'analyse du système et des CAD du robot.
+
+
+
+
+
+https://github.com/ThomasMaher027/Uppercut/assets/114596560/83d8d1ad-10cf-46f6-bbb1-c36d5d543623
+
+
+
+https://github.com/ThomasMaher027/Uppercut/assets/114596560/a4b2e40c-ad0c-4941-9826-d2be24af7056
+
