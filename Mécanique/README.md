@@ -1,5 +1,5 @@
 # ASSEMBLAGE MÉCANIQUE
-
+Toutes les impressions sont faite à 15% infill en fast (0,2mm).
 ## ASSEMBLAGE DE L'ÉPAULE
 
 Il faut d'abord imprimer les éléments suivant :
@@ -7,6 +7,7 @@ Il faut d'abord imprimer les éléments suivant :
 - **1x** [0002.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Épaule_test_2)
 - **1x** [0003.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Épaule_test_2)
 - **2x** [Adapteur_boost.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Coude_VF)
+    - À imprimer avec plus de précison, par exemple : Fine, 80% infill.
 
 Il faut ensuite se procurer les éléments suivant :
 - **2x** [Shaft 1/4 de longueur 180mm et 135mm](https://ca.robotshop.com/products/actobotics-12x1-4-precision-d-shaft)
@@ -26,6 +27,7 @@ Il faut d'abord imprimer les éléments suivant :
 - **1x** [Fixation_moteur.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Coude_VF)
 - **1x** [Fixation_bicep.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Coude_VF)
 - **1x** [Adaptateur.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Coude_VF)
+    - À imprimer avec plus de précison, par exemple : Fine, 80% infill.
 
 Il faut ensuite se procurer les éléments suivant :
 - **2x** [Shaft 1/4 de longueur 100mm et 50mm](https://ca.robotshop.com/products/actobotics-12x1-4-precision-d-shaft)
