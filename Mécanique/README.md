@@ -77,7 +77,7 @@ Ensuite il faut connecter les doigts à la paume de la même façon que les segm
 
 ## ASSEMBLAGE COMPLET:
 	
-Bicep et épaule : Il faut fixer le biceps à l'épaule à l'aide de 4 vis M4 25LG, 4 écrous et 4 rondelles. Il faut ensuite fixer le bras à sa base à l'aide de 4 vis M6 50LG, 4 écrous et 4 rondelles et de même pour la main, en s'assurant que les fils de pêche puisse bien s'enrouler autour de la poulie de l'avant-bras et passer dans les trous correspondant. Il faut les enrouler de manière opposé afin qu'il ouvre et/ou ferme la main.
+Il faut fixer le biceps à l'épaule à l'aide de 4 vis M4 25LG, 4 écrous et 4 rondelles. Il faut ensuite fixer le bras à sa base à l'aide de 4 vis M6 50LG, 4 écrous et 4 rondelles et de même pour la main, en s'assurant que les fils de pêche puisse bien s'enrouler autour de la poulie de l'avant-bras et passer dans les trous correspondant. Il faut les enrouler de manière opposé afin qu'il ouvre et/ou ferme la main.
 
 ![Figure 5 : Modèle 3D du bras entier](https://github.com/ThomasMaher027/Uppercut/blob/main/Mécanique/figure_5.png)
 
