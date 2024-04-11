@@ -78,7 +78,7 @@ Après, il faut passer le fil de pêche dans les doigts et l'attacher au bout du
 	
 Ensuite il faut connecter les doigts à la paume de la même façon que les segments de doigt se connectent ensemble.
 
-![Figure 4 : Modèle 3D de la main](https://github.com/ThomasMaher027/Uppercut/blob/main/Mécanique/figure_4.png)
+![Figure 4 : Modèle 3D de la main](https://github.com/ThomasMaher027/Uppercut/blob/main/Mécanique/figure_)
 
 *Figure 4 : Modèle 3D de la main*
 
