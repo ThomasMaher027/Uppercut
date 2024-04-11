@@ -1,5 +1,5 @@
 # ASSEMBLAGE MÉCANIQUE
-Toutes les impressions sont faite à 15% infill en fast (0,2mm).
+Toutes les impressions sont faites à 15% infill en fast (0,2mm).
 ## ASSEMBLAGE DE L'ÉPAULE
 
 Il faut d'abord imprimer les éléments suivant :
@@ -47,12 +47,14 @@ Enfin, il faut insérer le deuxième shaft comme sur la figure 2, y ajouter l'en
 ## ASSEMBLAGE DE L'AVANT-BRAS
 Pour faire l'avant-bras, il faut simplement fixer le rouleau_doigts au moteur et fixer le moteur à son support. Ensuite il faut assembler les 2 pièces d'Avant_Bras sur les côtés et les fixer au biceps avec le shaft ainsi qu'à la main à l'autre extrémité.
 	
-Liste de pièces:
+Il faut d'abord imprimer les éléments suivant :
 - **2x** [Avant_Bras.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Avant_Bras)
 - **1x** [Support_Avant_Bras_moteur.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Support)
 - **1x** [Support_files_main.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Avant_Bras)
 - **1x** [Poulie_1.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Avant_Bras)
 - **1x** [Poulie_2.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Avant_Bras)
+
+Il faut ensuite se procurer l'élément suivant :
 - **1x** [moteur dynamixel XL430-W250-T](https://emanual.robotis.com/docs/en/dxl/x/xl430-w250/)
 
 ![Figure 3 : Modèle 3D de l'avant-bras](https://github.com/ThomasMaher027/Uppercut/blob/main/Mécanique/figure_3.png)
@@ -60,12 +62,14 @@ Liste de pièces:
 *Figure 3 : Modèle 3D de l'avant-bras*
 
 ## ASSEMBLAGE DE LA MAIN:
-Pour faire la main il faut avoir:
+Il faut d'abord imprimer les éléments suivant :
 - **9x** [Doigt1.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/doigt)
     - À imprimer avec plus de précison, par exemple : Fine (0.1mm), 20% infill.
 - **5x** [Doigt2.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/doigt)
     - À imprimer avec plus de précison, par exemple : Fine (0.1mm), 20% infill.
 - **1x** [paume_V3.SLDPRT](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Paume)
+
+Il faut ensuite se procurer l'élément suivant :
 - **1x** bobine de PLA 2,85mm de diamètre
 	
 Pour assembler la main il faut faire 4 doigts et 1 pouce. Les doigt sont fait en connectant 2 Doigt1 et 1 Doigt2. Le pouce est fait en connectant 1 Doigt1 et 1 Doigt2. Pour faire la connexion il faut passer un bout de filament PLA dans les connecteurs rond puis faire fondre les bouts pour le garder en place.
