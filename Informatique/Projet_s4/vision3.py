@@ -11,7 +11,7 @@ import time
 from threading import Timer
 import filtreDonnees
 import matplotlib.pyplot as plt
-import scipy
+from scipy import signal 
 
 
 """
@@ -58,15 +58,12 @@ class RepeatedTimer(object):
         self._timer.cancel()
         self.is_running = False
 
-<<<<<<< Updated upstream
-
 
 
 """
 le frame utiliser pour analyser le corps
 """
-=======
->>>>>>> Stashed changes
+
 mp_drawing = mp.solutions.drawing_utils
 mp_holistic = mp.solutions.holistic
 
@@ -219,20 +216,16 @@ def main(a, b, c, d, e, f, g, h, i, j):
         
     return stage_m
 
-<<<<<<< Updated upstream
+
 
 dataAngle = filtreDonnees.dataAngle(fs, 2, 5, 4)
 
 """
 ouverture de la caméra avec le modèle avec son modèle (holistic)
 """
-    
-message = RepeatedTimer(ts, communication)
-=======
-dataAngle = real_time_peak_detection.data(10)
 
 message = RepeatedTimer(0.05, communication)
->>>>>>> Stashed changes
+
 try:
     with (mp_holistic.Holistic(min_detection_confidence=0.9, min_tracking_confidence=0.9) as holistic):
         while cap.isOpened():
@@ -323,8 +316,8 @@ try:
                 angleB = calculate_angle(hip, shoulder, elbow)
                 angleC = calculate_angle(hipB, shoulderB, elbowB)
                 angleD = calculate_angle(shoulderC, shoulder, elbow)
-<<<<<<< Updated upstream
-                if (pres_t-last_t >=5):
+
+                if (pres_t-last_t >=1):
                     pos_main = main(index, index2, majeur, majeur2, annulaire, annulaire2, auriculaire, auriculaire2, poignet, pouce)
                     last_t = pres_t
                 pres_t = time.time()
@@ -334,10 +327,7 @@ try:
                 """
                 permet d'afficher l'angle du coude sur le coude
                 """
-=======
-                pos_main = main(index, index2, majeur, majeur2, annulaire, annulaire2, auriculaire, auriculaire2, poignet, pouce)
 
->>>>>>> Stashed changes
                 cv2.putText(image, str(angleA),
                             tuple(np.multiply(elbow,[640, 480]).astype(int)),
                                   cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA, )
@@ -354,9 +344,7 @@ try:
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA, )
     
                 ret = "rien"
-<<<<<<< Updated upstream
 
-=======
                 """
                 # curl counter logic
                 if angle > 160 and angleB < 10:
@@ -392,7 +380,7 @@ try:
                 if ret != "rien":
                     print(ret)
                 """
->>>>>>> Stashed changes
+
                 if pos_main == 1:
                     stage_main = "down"
                 if pos_main == 0:
@@ -400,11 +388,11 @@ try:
     
             except:
                 pass
-<<<<<<< Updated upstream
+
             
 
             cv2.putText(image, stage_main, (450, 30),
-=======
+                        cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 2, cv2.LINE_AA)
            
             """cv2.rectangle(image, (0, 0), (112, 72), (245, 117, 16), -1)
     
@@ -463,9 +451,8 @@ try:
             cv2.putText(image,'STAGE', (450, 12),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1, cv2.LINE_AA)
             """
-            cv2.putText(image, stage_main, (450, 60),
->>>>>>> Stashed changes
-                        cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 2, cv2.LINE_AA)
+ 
+                        
     
     
             mp_drawing.draw_landmarks(image, results.pose_landmarks,mp_holistic.POSE_CONNECTIONS,
@@ -478,7 +465,7 @@ try:
                                         mp_drawing.DrawingSpec(color=(255, 0, 0), thickness=2, circle_radius=2)
                                       )
 
-<<<<<<< Updated upstream
+
             cv2.imshow('Mediapipe Feed', image)
     
             """
@@ -490,16 +477,7 @@ try:
         """
         ferme la caméra et détruite la fenêtre de la caméra
         """
-=======
-            """wait(0.5)
-            ret = write_read(f"<{angle}, {angleB}, {angleC}, {angleD}>")
-            """
-            cv2.imshow('Mediapipe Feed', image)
 
-            if cv2.waitKey(10) & 0xFF == ord('q'):
-                break
-
->>>>>>> Stashed changes
         cap.release()
         cv2.destroyAllWindows()
              
@@ -509,14 +487,17 @@ finally:
   message.stop() 
   
   
-  dataAngle.graph(data1=dataAngle.val_angles["moteur_0"], data2=dataAngle.filt_RII["moteur_0"], leg1="Angles calculés", leg2="Moyenne mobile", xlabel = "Temps (s)", ylabel = "Angle (deg)", title=f"Angle du biceps (moteur1)\nFe={fs}Hz, Ordre=2")
+  dataAngle.graph(data1=dataAngle.val_angles["moteur_2"], data2=dataAngle.filt_RII["moteur_2"], leg1="Angles calculés", leg2="Filtre RII", xlabel = "Temps (s)", ylabel = "Angle (deg)", title=f"Angle du coude (moteur3)\nFe={fs}Hz, Ordre=2")
   """dataAngle.graph(data1=dataAngle.data2, data2=dataAngle.filt2, data3=dataAngle.filt_IIR2, leg1="Angles calculés", leg2="Moyenne mobile", leg3='Angles filtrés', xlabel = "Temps (s)", ylabel = "Angle (deg)", title=f"Angle de l'épaule (moteur2)\nFe={fs}Hz, Ordre=10")
   dataAngle.graph(data1=dataAngle.data3, data2=dataAngle.filt3, data3=dataAngle.filt_IIR3, leg1="Angles calculés", leg2="Moyenne mobile", leg3='Angles filtrés', xlabel = "Temps (s)", ylabel = "Angle (deg)", title=f"Angle du coude (moteur3)\nFe={fs}Hz, Ordre=")
   """
-  """
-  plt.psd(dataAngle.data1,Fs=fs,NFFT=len(dataAngle.data1))
-  plt.psd(dataAngle.filt1,Fs=fs,NFFT=len(dataAngle.filt1))
+  
+  plt.psd(dataAngle.val_angles["moteur_2"],Fs=fs,NFFT=len(dataAngle.val_angles["moteur_2"]))
+  plt.psd(dataAngle.filt_RII["moteur_2"],Fs=fs,NFFT=len(dataAngle.filt_RII["moteur_2"]))
+  plt.legend(["Angles calculés","Filtre RII"])
+  plt.title("Densité spectrale des angles du biceps")
   plt.show()
+  """
   plt.psd(dataAngle.data2,Fs=fs,NFFT=len(dataAngle.data2))
   plt.psd(dataAngle.filt2,Fs=fs,NFFT=len(dataAngle.filt2))
   plt.show()
@@ -524,3 +505,12 @@ finally:
   plt.psd(dataAngle.filt3,Fs=fs,NFFT=len(dataAngle.filt3))
   plt.show()"""
   
+  
+  w, h = signal.freqz(dataAngle.b_RII,dataAngle.a_RII)
+  fig, ax1 = plt.subplots()
+  ax1.set_title('Réponse fréquentielle du filtre RII')
+  f = w/(2*np.pi)*fs
+  ax1.plot(f, 20 * np.log10(abs(h)))
+  ax1.set_ylabel('Amplitude [dB]')
+  ax1.set_xlabel('Frequency [rad/sample]')
+  plt.show()

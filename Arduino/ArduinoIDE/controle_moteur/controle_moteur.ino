@@ -34,11 +34,10 @@ using namespace ControlTableItem;
 
 
 const int nb_moteur = 4;
-const int nb_movement = 3;
 const uint8_t DXL_ID[nb_moteur] = {1, 20, 3, 4};
-
-
-float msg_data[nb_moteur] = {0,0,0,0};
+float mgs_donnees[nb_moteur] = {0,0,0,0};
+float home_pos[nb_moteur] = {121.0, 255.0, 283.0, 35.0};
+int combinaison[5] = {2, 3, 4,3, 5}; // Pour effectuer la séquence de mouvement, entrer 6 dans le port série
 
 
 void setup() {
@@ -51,7 +50,7 @@ void setup() {
   // Set Port Protocol Version. This has to match with DYNAMIXEL protocol version.
   dxl.setPortProtocolVersion(DXL_PROTOCOL_VERSION);
   
-  // initialise each moteur
+  // initialise chaque moteur
   for (int i=0;i<nb_moteur;i++){
     dxl.ping(DXL_ID[i]);
     dxl.torqueOff(DXL_ID[i]);
@@ -60,35 +59,42 @@ void setup() {
     defVitesse(dxl,DXL_ID[i],0.5);
   }
    homing(dxl);
+   check_pos_achieved(dxl, home_pos, 0);
 }
 
 
 
 // fonction loop() pour les mouvements préenregistés
-/*
+
 void loop() {
   while (!Serial.available()) {
-    int chosen_command = 0;
-    chosen_command = Serial.readString().toInt();
+    //int chosen_command = 0;
+    int chosen_command = Serial.readString().toInt();
     Serial.print(chosen_command);
     
     if (chosen_command <= 0){
       chosen_command = 0;
     }
+    if (chosen_command == 6){
+      for(int i=0; i<5;i++){
+        chosen_command = combinaison[i];
+        envoiCommande(dxl,chosen_command);
+      }
+    }
+    
     envoiCommande(dxl,chosen_command);
   }
-}*/
+}
 
 
 // fonction loop() pour le temps réel
 
 void loop(){
-  // J'ai besoin des cibles d'angle pour les 4 moteurs et le temps entre du écriture du port série
-  bool data_received = getSerialMessage(msg_data);
-  if (data_received){
-    changeAngle(msg_data);
-    limitePosition(msg_data);
-    defVitesseAng(dxl, msg_data, 0);
-    defPosAng(dxl, msg_data, 0);
+  bool donnees_recues = getSerialMessage(mgs_donnees);
+  if (donnees_recues){
+    changeAngle(mgs_donnees);
+    limitePosition(mgs_donnees);
+    defVitesseAng(dxl, mgs_donnees, 0);
+    defPosAng(dxl, mgs_donnees, 0);
   }
 }

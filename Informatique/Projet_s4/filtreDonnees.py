@@ -51,7 +51,7 @@ class dataAngle():
 
         
         self.ordre = 2 # filtre RIF/RII ordre 4
-        self.fc = 2 # fréquence de coupure = 2 Hz
+        self.fc = Fc # fréquence de coupure = 2 Hz
         self.fe = Fe # fréquence d'échantillonnage
         self.te = 1/self.fe # période d'échantillonnage
         self.b_RIF = signal.firwin(self.ordre, self.fc, fs=self.fe) # Coefficients du filtre RIF
@@ -234,7 +234,7 @@ class dataAngle():
         ax.set_xlabel(xlabel)
         ax.set_ylabel(ylabel)
         plt.title(title)
-        plt.show()
+        plt.show() 
         
         
     def outputData(self):
@@ -242,6 +242,7 @@ class dataAngle():
         Description
         ----------
         Sort les valeurs en CSV
+        !!! Elle n'a pas été essayée. !!!
 
         Returns
         -------
