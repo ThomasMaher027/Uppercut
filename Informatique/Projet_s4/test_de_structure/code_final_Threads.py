@@ -6,7 +6,9 @@ import serial
 import time
 from threading import Timer
 
-
+"""
+ce code ne fonctionne pas du tout, J'ai essayer de faire qqch de propre mais les threads ne sont pas assez fonctionnels de la manière que je voulais implementer
+"""
 arduino = serial.Serial(port='COM5', baudrate=115200, timeout=.1)
 
 class RepeatedTimer(object):

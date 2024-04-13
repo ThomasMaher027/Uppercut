@@ -8,6 +8,14 @@ import queue
 import threading
 from multiprocessing import Process, Queue, Semaphore
 
+"""
+J'ai essayer de mettre de la strucure dans le code final (Holistic_TempsReel_Angle_CommunicationSerie). 
+Je voulais faire différent process et avoir de la communication entre eux. 
+Ainsi, on aurait pu avoir un temps reel qui calcul des angles et un code basé sur l'analyse de mouvement précis. 
+Avec le thread de clavier, on choisit avec le terminal quel code se lance et on peux arrêter le programme.
+Les process que je voulais faire etaient le code temps reel, le code qui compte les mouvememts et la communication port série
+"""
+
 #region Globales
 #Commandes universelles
 EXIT_COMMAND = "Q"
