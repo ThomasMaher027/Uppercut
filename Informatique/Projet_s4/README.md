@@ -1,7 +1,7 @@
 # Système de Vision 
 
 ## Début et recherche utile pour comprendre le cheminement du côté de la vision
-le fichier suivant présente comment mettre en place l'environnement de programmation et qu'elle vidéo ont aider le choix des librairies et le choix du language de programmation utilisé :
+le fichier suivant présente comment mettre en place l'environnement de programmation et quelles vidéos ont aider le choix des librairies et le choix du language de programmation utilisé :
 [doc_vision](https://github.com/ThomasMaher027/Uppercut/blob/main/Informatique/Projet_s4/Projet_S4_recherche_Camera_Python.docx)
 
 ## Temps Réel
