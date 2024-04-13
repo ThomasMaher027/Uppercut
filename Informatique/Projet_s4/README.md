@@ -2,7 +2,7 @@
 
 ## Début et recherche utile pour comprendre le cheminement du côté de la vision
 le fichier suivant présente comment mettre en place l'environnement de programmation et qu'elle vidéo ont aider le choix des librairies et le choix du language de programmation utilisé :
-[doc_vision](https://github.com/ThomasMaher027/Uppercut/tree/main/Mécanique/3D%20CAD/En%20cours/Épaule_test_2)
+[doc_vision](https://github.com/ThomasMaher027/Uppercut/blob/main/Informatique/Projet_s4/Projet_S4_recherche_Camera_Python.docx)
 
 ## Temps Réel
 À l'aide des librairies OpenCv et MediaPipe, le flux vidéo de la caméra est analyser et des angles sont calculés. 
