@@ -1,4 +1,3 @@
-# source : https://stackoverflow.com/questions/22583391/peak-signal-detection-in-realtime-timeseries-data
 import numpy as np
 import matplotlib.pyplot as plt
 import csv
