@@ -1,9 +1,11 @@
 # Uppercut
 Voici le code pour une carte [OpenRB-150 de Robotis](https://emanual.robotis.com/docs/en/parts/controller/openrb-150/) pour contrôler les moteurs Dynamixels. L'ensemble est configuré pour être utilisé avec l'IDE d'Arduino.
 
-Le code principale est situé dans [control_moteur.ino](https://github.com/ThomasMaher027/Uppercut/blob/main/Arduino/ArduinoIDE/controle_moteur/controle_moteur.ino).
+Le code principale est situé dans [Arduino/control_moteur.ino](https://github.com/ThomasMaher027/Uppercut/blob/main/Arduino/ArduinoIDE/controle_moteur/controle_moteur.ino).
 
 Il y a 2 modes de fonctionnement : temps réel et choix de mouvement. Pour choisir le mode, commenter/décommenter la fonction loop() appropriée.
+
+Le dossier [PlatformIO](https://github.com/ThomasMaher027/Uppercut/tree/main/Arduino/PlaformIO) contient les fichiers pour faire fonctionner le code grâce à PlatformIO. Cependant, nous avons rencontré des problèmes avec PlatformIO et avons préféré d'utiliser l'IDE d'Arduino (mais rien n'empêche d'essayer de l'utiliser).
 
 ## Personnalisation
 Certaines variables du programme qui peuvent/doivent être modifiées selon le contexte d'utilisation. En voici la liste :
