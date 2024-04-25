@@ -8,7 +8,7 @@ float min_pos_moteur[nb_moteur] = {115, 120, 180, 10};
 float max_pos_moteur[nb_moteur] = {278, 258, 270, 230};
 // float pos_home[nb_moteur] = {190.0, 258.0, 180.0, 330.0};
 float pos_home[nb_moteur] = {121.0, 255.0, 283.0, 10.0};
-float vit_max = 0.8;
+float vit_max = 0.7;
 float vit_min = 0;
 
 // Transforme les angles obtenus de l'ordinateur et les changes pour qu'ils soient utilisablent par les moteurs
